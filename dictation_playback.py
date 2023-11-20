@@ -19,7 +19,7 @@ def on_phrase(j):
 speech_system.register('phrase', on_phrase)
 
 #The on_phrase function was based on the on_phrase function in the community repository for its command history.
-#The community repository is distributed under the following license
+#The community repository (https://github.com/talonhub/community) is distributed under the following license
 #MIT License
 
 # Copyright (c) 2021 Jeff Knaus, Ryan Hileman, Zach Dwiel, Michael Arntzenius, and others

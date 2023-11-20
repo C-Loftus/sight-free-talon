@@ -15,3 +15,9 @@ edge speak this:
 
 toggle echo:
     user.toggle_echo()
+
+echo context:
+    user.echo_context()
+
+toggle echo context:
+    user.toggle_echo_context()

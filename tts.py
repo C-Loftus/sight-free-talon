@@ -1,4 +1,4 @@
-from talon import Module, actions, Context, settings, cron
+from talon import Module, actions, Context, settings, cron, ui
 import requests
 import json, os, time, subprocess, multiprocessing
 from pathlib import Path
@@ -17,6 +17,13 @@ mod.setting(
     desc="Speed of text to speech",
 )
 
+mod.setting(
+    "echo_context",
+    type=bool,
+    default=False,
+    desc="If nonzero, plays back dictation with text to speech",
+)
+
 
 @mod.action_class
 class Actions:
@@ -27,6 +34,19 @@ class Actions:
         ctx.settings["user.echo_dictation"] = not settings.get("user.echo_dictation")
         if settings.get("user.echo_dictation"):
             actions.user.robot_tts("echo dictation enabled")
+    
+    def toggle_echo_context():
+        """Toggles echo context on and off"""
+
+        ctx.settings["user.echo_context"] = not settings.get("user.echo_context")
+        if settings.get("user.echo_context"):
+            actions.user.robot_tts("echo context enabled")
+
+    def echo_context():
+        """Echo the current context"""
+        friendly_name = actions.app.name()
+
+        actions.user.robot_tts(str(friendly_name))
 
 
     def robot_tts(text: str):
@@ -132,6 +152,20 @@ class UserActions:
 
 
 
+def on_app_switch(app):
+    if settings.get("user.echo_context"):
+        actions.user.echo_context()
 
+def on_title_switch(win):
+    if settings.get("user.echo_context"):
+        window = ui.active_window()
+        active_window_title = window.title
+        # get just the first two word
+        active_window_title = ' '.join(active_window_title.split()[:2])
+        #trime the title to 20 characters so super long addresses don't get read
+        active_window_title = active_window_title[:20]
 
+        actions.user.robot_tts(f"{active_window_title}")
 
+ui.register("app_activate", on_app_switch)
+ui.register("win_title", on_title_switch)

@@ -1,4 +1,4 @@
-from talon import Module, actions, Context, settings
+from talon import Module, actions, Context, settings, cron
 import requests
 import json, os, time, subprocess, multiprocessing
 from pathlib import Path
@@ -126,6 +126,12 @@ class UserActions:
         # open a process that will speak the text
         # p = multiprocessing.Process(target=speaker.Speak, args=(text,))
         # p.start()
-        t = threading.Thread(target=speaker.Speak, args=(text,))
-        t.start()
+        cron.after("0s", lambda: speaker.Speak(text))
+        # t = threading.Thread(target=speaker.Speak, args=(text,))
+        # t.start
+
+
+
+
+
 

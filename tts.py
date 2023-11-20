@@ -1,4 +1,4 @@
-from talon import Module, actions, Context
+from talon import Module, actions, Context, settings
 import requests
 import json, os, time, subprocess, multiprocessing
 from pathlib import Path
@@ -8,11 +8,17 @@ if os.name == 'nt':
     import win32com.client
 
 mod = Module()
-
+ctx = Context()
 
 
 @mod.action_class
 class Actions:
+
+    def toggle_echo():
+        """Toggles echo dictation on and off"""
+
+        ctx.settings["user.echo_dictation"] = not settings.get("user.echo_dictation")
+
     def robot_tts(text: str):
         '''text to speech with robot voice'''
 

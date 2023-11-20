@@ -10,6 +10,13 @@ if os.name == 'nt':
 mod = Module()
 ctx = Context()
 
+mod.setting(
+    "tts_speed",
+    type=float,
+    default=1.0,
+    desc="Speed of text to speech",
+)
+
 
 @mod.action_class
 class Actions:
@@ -18,6 +25,9 @@ class Actions:
         """Toggles echo dictation on and off"""
 
         ctx.settings["user.echo_dictation"] = not settings.get("user.echo_dictation")
+        if settings.get("user.echo_dictation"):
+            actions.user.robot_tts("echo dictation enabled")
+
 
     def robot_tts(text: str):
         '''text to speech with robot voice'''
@@ -110,6 +120,7 @@ class UserActions:
     def robot_tts(text: str):
         """text to speech"""
         speaker = win32com.client.Dispatch("SAPI.SpVoice")
+        speaker.rate = settings.get("user.tts_speed", 1.0)
 
         # speaker.Speak(text)
         # open a process that will speak the text

@@ -1,4 +1,4 @@
-from talon import Module, actions, Context, settings, cron, ui
+from talon import Module, actions, Context, settings, cron, ui, registry, scope, clip
 import requests
 import json, os, time, subprocess, multiprocessing
 from pathlib import Path
@@ -42,11 +42,18 @@ class Actions:
         if settings.get("user.echo_context"):
             actions.user.robot_tts("echo context enabled")
 
-    def echo_context():
+    def echo_context(include_title: bool = False):
         """Echo the current context"""
-        friendly_name = actions.app.name()
+        friendly_name = actions.app.name() 
+        title = ui.active_window().title 
 
-        actions.user.robot_tts(str(friendly_name))
+        if include_title: 
+            actions.user.robot_tts(f"{friendly_name} {title}") 
+        else:
+            actions.user.robot_tts(str(friendly_name))
+
+    def nvda_tts(text: str):
+        '''text to speech with NVDA'''
 
 
     def robot_tts(text: str):
@@ -150,6 +157,14 @@ class UserActions:
         # t = threading.Thread(target=speaker.Speak, args=(text,))
         # t.start
 
+    def nvda_tts(text: str):
+        """text to speech with NVDA"""
+        clip.set_text(text) # sets the result to the clipboard
+        actions.sleep("10ms")
+        nvda_key = settings.get("user.nvda_key")
+        actions.key(f"{nvda_key}:down c {nvda_key}:up") 
+
+
 
 
 def on_app_switch(app):
@@ -166,6 +181,9 @@ def on_title_switch(win):
         active_window_title = active_window_title[:20]
 
         actions.user.robot_tts(f"{active_window_title}")
+
+
+# registry.register("update_contexts", on_update_contexts)
 
 ui.register("app_activate", on_app_switch)
 ui.register("win_title", on_title_switch)

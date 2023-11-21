@@ -21,8 +21,9 @@ mod.setting(
     "echo_context",
     type=bool,
     default=False,
-    desc="If nonzero, plays back dictation with text to speech",
+    desc="If true, plays back dictation with text to speech",
 )
+
 
 
 @mod.action_class
@@ -51,9 +52,6 @@ class Actions:
             actions.user.robot_tts(f"{friendly_name} {title}") 
         else:
             actions.user.robot_tts(str(friendly_name))
-
-    def nvda_tts(text: str):
-        '''text to speech with NVDA'''
 
 
     def robot_tts(text: str):
@@ -135,17 +133,11 @@ class Actions:
                 f.write(response.content)
             print('Audio file saved as ' + full_name)
 
-
-ctxWindows = Context()
-ctxWindows.matches = r"""
-os: windows
-"""
-
-@ctxWindows.action_class('user')
-class UserActions:
-    
-    def robot_tts(text: str):
-        """text to speech"""
+    def windows_robot_tts(text: str):
+        """text to speech with windows voice
+         this function should never be overwritten and is used to be called from within the robot
+         function which can be overwritten by the user
+        """
         speaker = win32com.client.Dispatch("SAPI.SpVoice")
         speaker.rate = settings.get("user.tts_speed", 1.0)
 
@@ -157,13 +149,20 @@ class UserActions:
         # t = threading.Thread(target=speaker.Speak, args=(text,))
         # t.start
 
-    def nvda_tts(text: str):
-        """text to speech with NVDA"""
-        clip.set_text(text) # sets the result to the clipboard
-        actions.sleep("10ms")
-        nvda_key = settings.get("user.nvda_key")
-        actions.key(f"{nvda_key}:down c {nvda_key}:up") 
 
+ctxWindows = Context()
+ctxWindows.matches = r"""
+os: windows
+"""
+
+@ctxWindows.action_class('user')
+class UserActions:
+
+
+    
+    def robot_tts(text: str):
+        """text to speech"""
+        actions.user.windows_robot_tts(text)
 
 
 

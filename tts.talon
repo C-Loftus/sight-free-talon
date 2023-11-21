@@ -24,3 +24,8 @@ echo context:
 
 toggle echo context:
     user.toggle_echo_context()
+
+echo line:
+    edit.select_line()
+    key(ctrl-c)
+    user.robot_tts(clip.text())

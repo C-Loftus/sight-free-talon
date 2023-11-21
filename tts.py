@@ -35,6 +35,8 @@ class Actions:
         ctx.settings["user.echo_dictation"] = not settings.get("user.echo_dictation")
         if settings.get("user.echo_dictation"):
             actions.user.robot_tts("echo dictation enabled")
+        else:
+            actions.user.robot_tts("echo dictation disabled")
     
     def toggle_echo_context():
         """Toggles echo context on and off"""
@@ -42,6 +44,23 @@ class Actions:
         ctx.settings["user.echo_context"] = not settings.get("user.echo_context")
         if settings.get("user.echo_context"):
             actions.user.robot_tts("echo context enabled")
+        else:
+            actions.user.robot_tts("echo context disabled")
+        
+
+    # def toggle_echo_all():
+    #     """Toggles echo dictation and echo context on and off"""
+
+    #     ctx.settings["user.echo_dictation"] = not settings.get("user.echo_dictation")
+    #     ctx.settings["user.echo_context"] = not settings.get("user.echo_context")
+    #     if settings.get("user.echo_dictation") and settings.get("user.echo_context"):
+    #         actions.user.robot_tts("echo dictation and echo context enabled")
+    #     elif settings.get("user.echo_dictation"):
+    #         actions.user.robot_tts("echo dictation enabled")
+    #     elif settings.get("user.echo_context"):
+    #         actions.user.robot_tts("echo context enabled")
+    #     else:
+    #         actions.user.robot_tts("echo dictation and echo context disabled")
 
     def echo_context(include_title: bool = False):
         """Echo the current context"""
@@ -181,8 +200,20 @@ def on_title_switch(win):
 
         actions.user.robot_tts(f"{active_window_title}")
 
+last_mode = None
+def on_update_contexts():
+    global last_mode
+    modes = scope.get("mode")
+    if last_mode == 'sleep' and 'sleep' not in modes:
+        actions.user.robot_tts(f'Talon has waken up')
+    last_mode = modes
+    if "sleep" in modes:
+        last_mode  = "sleep"
+    else:
+        last_mode = "other"
+        
 
-# registry.register("update_contexts", on_update_contexts)
+registry.register("update_contexts", on_update_contexts)
 
 ui.register("app_activate", on_app_switch)
 ui.register("win_title", on_title_switch)

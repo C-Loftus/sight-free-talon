@@ -4,11 +4,21 @@ next heading:
 previous heading:
     key(shift-h)
 
-Turn reader on:                          key(ctrl-alt-n)
-Turn reader off:                         
-    key(capslock:down)
-    key(q)
-    key(capslock:up)
+previous option:
+    user.with_nvda_mod_press('ctrl-left')
+
+next option:
+    user.with_nvda_mod_press('ctrl-right')
+
+up option:
+    user.with_nvda_mod_press('ctrl-up') 
+
+down option:
+    user.with_nvda_mod_press('ctrl-down')
+
+toggle reader:
+    user.toggle_nvda()
+
 
 deck(pedal_left:repeat):    
     key(tab)

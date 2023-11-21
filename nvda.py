@@ -21,6 +21,20 @@ mod.setting(
     desc="If true, plays back dictation with text to speech through the screenreader, not within Talon",
 )
 
+import subprocess
+def is_nvda_running2():
+    try:
+        # Use the 'tasklist' command to check if NVDA is running
+        result = subprocess.run(['tasklist', '/FI', 'IMAGENAME eq nvda.exe'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+        # Check if 'nvda.exe' is present in the tasklist output
+        return 'nvda.exe' in result.stdout
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return False
+
+
+
 @mod.scope
 def check_nvda():
     '''Check if NVDA is running'''
@@ -33,31 +47,43 @@ def check_nvda():
             print(f"Error: {e}")
             return False
 
-    nvda_running = is_nvda_running() 
+    nvda_running = is_nvda_running()
     if nvda_running:
         ctx.tags = ["user.nvda_running"]
     else:
         ctx.tags = []
+    print(list(ctx.tags))
 
 # Re-run the above code every 15s to update the scope
-cron.interval("5s", check_nvda.update)
+cron.interval("3s", check_nvda.update)
 
 
 
 @mod.action_class
 class Actions:
+     
+    def toggle_nvda():
+        '''Toggles NVDA on and off'''
+        if not actions.user.is_nvda_running():
+            actions.key("ctrl-alt-n") 
+            actions.user.robot_tts("NVDA on")
+        elif actions.user.is_nvda_running():
+            actions.user.with_nvda_mod_press('q')
+            actions.user.robot_tts("NVDA off")
+
+
     def with_nvda_mod_press(key: str):
         """Presses the NVDA key"""
         nvda_key = settings.get("user.nvda_key")
         actions.key(f'{nvda_key}:down') 
         actions.sleep("50ms")
         actions.key(key)
-        actions.sleep("50ms")
+        actions.sleep("10ms")
         actions.key(f'{nvda_key}:up') 
 
     def is_nvda_running() -> bool:
         '''Returns true if NVDA is running'''
-        return ctx.tags == ["user.nvda_running"]
+        return "user.nvda_running" in ctx.tags
     
     def nvda_tts(text: str):
         '''text to speech with NVDA'''
@@ -75,7 +101,6 @@ class NVDAActions:
             clip.set_text(text) # sets the result to the clipboard
             actions.sleep("50ms")
             actions.user.with_nvda_mod_press('c')
-            actions.sleep("50ms")
 
 
 

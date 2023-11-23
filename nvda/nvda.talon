@@ -7,18 +7,21 @@ previous heading:
 previous option:
     user.with_nvda_mod_press('ctrl-left')
 
+# In the menu, this will go to the next option
 next option:
     user.with_nvda_mod_press('ctrl-right')
 
 up option:
     user.with_nvda_mod_press('ctrl-up') 
 
+# In the menu, this will lower the value of the option
 down option:
     user.with_nvda_mod_press('ctrl-down')
 
 toggle reader:
     user.toggle_nvda() 
 
+# reads everything from the current position down
 echo below:
     user.with_nvda_mod_press('down')
 
@@ -26,32 +29,65 @@ echo below:
 toggle echo: 
     key(shift)
 
+stop speech:
+    key(ctrl)
+
+read current line:
+    user.with_nvda_mod_press('up')
+
+move mouse to current navigator object:
+    user.with_nvda_mod_press('shift-m')
+
+navigate to mouse:
+    user.with_nvda_mod_press('shift-n')
+
 
 deck(pedal_left:repeat):    
     key(tab)
     sleep(.2)
 
-Stop Reading:                          key(ctrl)
-Start reading continuously:          
-    key(capslock:down)
-    key(down)
-    key(capslock:up)
-Read next item:                        key(down arrow)
-Read next focusable item:              key(Tab)
 
-Link:                                  key(Enter)
-Button:                                key(Enter)
+read title:
+    user.with_nvda_mod_press('t')
 
-Go to next heading:                    key(H)
-Go to next heading of level <user.number_signed_small>:    key(user.number_signed_small)
+next focusable item:              key(tab)
+next heading <number_small>:    key("{number_small}")
+previous heading  <number_small>:   key("shift-{number_small}")
 
 Go to next landmark:        key(D)
 
 list all fields:  
-    key(capslock:down)
-    key(f7)
-    key(capslock:up)
+    user.with_nvda_mod_press('f7')
 
+toggle input help:
+    user.with_nvda_mod_press('1')
+
+speak typed words:
+    user.with_nvda_mod_press('3')
+
+speak typed characters:
+    user.with_nvda_mod_press('2')
+
+speak command keys:
+    user.with_nvda_mod_press('4')
+
+toggle mouse tracking:
+    user.with_nvda_mod_press('m')
+
+open reader setings:
+    user.with_nvda_mod_press('ctrl-g')
+
+open synthesizer settings:
+    user.with_nvda_mod_press('ctrl-s')
+
+# sleep mode disables all NVDA commands and speech/braille 
+# output for the current application. This is most useful in 
+# applications that provide their own speech or screen reading 
+# features. Press this command again to disable sleep mode - note 
+# that NVDA will only retain the Sleep Mode setting until it is restarted.
+toggle reader sleep:
+    user.with_nvda_mod_press("shift-s")
+    
 Go to next table:                       key(T)
 Go to next list:                        key(L)
 Go to next list item:                   key(I)
@@ -61,10 +97,9 @@ Go to next link:                        key(K)
 Go to next unvisited link:              key(U)
 Go to next visited link:                key(V)
 Next form field:                        key(F)
-Next focusable item:                    key(Tab)
 Next button:                            key(B)
 
-Select and deselect:                    key(Spacebar)
+toggle selection:                    key(space)
 Next checkbox:                          key(X)
 
 Next combo box:                          key(C)

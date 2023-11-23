@@ -1,6 +1,10 @@
 from talon import actions, Module, settings, cron, Context, clip, registry
 import os, ctypes
 
+# Load the NVDA client library
+dir_path = os.path.dirname(os.path.realpath(__file__))
+dll_path = os.path.join(dir_path, "nvdaControllerClient64.dll")
+nvda_client: ctypes.WinDLL = ctypes.windll.LoadLibrary(dll_path)
 
 mod = Module()
 ctx = Context()
@@ -22,53 +26,33 @@ mod.setting(
 )
 
 @mod.scope
-def check_nvda():
-    '''Check if NVDA is running'''
-    # Check if it is running without spawning a thread or process
-    def is_nvda_running():
-        try:
-            hwnd = ctypes.windll.user32.FindWindowW(None, "NVDA")
-            return hwnd != 0
-        except Exception as e:
-            print(f"Error: {e}")
-            return False
-
-    nvda_running = is_nvda_running()
-    if nvda_running:
-        ctx.tags = ["user.nvda_running"]
-    else:
-        ctx.tags = []
+def set_nvda_running_tag():
+    '''Update tags based on if NVDA is running'''
+    ctx.tags = ["user.nvda_running"] \
+        if actions.user.is_nvda_running() \
+        else []
 
 # Re-run the above code every 15s to update the scope
-cron.interval("3s", check_nvda.update)
-
-# Load the NVDA client library
-# get dir of this file
-import os
-dir_path = os.path.dirname(os.path.realpath(__file__))
-dll_path = os.path.join(dir_path, "nvdaControllerClient64.dll")
-
-clientLib = ctypes.windll.LoadLibrary(dll_path)
-
-# Test if NVDA is running, and if its not show a message
-res = clientLib.nvdaController_testIfRunning()
-if res != 0:
-	errorMessage = str(ctypes.WinError(res))
-	ctypes.windll.user32.MessageBoxW(0, "Error: %s" % errorMessage, "Error communicating with NVDA", 0)
-    # actions.user.robot_tts("Error communicating with NVDA")
+cron.interval("3s", set_nvda_running_tag.update)
 
 
 @mod.action_class
 class Actions:
+
+    def nvda_braille(text: str):
+        """Output braille with NVDA"""
+
+    def cancel_robot_tts(text: str):
+        """Stop the currently spoken tts phrase"""
      
     def toggle_nvda():
         '''Toggles NVDA on and off'''
         if not actions.user.is_nvda_running():
             actions.key("ctrl-alt-n") 
-            actions.user.robot_tts("NVDA on")
+            actions.user.robot_tts("Turning NVDA on")
         elif actions.user.is_nvda_running():
             actions.user.with_nvda_mod_press('q')
-            actions.user.robot_tts("NVDA off")
+            actions.user.robot_tts("Turning NVDA off")
 
 
     def with_nvda_mod_press(key: str):
@@ -82,7 +66,7 @@ class Actions:
 
     def is_nvda_running() -> bool:
         '''Returns true if NVDA is running'''
-        return "user.nvda_running" in ctx.tags
+        return True if nvda_client.nvdaController_testIfRunning() == 0 else False
     
     def nvda_tts(text: str, use_clipboard: bool= False):
         '''text to speech with NVDA'''
@@ -92,10 +76,18 @@ ctxNVDARunning.matches = r"""
 tag: user.nvda_running
 """
 
+
 @ctxNVDARunning.action_class("user")
 class NVDAActions:
     def nvda_tts(text: str, use_clipboard: bool= False):
         """text to speech with NVDA"""
+
+        # Test if NVDA is running, and if its not show a message
+        res = nvda_client.nvdaController_testIfRunning()
+        if res != 0:
+            errorMessage = str(ctypes.WinError(res))
+            # ctypes.windll.user32.MessageBoxW(0, "Error: %s" % errorMessage, "Error communicating between Talon and NVDA", 0)
+            raise Exception("Error communicating between Talon and NVDA: %s" % errorMessage)
 
         # Text can be sent via the clipboard or directly to NVDA using the dll
         if use_clipboard:
@@ -104,9 +96,7 @@ class NVDAActions:
                 actions.sleep("50ms")
                 actions.user.with_nvda_mod_press('c')
         else:
-            clientLib.nvdaController_speakText(text)
-
-    
+            nvda_client.nvdaController_speakText(text)
 
 
 ctxWindowsNVDARunning = Context()
@@ -123,3 +113,11 @@ class UserActions:
             actions.user.nvda_tts(text)
         else:
             actions.user.windows_robot_tts(text)
+
+    def cancel_robot_tts(text: str):
+        """cancel the robot tts"""
+        nvda_client.nvdaController_cancelSpeech()
+
+    def nvda_braille(text: str):
+        """Output braille with NVDA"""
+        nvda_client.nvdaController_brailleMessage(text)

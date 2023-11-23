@@ -8,8 +8,8 @@ settings():
     # automatically echo the context of the focused window when switching applications/tabs
     user.echo_context = true
 
-    # instead of playing tts via the screenreader, play it via the tts engine in talon
-    user.tts_via_screenreader = false
+    # instead of playing tts via talon, play it via the tts engine in your screenreader
+    user.tts_via_screenreader = true
 
     # key used for nvda modifier, change to 'insert' if that is your nvda modifier
     user.nvda_key = 'capslock'

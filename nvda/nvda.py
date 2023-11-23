@@ -42,12 +42,6 @@ def check_nvda():
 # Re-run the above code every 15s to update the scope
 cron.interval("3s", check_nvda.update)
 
-
-# A part of NonVisual Desktop Access (NVDA)
-# Copyright (C) 2006-2023 NV Access Limited, Łukasz Golonka, Leonard de Ruijter
-# This file is covered by the GNU Lesser General Public License, version 2.1.
-# See the file license.txt for more details.
-
 # Load the NVDA client library
 # get dir of this file
 import os
@@ -90,7 +84,7 @@ class Actions:
         '''Returns true if NVDA is running'''
         return "user.nvda_running" in ctx.tags
     
-    def nvda_tts(text: str):
+    def nvda_tts(text: str, use_clipboard: bool= False):
         '''text to speech with NVDA'''
 
 ctxNVDARunning = Context()
@@ -100,7 +94,7 @@ tag: user.nvda_running
 
 @ctxNVDARunning.action_class("user")
 class NVDAActions:
-    def nvda_tts(text: str, use_clipboard: bool = False):
+    def nvda_tts(text: str, use_clipboard: bool= False):
         """text to speech with NVDA"""
 
         # Text can be sent via the clipboard or directly to NVDA using the dll
@@ -125,7 +119,6 @@ class UserActions:
     
     def robot_tts(text: str):
         """text to speech"""
-        
         if settings.get("user.tts_via_screenreader"):
             actions.user.nvda_tts(text)
         else:

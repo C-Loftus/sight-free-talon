@@ -5,3 +5,5 @@ The current priority is to focus on Windows. This repository is relatively exper
 # Acknowledgements
 
 NVDA Controller client can be found at: `https://www.nvaccess.org/files/nvda/releases/stable/` `
+Docs at:
+[https://github.com/nvaccess/nvda/blob/master/extras/controllerClient/readme.md](https://github.com/nvaccess/nvda/blob/master/extras/controllerClient/readme.md)

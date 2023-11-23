@@ -1,8 +1,9 @@
+from typing import Optional
 from talon import Module, actions, Context, settings, cron, ui, registry, scope, clip
 import requests
 import json, os, time, subprocess, multiprocessing
 from pathlib import Path
-import threading
+# from .utils import StoppableThread
 
 if os.name == 'nt':
     import win32com.client
@@ -24,10 +25,31 @@ mod.setting(
     desc="If true, plays back dictation with text to speech",
 )
 
-
+# TTS_IN_PROGRESS: Optional[StoppableThread] = None
 
 @mod.action_class
 class Actions:
+
+    def windows_robot_tts(text: str):
+        """text to speech with windows voice
+         this function should never be overwritten and is used to be called from within the robot
+         function which can be overwritten by the user
+        """
+        speaker = win32com.client.Dispatch("SAPI.SpVoice")
+        speaker.rate = settings.get("user.tts_speed", 1.0)
+        cron.after("0s", lambda: speaker.Speak(text))
+
+        # TODO:  this doesn't work to stop text to speech in the middle of speaking
+        # # for some reason, TODO fix this
+        #  
+        # global TTS_IN_PROGRESS
+        # if TTS_IN_PROGRESS:
+        #     if not TTS_IN_PROGRESS.stopped():
+        #         actions.user.notify('stopped')
+        #         TTS_IN_PROGRESS.stop()
+            
+        # TTS_IN_PROGRESS = StoppableThread(target=speaker.Speak, args=(text,))
+        # TTS_IN_PROGRESS.start()
 
     def toggle_echo():
         """Toggles echo dictation on and off"""
@@ -48,19 +70,20 @@ class Actions:
             actions.user.robot_tts("echo context disabled")
         
 
-    # def toggle_echo_all():
-    #     """Toggles echo dictation and echo context on and off"""
+    def toggle_echo_all():
+        """Toggles echo dictation and echo context on and off"""
 
-    #     ctx.settings["user.echo_dictation"] = not settings.get("user.echo_dictation")
-    #     ctx.settings["user.echo_context"] = not settings.get("user.echo_context")
-    #     if settings.get("user.echo_dictation") and settings.get("user.echo_context"):
-    #         actions.user.robot_tts("echo dictation and echo context enabled")
-    #     elif settings.get("user.echo_dictation"):
-    #         actions.user.robot_tts("echo dictation enabled")
-    #     elif settings.get("user.echo_context"):
-    #         actions.user.robot_tts("echo context enabled")
-    #     else:
-    #         actions.user.robot_tts("echo dictation and echo context disabled")
+        dictation, context = settings.get("user.echo_dictation"), settings.get("user.echo_context")
+
+        if any([dictation, context]):
+            actions.user.robot_tts("echo disabled")
+            ctx.settings["user.echo_dictation"] = False
+            ctx.settings["user.echo_context"] = False
+        else:
+            actions.user.robot_tts("echo enabled")
+            ctx.settings["user.echo_dictation"] = True
+            ctx.settings["user.echo_context"] = True
+
 
     def echo_context(include_title: bool = False):
         """Echo the current context"""
@@ -152,22 +175,6 @@ class Actions:
                 f.write(response.content)
             print('Audio file saved as ' + full_name)
 
-    def windows_robot_tts(text: str):
-        """text to speech with windows voice
-         this function should never be overwritten and is used to be called from within the robot
-         function which can be overwritten by the user
-        """
-        speaker = win32com.client.Dispatch("SAPI.SpVoice")
-        speaker.rate = settings.get("user.tts_speed", 1.0)
-
-        # speaker.Speak(text)
-        # open a process that will speak the text
-        # p = multiprocessing.Process(target=speaker.Speak, args=(text,))
-        # p.start()
-        cron.after("0s", lambda: speaker.Speak(text))
-        # t = threading.Thread(target=speaker.Speak, args=(text,))
-        # t.start
-
 
 ctxWindows = Context()
 ctxWindows.matches = r"""
@@ -176,34 +183,41 @@ os: windows
 
 @ctxWindows.action_class('user')
 class UserActions:
-
-
-    
     def robot_tts(text: str):
         """text to speech"""
         actions.user.windows_robot_tts(text)
 
-
-
 def on_app_switch(app):
-    if settings.get("user.echo_context"):
-        actions.user.echo_context()
+    if not settings.get("user.echo_context"):
+        return 
+    
+    actions.user.echo_context()
 
+last_title = None
 def on_title_switch(win):
-    if settings.get("user.echo_context"):
-        window = ui.active_window()
-        active_window_title = window.title
-        # get just the first two word
-        active_window_title = ' '.join(active_window_title.split()[:2])
-        #trime the title to 20 characters so super long addresses don't get read
-        active_window_title = active_window_title[:20]
+    if not settings.get("user.echo_context"):
+        return
+    
+    window = ui.active_window()
+    active_window_title = window.title
+    # get just the first two word
+    active_window_title = ' '.join(active_window_title.split()[:2])
+    #trime the title to 20 characters so super long addresses don't get read
+    active_window_title = active_window_title[:20]
 
-        actions.user.robot_tts(f"{active_window_title}")
+    global last_title
+    if last_title == active_window_title:
+        return
+    else:
+        last_title = active_window_title
+
+    actions.user.robot_tts(f"{active_window_title}")
 
 last_mode = None
 def on_update_contexts():
     global last_mode
-    modes = scope.get("mode")
+
+    modes = scope.get("mode") or []
     if last_mode == 'sleep' and 'sleep' not in modes:
         actions.user.robot_tts(f'Talon has waken up')
     last_mode = modes
@@ -214,6 +228,5 @@ def on_update_contexts():
         
 
 registry.register("update_contexts", on_update_contexts)
-
 ui.register("app_activate", on_app_switch)
 ui.register("win_title", on_title_switch)

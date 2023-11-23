@@ -2,3 +2,6 @@ This repository is intended to hold code useful for using Talon with a vision im
 
 The current priority is to focus on Windows. This repository is relatively experimental.
 
+# Acknowledgements
+
+NVDA Controller client can be found at: `https://www.nvaccess.org/files/nvda/releases/stable/` `

@@ -17,7 +17,14 @@ down option:
     user.with_nvda_mod_press('ctrl-down')
 
 toggle reader:
-    user.toggle_nvda()
+    user.toggle_nvda() 
+
+echo below:
+    user.with_nvda_mod_press('down')
+
+# If the user is in the middle of an echoed text and this will posit otherwise it will resume
+toggle echo: 
+    key(shift)
 
 
 deck(pedal_left:repeat):    

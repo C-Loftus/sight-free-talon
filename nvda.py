@@ -21,20 +21,6 @@ mod.setting(
     desc="If true, plays back dictation with text to speech through the screenreader, not within Talon",
 )
 
-import subprocess
-def is_nvda_running2():
-    try:
-        # Use the 'tasklist' command to check if NVDA is running
-        result = subprocess.run(['tasklist', '/FI', 'IMAGENAME eq nvda.exe'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-
-        # Check if 'nvda.exe' is present in the tasklist output
-        return 'nvda.exe' in result.stdout
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return False
-
-
-
 @mod.scope
 def check_nvda():
     '''Check if NVDA is running'''
@@ -52,11 +38,30 @@ def check_nvda():
         ctx.tags = ["user.nvda_running"]
     else:
         ctx.tags = []
-    print(list(ctx.tags))
 
 # Re-run the above code every 15s to update the scope
 cron.interval("3s", check_nvda.update)
 
+
+# A part of NonVisual Desktop Access (NVDA)
+# Copyright (C) 2006-2023 NV Access Limited, Łukasz Golonka, Leonard de Ruijter
+# This file is covered by the GNU Lesser General Public License, version 2.1.
+# See the file license.txt for more details.
+
+# Load the NVDA client library
+# get dir of this file
+import os
+dir_path = os.path.dirname(os.path.realpath(__file__))
+dll_path = os.path.join(dir_path, "nvdaControllerClient64.dll")
+
+clientLib = ctypes.windll.LoadLibrary(dll_path)
+
+# Test if NVDA is running, and if its not show a message
+res = clientLib.nvdaController_testIfRunning()
+if res != 0:
+	errorMessage = str(ctypes.WinError(res))
+	ctypes.windll.user32.MessageBoxW(0, "Error: %s" % errorMessage, "Error communicating with NVDA", 0)
+    # actions.user.robot_tts("Error communicating with NVDA")
 
 
 @mod.action_class
@@ -95,13 +100,19 @@ tag: user.nvda_running
 
 @ctxNVDARunning.action_class("user")
 class NVDAActions:
-    def nvda_tts(text: str):
+    def nvda_tts(text: str, use_clipboard: bool = False):
         """text to speech with NVDA"""
-        with clip.revert():
-            clip.set_text(text) # sets the result to the clipboard
-            actions.sleep("50ms")
-            actions.user.with_nvda_mod_press('c')
 
+        # Text can be sent via the clipboard or directly to NVDA using the dll
+        if use_clipboard:
+            with clip.revert():
+                clip.set_text(text) # sets the result to the clipboard
+                actions.sleep("50ms")
+                actions.user.with_nvda_mod_press('c')
+        else:
+            clientLib.nvdaController_speakText(text)
+
+    
 
 
 ctxWindowsNVDARunning = Context()

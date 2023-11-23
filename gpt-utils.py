@@ -24,4 +24,3 @@ else:
     ctx.tags = []
 
 # cron.interval("15s", check_openai)
-    

@@ -19,6 +19,9 @@ edge echo this:
 toggle echo:
     user.toggle_echo()
 
+toggle echo all:
+    user.toggle_echo_all()
+
 echo context:
     user.echo_context(true)
 

@@ -18,12 +18,6 @@ mod.setting(
     desc="The key that is used as the NVDA key",
 )
 
-mod.setting(
-    "tts_via_screenreader",
-    type=bool,
-    default=False,
-    desc="If true, plays back dictation with text to speech through the screenreader, not within Talon",
-)
 
 @mod.scope
 def set_nvda_running_tag():
@@ -32,18 +26,12 @@ def set_nvda_running_tag():
         if actions.user.is_nvda_running() \
         else []
 
-# Re-run the above code every 15s to update the scope
+# Re-run the above code to update the scope
 cron.interval("3s", set_nvda_running_tag.update)
 
 
 @mod.action_class
 class Actions:
-
-    def nvda_braille(text: str):
-        """Output braille with NVDA"""
-
-    def cancel_robot_tts(text: str):
-        """Stop the currently spoken tts phrase"""
      
     def toggle_nvda():
         '''Toggles NVDA on and off'''
@@ -108,16 +96,16 @@ tag: user.nvda_running
 class UserActions:
     
     def robot_tts(text: str):
-        """text to speech"""
+        """Text to speech"""
         if settings.get("user.tts_via_screenreader"):
             actions.user.nvda_tts(text)
         else:
-            actions.user.windows_robot_tts(text)
+            actions.user.windows_native_tts(text)
 
     def cancel_robot_tts(text: str):
-        """cancel the robot tts"""
+        """Cancel the narrator tts from NVDA"""
         nvda_client.nvdaController_cancelSpeech()
 
-    def nvda_braille(text: str):
+    def braille_output(text: str):
         """Output braille with NVDA"""
         nvda_client.nvdaController_brailleMessage(text)

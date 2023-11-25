@@ -12,21 +12,21 @@ next option:
     user.with_nvda_mod_press('ctrl-right')
 
 up option:
-    user.with_nvda_mod_press('ctrl-up') 
+    user.with_nvda_mod_press('ctrl-up')
 
 # In the menu, this will lower the value of the option
 down option:
     user.with_nvda_mod_press('ctrl-down')
 
 toggle reader:
-    user.toggle_nvda() 
+    user.toggle_nvda()
 
 # reads everything from the current position down
 echo below:
     user.with_nvda_mod_press('down')
 
 # If the user is in the middle of an echoed text and this will posit otherwise it will resume
-toggle echo: 
+toggle echo:
     key(shift)
 
 stop speech:
@@ -41,22 +41,25 @@ move mouse to current navigator object:
 navigate to mouse:
     user.with_nvda_mod_press('shift-n')
 
+next paragraph:
+    key(ctrl-down)
 
-deck(pedal_left:repeat):    
-    key(tab)
-    sleep(.2)
+previous paragraph:
+    key(ctrl-up)
 
+change verbosity:
+    user.with_nvda_mod_press('p')
 
 read title:
     user.with_nvda_mod_press('t')
 
-next focusable item:              key(tab)
-next heading <number_small>:    key("{number_small}")
-previous heading  <number_small>:   key("shift-{number_small}")
+next focusable item:        key(tab)
+next heading <number_small>: key("{number_small}")
+previous heading  <number_small>: key("shift-{number_small}")
 
 Go to next landmark:        key(D)
 
-list all fields:  
+list all fields:
     user.with_nvda_mod_press('f7')
 
 toggle input help:
@@ -80,29 +83,29 @@ open reader setings:
 open synthesizer settings:
     user.with_nvda_mod_press('ctrl-s')
 
-# sleep mode disables all NVDA commands and speech/braille 
-# output for the current application. This is most useful in 
-# applications that provide their own speech or screen reading 
-# features. Press this command again to disable sleep mode - note 
+# sleep mode disables all NVDA commands and speech/braille
+# output for the current application. This is most useful in
+# applications that provide their own speech or screen reading
+# features. Press this command again to disable sleep mode - note
 # that NVDA will only retain the Sleep Mode setting until it is restarted.
 toggle reader sleep:
     user.with_nvda_mod_press("shift-s")
-    
-Go to next table:                       key(T)
-Go to next list:                        key(L)
-Go to next list item:                   key(I)
 
-Go to next graphic:                     key(G)
-Go to next link:                        key(K)
-Go to next unvisited link:              key(U)
-Go to next visited link:                key(V)
-Next form field:                        key(F)
-Next button:                            key(B)
+Go to next table:           key(T)
+Go to next list:            key(L)
+Go to next list item:       key(I)
 
-toggle selection:                    key(space)
-Next checkbox:                          key(X)
+Go to next graphic:         key(G)
+Go to next link:            key(K)
+Go to next unvisited link:  key(U)
+Go to next visited link:    key(V)
+Next form field:            key(F)
+Next button:                key(B)
 
-Next combo box:                          key(C)
+toggle selection:           key(space)
+Next checkbox:              key(X)
 
-Toggle selection:                       key(up)
-Next radio button:                       key(R)
+Next combo box:             key(C)
+
+Toggle selection:           key(up)
+Next radio button:          key(R)

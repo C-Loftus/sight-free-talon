@@ -1,7 +1,7 @@
 natural echo this:
     key(ctrl-c)
     sleep(0.1)
-    user.natural_tts(clip.text())
+    user.elevenlabs_tts(clip.text())
 
 echo this:
     key(ctrl-c)

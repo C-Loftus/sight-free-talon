@@ -17,3 +17,6 @@ toggle both:
     key(ctrl-shift-u)
     sleep(1)
     key(f9)
+    sleep(1)
+    # press ctrl to stop nvda from reading the page simultaneously
+    key(ctrl)

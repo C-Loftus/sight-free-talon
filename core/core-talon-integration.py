@@ -12,42 +12,6 @@ if os.name == 'nt':
 mod = Module()
 ctx = Context()
 
-mod.setting(
-    "tts_speed",
-    type=float,
-    default=1.0,
-    desc="Speed of text to speech",
-)
-
-mod.setting(
-    "echo_context",
-    type=bool,
-    default=False,
-    desc="If true, plays back dictation with text to speech",
-)
-
-mod.setting(
-    "tts_via_screenreader",
-    type=bool,
-    default=False,
-    desc="If true, plays back dictation with text to speech through the screenreader, not within Talon",
-)
-
-mod.setting(
-    "braille_output",
-    type=bool,
-    default=False,
-    desc="If true, outputs braille through your screenreader",
-)
-
-ScreenreaderType = Literal["NVDA", "JAWS", "Narrator"]
-mod.setting(
-    "screenreader_type",
-    type=ScreenreaderType,
-    default="NVDA",
-    desc="The screenreader you are using",
-)
-
 
 @mod.action_class
 class Actions:
@@ -142,42 +106,14 @@ class UserActions:
         """Text to speech with a robotic/narrator voice"""
         actions.user.windows_native_tts(text)
 
-def on_app_switch(app):
-    if not settings.get("user.echo_context"):
-        return 
-    actions.user.echo_context()
 
-# We have to keep track of the last title so we don't repeat it
-# since sometimes Talon triggers a "title switch" when 
-# the title actually hasn't changed, i.e. when a text file is saved
-last_title = None
-def on_title_switch(win):
-    if not settings.get("user.echo_context"):
-        return
-    window = ui.active_window()
-    active_window_title = window.title
-    # get just the first two word
-    active_window_title = ' '.join(active_window_title.split()[:2])
-    #trime the title to 20 characters so super long addresses don't get read
-    active_window_title = active_window_title[:20]
+ctxLinux = Context()
+ctxLinux.matches = r"""
+os: linux
+"""
 
-    global last_title
-    if last_title == active_window_title:
-        return
-    else:
-        last_title = active_window_title
-
-    actions.user.robot_tts(f"{active_window_title}")
-
-last_mode = None
-def on_update_contexts():
-    global last_mode
-    modes = scope.get("mode") or []
-    if last_mode == 'sleep' and 'sleep' not in modes:
-        actions.user.robot_tts(f'Talon has waken up')
-    last_mode = "sleep" if "sleep" in modes else "other"
-        
-
-registry.register("update_contexts", on_update_contexts)
-ui.register("app_activate", on_app_switch)
-ui.register("win_title", on_title_switch)
+@ctxLinux.action_class('user')
+class UserActions:
+    def robot_tts(text: str):
+        """Text to speech with a robotic/narrator voice"""
+        subprocess.Popen(["spd-say", text])

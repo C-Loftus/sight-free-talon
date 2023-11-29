@@ -40,8 +40,15 @@ mod.setting(
 )
 
 mod.setting(
-    'user.echo_dictation',
+    'echo_dictation',
     type = bool,
     default = True,
     desc = 'If nonzero, plays back dictation with text to speech'
+)
+
+mod.setting(
+    'start_screenreader_on_startup',
+    type = bool,
+    default = False,
+    desc = 'If True, starts the screenreader on Talon startup'
 )

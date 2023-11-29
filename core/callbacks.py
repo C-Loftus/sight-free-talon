@@ -1,10 +1,18 @@
-from talon import scope, registry, ui, actions, settings, speech_system
+from talon import scope, registry, ui, actions, settings, speech_system, app
 
 def on_phrase(parsed_phrase):
     if actions.speech.enabled() and settings.get('user.echo_dictation'):
         words = parsed_phrase.get('text')
         if words:
             command_chain = ' '.join(words)
+
+            # Not all tts engines support canceling
+            # Easier to just catch the exception
+            try:
+                actions.user.cancel_robot_tts()
+            except:
+                pass
+
             actions.user.robot_tts(command_chain)
 speech_system.register('phrase', on_phrase)
 
@@ -43,7 +51,13 @@ def on_update_contexts():
         actions.user.robot_tts(f'Talon has waken up')
     last_mode = "sleep" if "sleep" in modes else "other"
         
+def on_ready():
+    if not settings.get("user.start_screenreader_on_startup"):
+        return
+    actions.user.toggle_nvda()
+    actions.user.robot_tts("Talon user scripts loaded")
 
+app.register("ready", on_ready)
 registry.register("update_contexts", on_update_contexts)
 ui.register("app_activate", on_app_switch)
 ui.register("win_title", on_title_switch)

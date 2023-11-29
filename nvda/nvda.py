@@ -102,10 +102,11 @@ class UserActions:
         else:
             actions.user.windows_native_tts(text)
 
-    def cancel_robot_tts(text: str):
+    def cancel_robot_tts():
         """Cancel the narrator tts from NVDA"""
         nvda_client.nvdaController_cancelSpeech()
 
-    def braille_output(text: str):
+    def braille(text: str):
         """Output braille with NVDA"""
-        nvda_client.nvdaController_brailleMessage(text)
+        if settings.get("user.braille_output"):
+            nvda_client.nvdaController_brailleMessage(text)

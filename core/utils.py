@@ -1,7 +1,7 @@
 # import threading
 # import queue
 # from talon import actions
-# import time
+import time
 
 import threading
 # source: https://stackoverflow.com/questions/47912701/python-how-can-i-implement-a-stoppable-thread

@@ -35,7 +35,7 @@ stop speech:
 read current line:
     user.with_nvda_mod_press('up')
 
-move mouse to current navigator object:
+move mouse to navigator object:
     user.with_nvda_mod_press('shift-m')
 
 navigate to mouse:
@@ -57,9 +57,9 @@ next focusable item:        key(tab)
 next heading <number_small>: key("{number_small}")
 previous heading  <number_small>: key("shift-{number_small}")
 
-Go to next landmark:        key(D)
+next landmark:              key(d)
 
-list all fields:
+open element list:
     user.with_nvda_mod_press('f7')
 
 toggle input help:
@@ -74,6 +74,11 @@ speak typed characters:
 speak command keys:
     user.with_nvda_mod_press('4')
 
+follow system focus:
+    user.with_nvda_mod_press('7')
+follow system caret:
+    user.with_nvda_mod_press('6')
+
 toggle mouse tracking:
     user.with_nvda_mod_press('m')
 
@@ -82,6 +87,25 @@ open reader setings:
 
 open synthesizer settings:
     user.with_nvda_mod_press('ctrl-s')
+
+read time:
+    user.with_nvda_mod_press('f12')
+
+# Reporting Location and Other Information
+read text formatting:
+    user.with_nvda_mod_press('f')
+
+read link destination:
+    user.with_nvda_mod_press('k')
+
+read window:
+    user.with_nvda_mod_press('b')
+
+read focus:
+    user.with_nvda_mod_press('tab')
+
+screen curtain:
+    user.with_nvda_mod_press('ctrl-escape')
 
 # sleep mode disables all NVDA commands and speech/braille
 # output for the current application. This is most useful in

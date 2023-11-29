@@ -16,3 +16,11 @@ settings():
 
     # key used for nvda modifier, change to 'insert' if that is your nvda modifier
     user.nvda_key = 'capslock'
+
+    user.start_screenreader_on_startup = false
+
+    # setting from community repository
+    # Manually typing keys through Talon can jumble the audio output since nvda can also say out
+    # keys and/or words. By having this setting enabled, we can echo out the text but
+    # not need to disable the screenreader's speech for characters and words for normal typing
+    user.paste_to_insert_threshold = -1

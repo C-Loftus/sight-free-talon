@@ -31,4 +31,16 @@ toggle echo context:
 echo line:
     edit.select_line()
     key(ctrl-c)
+    sleep(0.1)
     user.robot_tts(clip.text())
+
+echo tab level:
+    key(ctrl-l)
+    sleep(0.1)
+    key(ctrl-c)
+    sleep(0.1)
+    level = user.indentation_level(clip.text())
+    user.robot_tts('{level}')
+
+extract text:
+    user.extract_text()

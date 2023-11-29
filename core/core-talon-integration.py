@@ -18,7 +18,7 @@ class Actions:
     def braille(text: str):
         """Output braille with the screenreader"""
 
-    def cancel_robot_tts(text: str):
+    def cancel_robot_tts():
         """Stop the currently spoken tts phrase"""
 
     def windows_native_tts(text: str):
@@ -81,14 +81,6 @@ class Actions:
             actions.user.robot_tts("echo enabled")
             ctx.settings["user.echo_dictation"] = True
             ctx.settings["user.echo_context"] = True
-
-
-    def echo_context(include_title: bool = False):
-        """Echo the current context"""
-        friendly_name = actions.app.name() 
-        title = ui.active_window().title 
-        output = f"{friendly_name} {title}" if include_title else friendly_name
-        actions.user.robot_tts(output)
 
 
     def robot_tts(text: str):

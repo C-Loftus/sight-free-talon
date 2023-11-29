@@ -6,6 +6,7 @@ mod = Module()
 class Actions:
 
     def openai_tts(text: str):
+        """text to speech with openai"""
         url = "https://api.openai.com/v1/audio/speech"
         try:
             TOKEN = os.environ["OPENAI_API_KEY"]
@@ -20,7 +21,7 @@ class Actions:
 
         data = {
             "model": "tts-1",
-            "input": "Today is a wonderful day to build something people love!",
+            "input": text,
             "voice": "alloy",
         }
 

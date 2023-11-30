@@ -21,6 +21,9 @@ Documentation for this controller client can be found at
 
 ## Various Other Resources
 
+- https://www.afb.org/aw/19/4/15104
+- https://github.com/dictationbridge
+- http://www.hartgen.org/j-say
 - http://www.eklhad.net/philosophy.html
 - https://tvraman.github.io/emacspeak/manual/
 - https://emacspeak.blogspot.com/

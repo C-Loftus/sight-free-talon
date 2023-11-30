@@ -1,9 +1,7 @@
 from typing import Optional
 from talon import Module, actions, Context, settings, cron, ui, registry, scope, clip
-import requests
-import json, os, time, subprocess, multiprocessing
-from pathlib import Path
-from typing import Literal
+import os,  subprocess
+from ..lib import scheduling
 
 
 if os.name == 'nt':
@@ -28,26 +26,10 @@ class Actions:
         """
         speaker = win32com.client.Dispatch("SAPI.SpVoice")
         speaker.rate = settings.get("user.tts_speed", 1.0)
-        # Moves the tts to the cron thread,
-        # However, this blocks the cron thread until the tts is done
-        # TODO: make this not block the cron thread 
-        # by passing to a designated tts thread. (We
-        # don't want to make a new thread each time
-        # since that will through an error in the log
-        # every time and spam the log, and thus tts)
-        cron.after("0s", lambda: speaker.Speak(text))
-
-        # TODO:  this doesn't work to stop text to speech in the middle of speaking
-        # # for some reason, TODO fix this
-        #  
-        # global TTS_IN_PROGRESS
-        # if TTS_IN_PROGRESS:
-        #     if not TTS_IN_PROGRESS.stopped():
-        #         actions.user.notify('stopped')
-        #         TTS_IN_PROGRESS.stop()
-            
-        # TTS_IN_PROGRESS = StoppableThread(target=speaker.Speak, args=(text,))
-        # TTS_IN_PROGRESS.start()
+        
+        # send it to a central scheduler thread so it can be cancelled and so
+        # it doesn't block the main thread or clog the log with warnings
+        scheduling.Scheduler.send(speaker.Speak, text)
 
     def toggle_echo():
         """Toggles echo dictation on and off"""

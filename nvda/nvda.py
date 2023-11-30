@@ -1,5 +1,5 @@
-from talon import actions, Module, settings, cron, Context, clip, registry
-import os, ctypes
+from talon import actions, Module, settings, cron, Context, clip, registry, app 
+import os, ctypes, time
 
 # Load the NVDA client library
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -22,11 +22,12 @@ mod.setting(
 @mod.scope
 def set_nvda_running_tag():
     '''Update tags based on if NVDA is running'''
+    # TODO edge case on startup this might not be set yet
     ctx.tags = ["user.nvda_running"] \
         if actions.user.is_nvda_running() \
         else []
 
-# Re-run the above code to update the scope
+
 cron.interval("3s", set_nvda_running_tag.update)
 
 
@@ -54,7 +55,8 @@ class Actions:
 
     def is_nvda_running() -> bool:
         '''Returns true if NVDA is running'''
-        return True if nvda_client.nvdaController_testIfRunning() == 0 else False
+        NVDA_RUNNING_CONSTANT = 0
+        return True if nvda_client.nvdaController_testIfRunning() == NVDA_RUNNING_CONSTANT else False
     
     def nvda_tts(text: str, use_clipboard: bool= False):
         '''text to speech with NVDA'''
@@ -110,3 +112,4 @@ class UserActions:
         """Output braille with NVDA"""
         if settings.get("user.braille_output"):
             nvda_client.nvdaController_brailleMessage(text)
+

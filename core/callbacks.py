@@ -21,6 +21,7 @@ def on_app_switch(app):
         return 
     actions.user.echo_context()
 
+
 # We have to keep track of the last title so we don't repeat it
 # since sometimes Talon triggers a "title switch" when 
 # the title actually hasn't changed, i.e. when a text file is saved
@@ -30,7 +31,7 @@ def on_title_switch(win):
         return
     window = ui.active_window()
     active_window_title = window.title
-    # get just the first two word
+    # get just the first two words
     active_window_title = ' '.join(active_window_title.split()[:2])
     #trime the title to 20 characters so super long addresses don't get read
     active_window_title = active_window_title[:20]
@@ -38,9 +39,8 @@ def on_title_switch(win):
     global last_title
     if last_title == active_window_title:
         return
-    else:
-        last_title = active_window_title
-
+    
+    last_title = active_window_title
     actions.user.robot_tts(f"{active_window_title}")
 
 last_mode = None

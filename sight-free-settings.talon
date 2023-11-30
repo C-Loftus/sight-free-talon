@@ -24,3 +24,5 @@ settings():
     # keys and/or words. By having this setting enabled, we can echo out the text but
     # not need to disable the screenreader's speech for characters and words for normal typing
     user.paste_to_insert_threshold = -1
+
+    user.braille_output = true

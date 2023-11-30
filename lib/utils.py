@@ -35,6 +35,8 @@ class Actions:
     def extract_text():
         """Extract the text from the current window"""
 
+    def beep(freq: int = 440, duration: int = 1000):
+        """Beep a sound"""
 
     
 ctxWindows = Context()
@@ -62,7 +64,7 @@ class ActionsWin:
         actions.sleep("3s")
         actions.mouse_move(saved_x, saved_y)
     
-    def beep(duration: int = 1000, freq: int = 440):
+    def beep(freq: int = 440, duration: int = 1000):
         """Beep"""
         winsound.Beep(freq, duration)
 

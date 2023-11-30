@@ -1,6 +1,6 @@
 # Sight-Free-Talon
 
-This repository is intended to hold code useful for using Talon with a vision impairment or eye strain. This code may allow easier interaction with tools like screen readers, text-to-speech, or forms of alternative user feedback like buzzers, pedals, etc.
+This repository is intended to hold code useful for using Talon with a vision impairment or eye strain. This code may allow easier interaction with tools like screen readers, text-to-speech, or forms of alternative user feedback like software beeps, hardware buzzers, pedals, etc.
 
 The current priority is to focus on Windows. This repository is relatively experimental.
 
@@ -25,3 +25,5 @@ Documentation for this controller client can be found at
 - https://tvraman.github.io/emacspeak/manual/
 - https://emacspeak.blogspot.com/
 - https://www.emacswiki.org/emacs/BrailleMode
+- https://www.emacswiki.org/emacs/EmacSpeak
+- https://github.com/nvaccess/nvda/wiki/

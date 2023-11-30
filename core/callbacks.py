@@ -52,9 +52,8 @@ def on_update_contexts():
     last_mode = "sleep" if "sleep" in modes else "other"
         
 def on_ready():
-    if not settings.get("user.start_screenreader_on_startup"):
-        return
-    actions.user.toggle_nvda()
+    if settings.get("user.start_screenreader_on_startup"):
+        actions.user.toggle_nvda()
     actions.user.robot_tts("Talon user scripts loaded")
 
 app.register("ready", on_ready)

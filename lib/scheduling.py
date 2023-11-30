@@ -26,7 +26,7 @@ class Scheduler:
     is_running = False
 
     @classmethod
-    def start(cls):
+    def _start(cls):
         if not cls.is_running:
             cls.is_running = True
             cls.thread = StoppableThread(target=cls._handler, daemon=True)
@@ -36,7 +36,7 @@ class Scheduler:
     def cancel(cls):
         cls.is_running = False
         cls.thread.stop()
-
+        
     @classmethod
     def _handler(cls):
         while cls.is_running:
@@ -52,10 +52,11 @@ class Scheduler:
             time.sleep(0.1)
 
     @classmethod
-    def send(cls, function, *args):
-        cls.queue.put((function, *args))
+    def send(cls, function, *args): 
+        if not cls.is_running:
+            cls._start()
 
-Scheduler.start()
+        cls.queue.put((function, *args))
 
 # Make the Mutex generic over the value it stores.
 # In this way we can get proper typing from the `lock` method.

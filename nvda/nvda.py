@@ -11,14 +11,6 @@ ctx = Context()
 
 mod.tag("nvda_running", desc="NVDA is running")
 
-mod.setting(
-    "nvda_key",
-    type=str,
-    default="capslock",
-    desc="The key that is used as the NVDA key",
-)
-
-
 @mod.scope
 def set_nvda_running_tag():
     '''Update tags based on if NVDA is running'''

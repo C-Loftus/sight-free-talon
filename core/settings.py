@@ -31,7 +31,7 @@ mod.setting(
     desc="If true, outputs braille through your screenreader",
 )
 
-ScreenreaderType = Literal["NVDA", "JAWS", "Narrator"]
+ScreenreaderType = Literal["NVDA", "JAWS", "Narrator", "Orca"]
 mod.setting(
     "screenreader_type",
     type=ScreenreaderType,
@@ -51,4 +51,11 @@ mod.setting(
     type = bool,
     default = False,
     desc = 'If True, starts the screenreader on Talon startup'
+)
+
+mod.setting(
+    "nvda_key",
+    type=str,
+    default="capslock",
+    desc="The key that is used as the NVDA key",
 )

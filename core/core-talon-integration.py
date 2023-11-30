@@ -90,4 +90,8 @@ os: linux
 class UserActions:
     def robot_tts(text: str):
         """Text to speech with a robotic/narrator voice"""
-        subprocess.Popen(["spd-say", text])
+        rate = settings.get("user.tts_speed", 0)
+        # convert -5 to 5 to -100 to 100 
+        rate = rate * 20
+
+        os.system(f"spd-say '{text}' --rate {rate}")

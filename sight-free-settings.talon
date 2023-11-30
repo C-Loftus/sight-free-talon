@@ -6,7 +6,7 @@ settings():
     # if using the windows native tts. If
     # using the screenreader tts, this setting
     # is ignored and the screenreader's tts is used
-    user.tts_speed = 5
+    user.tts_speed = 3
 
     # Automatically echo the context of the focused window when switching applications/tabs
     user.echo_context = false

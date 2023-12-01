@@ -10,6 +10,11 @@ if os.name == 'nt':
 mod = Module()
 ctx = Context()
 
+# We want to get the settings from the talon file but then update 
+# them locally here so we can change them globally via expose talon actions
+ctx.settings["user.echo_dictation"]: bool = settings.get("user.echo_dictation")
+ctx.settings["user.echo_context"]: bool = settings.get("user.echo_context")
+
 
 @mod.action_class
 class Actions:
@@ -31,29 +36,38 @@ class Actions:
         # it doesn't block the main thread or clog the log with warnings
         scheduling.Scheduler.send(speaker.Speak, text)
 
+    def echo_dictation_enabled() -> bool:
+        """Returns true if echo dictation is enabled"""
+        return ctx.settings["user.echo_dictation"]
+    
+    def echo_context_enabled() -> bool:
+        """Returns true if echo context is enabled"""
+        return ctx.settings["user.echo_context"]
+
     def toggle_echo():
         """Toggles echo dictation on and off"""
 
-        ctx.settings["user.echo_dictation"] = not settings.get("user.echo_dictation")
-        if settings.get("user.echo_dictation"):
-            actions.user.robot_tts("echo dictation enabled")
+        if actions.user.echo_dictation_enabled():
+            actions.user.robot_tts("echo disabled")
+            ctx.settings["user.echo_dictation"] = False
         else:
-            actions.user.robot_tts("echo dictation disabled")
+            actions.user.robot_tts("echo enabled")
+            ctx.settings["user.echo_dictation"] = True
     
     def toggle_echo_context():
         """Toggles echo context on and off"""
 
-        ctx.settings["user.echo_context"] = not settings.get("user.echo_context")
-        if settings.get("user.echo_context"):
-            actions.user.robot_tts("echo context enabled")
-        else:
+        if actions.user.echo_context_enabled():
             actions.user.robot_tts("echo context disabled")
-        
+            ctx.settings["user.echo_context"] = False
+        else:
+            actions.user.robot_tts("echo context enabled")
+            ctx.settings["user.echo_context"] = True
 
     def toggle_echo_all():
         """Toggles echo dictation and echo context on and off"""
 
-        dictation, context = settings.get("user.echo_dictation"), settings.get("user.echo_context")
+        dictation, context = actions.user.echo_dictation_enabled(), actions.user.echo_context_enabled()
 
         if any([dictation, context]):
             actions.user.robot_tts("echo disabled")

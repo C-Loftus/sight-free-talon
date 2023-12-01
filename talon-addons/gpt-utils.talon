@@ -8,3 +8,6 @@ tag: user.openai_defined
 ^echo {user.promptNoArgument}$:
     result = user.gpt_prompt_no_argument(user.promptNoArgument)
     user.robot_tts(result)
+
+describe image:
+    user.describe_image()

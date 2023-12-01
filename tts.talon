@@ -44,3 +44,6 @@ echo tab level:
 
 extract text:
     user.extract_text()
+
+toggle reader:
+    user.toggle_nvda()

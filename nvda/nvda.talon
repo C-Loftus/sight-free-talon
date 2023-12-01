@@ -1,3 +1,7 @@
+tag: user.nvda_running
+
+-
+
 next heading:
     key(h)
 
@@ -17,9 +21,6 @@ up option:
 # In the menu, this will lower the value of the option
 down option:
     user.with_nvda_mod_press('ctrl-down')
-
-toggle reader:
-    user.toggle_nvda()
 
 # reads everything from the current position down
 echo below:

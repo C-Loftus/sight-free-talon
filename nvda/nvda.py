@@ -1,18 +1,10 @@
 from talon import actions, Module, settings, cron, Context, clip, registry, app 
 import os, ctypes, time 
 
-if os.name == 'nt':
-    # Load the NVDA client library
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    dll_path = os.path.join(dir_path, "nvdaControllerClient64.dll")
-    nvda_client: ctypes.WinDLL = ctypes.windll.LoadLibrary(dll_path)
-else:
-    nvda_client = None
-
 mod = Module()
 ctx = Context()
 
-mod.tag("nvda_running", desc="NVDA is running")
+mod.tag("nvda_running", desc="If set, NVDA is running")
 
 @mod.scope
 def set_nvda_running_tag():
@@ -25,8 +17,15 @@ def set_nvda_running_tag():
     except:
         ctx.tags = []
 
+if os.name == 'nt':
+    # Load the NVDA client library
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    dll_path = os.path.join(dir_path, "nvdaControllerClient64.dll")
+    nvda_client: ctypes.WinDLL = ctypes.windll.LoadLibrary(dll_path)
 
-cron.interval("3s", set_nvda_running_tag.update)
+    cron.interval("3s", set_nvda_running_tag.update)
+else:
+    nvda_client = None
 
 
 @mod.action_class

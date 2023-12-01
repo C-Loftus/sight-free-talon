@@ -1,7 +1,7 @@
 from talon import scope, registry, ui, actions, settings, speech_system, app
 
 def on_phrase(parsed_phrase):
-    if actions.speech.enabled() and settings.get('user.echo_dictation'):
+    if actions.speech.enabled() and actions.user.echo_dictation_enabled():
         words = parsed_phrase.get('text')
         if words:
             command_chain = ' '.join(words)

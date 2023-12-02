@@ -47,3 +47,6 @@ extract text:
 
 toggle reader:
     user.toggle_nvda()
+
+echo tags:
+    user.echo_tags()

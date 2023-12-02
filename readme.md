@@ -1,10 +1,23 @@
 # Sight-Free-Talon
 
-This repository is intended to hold code useful for using Talon with a vision impairment or eye strain. This code may allow easier interaction with tools like screen readers, text-to-speech, or forms of alternative user feedback like software beeps, hardware buzzers, pedals, etc.
+Use Talon while not needing to look at your computer. Especially helpful for those with vision impairment, blindness, eye strain, or those who prefer alternative computer interaction. Integrates tools like:
 
-The current priority is to focus on Windows. This repository is relatively experimental.
+- screen readers
+- text-to-speech
+- braille
+- software beeps
+- hardware rumble / tacile feedback
+- pedals
 
-The motivation for this repository is the fact that many screen readers and other tools for visual impairment are very dependent upon keyboard and hand usage. This repository tries to decouple that. Also, by leveraging the macro potential of Talon, we can automate tasks that would potentially take a much longer time with a screen reader. Talon also allows easier integration of tools like foot pedals and the significant pre-existing ecosystem of tools to help automate user input or navigation
+# Installing
+
+Clone the repo into your Talon user directory. The repository works fine without a screenreader, but it will work alongside NVDA if you have NVDA installed.
+
+On Linux you must install `spd-say` to play tts.
+
+## Background and Motivation
+
+Many screen readers and tools for visual impairment are very dependent upon keyboard and hand usage. By leveraging Talon, we can reduce hand usage and automate tasks, especially those that would be difficult with a screen reader. Talon also allows easier integration of tools like foot pedals and the significant pre-existing ecosystem of tools to help automate user input or navigation.
 
 # Contributing
 
@@ -30,3 +43,7 @@ Documentation for this controller client can be found at
 - https://www.emacswiki.org/emacs/BrailleMode
 - https://www.emacswiki.org/emacs/EmacSpeak
 - https://github.com/nvaccess/nvda/wiki/
+- https://github.com/EmpowermentZone/EdSharp
+- https://github.com/accessibleapps/accessible_output2
+- https://github.com/qtnc/UniversalSpeech
+  - contains JAWS dll

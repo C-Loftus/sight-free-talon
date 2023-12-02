@@ -1,5 +1,5 @@
 import base64
-from talon import Module, actions, ui, Context, ctrl, clip
+from talon import Module, actions, ui, Context, ctrl, clip, registry
 import os, requests
 
 mod = Module()
@@ -33,11 +33,14 @@ class Actions:
         output = f"{friendly_name} {title}" if include_title else friendly_name
         actions.user.robot_tts(output)
 
+    def echo_tags():
+        """Echo the current tags"""
+        active_contexts = registry.tags
+        actions.user.robot_tts(" ".join(active_contexts))
+
+
     def extract_text():
         """Extract the text from the current window"""
-
-    def beep(freq: int = 440, duration: int = 1000):
-        """Beep a sound"""
 
     def describe_image():
         """Describe the image on the clipboard"""

@@ -12,8 +12,8 @@ ctx = Context()
 
 # We want to get the settings from the talon file but then update 
 # them locally here so we can change them globally via expose talon actions
-ctx.settings["user.echo_dictation"]: bool = settings.get("user.echo_dictation")
-ctx.settings["user.echo_context"]: bool = settings.get("user.echo_context")
+ctx.settings["user.echo_dictation"]: bool = settings.get("user.echo_dictation", False)
+ctx.settings["user.echo_context"]: bool = settings.get("user.echo_context", False)
 
 
 @mod.action_class
@@ -109,3 +109,14 @@ class UserActions:
         rate = rate * 20
 
         os.system(f"spd-say '{text}' --rate {rate}")
+
+ctxMac = Context()
+ctxMac.matches = r"""
+os: mac
+"""
+
+@ctxMac.action_class('user')
+class UserActions:
+    def robot_tts(text: str):
+        """Text to speech with a robotic/narrator voice"""
+        os.system(f"say '{text}'")

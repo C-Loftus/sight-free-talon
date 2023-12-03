@@ -1,9 +1,9 @@
 from __future__ import absolute_import
 from collections import OrderedDict
-import pywintypes
 import os
 
 if os.name == "nt":
+    import pywintypes
     import win32com.client
 
 SVSFDefault = 0

@@ -111,6 +111,14 @@ class UserActions:
         rate = settings.get("user.tts_speed", 0)
         # convert -5 to 5 to -100 to 100 
         rate = rate * 20
+        # remove all special characters  from text that espeak might interpret
+        specialChars = ["'", '"', "(", ")", "[", "]", "{", "}", 
+                        "<", ">", "|", "\\", "/", "_", "-", "+",
+                        "=", "*", "&", "^", "%", "$", "#", "@", 
+                        "!", "`", "~", "?", ",", ".",]
+        
+        for char in specialChars:
+            text = text.replace(char, "")
 
         os.system(f"spd-say '{text}' --rate {rate}")
 

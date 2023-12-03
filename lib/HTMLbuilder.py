@@ -2,10 +2,10 @@
 # Talon's imgui gui library is not accessible to screen readers. 
 # By using HTML we can create temporary web pages that are accessible to screen readers.
 
-import os
 import tempfile
 import webbrowser
-from talon import cron
+import enum
+
 
 STYLE = """
 <style>
@@ -27,23 +27,33 @@ STYLE = """
     }
 </style>
 """
-import enum, contextlib
 
 class ARIARole(enum.Enum):
     MAIN = "main"
-    # roles TODO fill in
-
-
+    BANNER = "banner"
+    NAV = "navigation"
+    FOOTER = "contentinfo"
+    # TODO other roles?
 
 class HTMLBuilder:
+
+    '''
+    Easily build HTML pages and add aria roles to elements
+    in order to make them accessible to screen readers.
+    '''
+
     def __init__(self):
         self.elements = []
+        self.doc_title = "Generated Help Page from Talon"
 
     def _flat_helper(self, text, tag, role=None):
         if role:
             self.elements.append(f"<{tag} role='{role.value}'>{text}</{tag}>")
         else:
             self.elements.append(f"<{tag}>{text}</{tag}>")
+
+    def title(self, text):
+        self.doc_title = text
 
     def h1(self, text, role=None):
         self._flat_helper(text, "h1", role)
@@ -86,7 +96,7 @@ class HTMLBuilder:
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Generated HTML</title>
+            <title>{self.doc_title}</title>
             {STYLE}
         </head>
         <body>
@@ -97,25 +107,25 @@ class HTMLBuilder:
         </html>
         """
 
-        # Create a temporary file and write the HTML content
         with tempfile.NamedTemporaryFile(mode='w+', suffix='.html', delete=False) as temp_file:
             temp_file.write(full_html)
             temp_file_path = temp_file.name
 
-        # Open the temporary HTML file in the default web browser
         webbrowser.open(temp_file_path)
-        # Delete it automatically after a while
-        # cron.after("1000s", lambda: os.remove(temp_file_path))
 
 
-builder = HTMLBuilder()
-builder.h1("Hello World")
-builder.h2("Hello World")
-builder.h3("Hello World")
-builder.ul("Hello", "World")
-builder.h1("Article Heading", role=ARIARole.MAIN)
-builder.p("This is a paragraph within the article")
-builder.ol("Hello", "World")
-builder.p("Hello World")
-builder.render()
+# API Demo
+# builder = HTMLBuilder()
+# builder.title("Generated Help Page from Talon")
+# builder.h1("Banner Heading", role=ARIARole.BANNER)
+# builder.h1("Header 1 for the page")
+# builder.h2("Header 2")
+# builder.h3("Smaller Header 3")
+# builder.ul("Bullet 1", "Bullet number two")
+# builder.p("This is a paragraph within the article", role=ARIARole.MAIN)
+# builder.h2("Navigation Heading", role=ARIARole.NAV)
+# builder.p("This is a paragraph within the article")
+# builder.ol("First element: Hello", "Second one: World")
+# builder.p("This is labeled as an aria footer within the article", role=ARIARole.FOOTER)
+# builder.render()
 

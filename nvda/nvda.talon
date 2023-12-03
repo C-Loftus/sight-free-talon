@@ -27,7 +27,7 @@ echo below:
     user.with_nvda_mod_press('down')
 
 # If the user is in the middle of an echoed text and this will posit otherwise it will resume
-toggle echo:
+pause echo:
     key(shift)
 
 stop speech:
@@ -134,3 +134,6 @@ Next combo box:             key(C)
 
 Toggle selection:           key(up)
 Next radio button:          key(R)
+
+braille display dialog:
+    user.with_nvda_mod_press('ctrl-a')

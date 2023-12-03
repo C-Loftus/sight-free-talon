@@ -113,7 +113,7 @@ def send_text_to_narrator(text):
     # Set the screen reader text
     user32.SystemParametersInfoW(SPI_SETSCREENREADER, 0, text, 2)
 
-time.sleep(5)
-# Example usage
-text_to_read = "Hello, this is a test message for the Narrator."
-send_text_to_narrator(text_to_read)
+# time.sleep(5)
+# # Example usage
+# text_to_read = "Hello, this is a test message for the Narrator."
+# send_text_to_narrator(text_to_read)

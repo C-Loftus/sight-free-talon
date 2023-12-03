@@ -1,5 +1,5 @@
 from typing import Optional
-from talon import Module, actions, Context, settings, cron, ui, registry, scope, clip
+from talon import Module, actions, Context, settings, cron, ui, registry, scope, clip, app  
 import os,  subprocess
 from ..lib import scheduling
 
@@ -11,10 +11,14 @@ mod = Module()
 ctx = Context()
 
 # We want to get the settings from the talon file but then update 
-# them locally here so we can change them globally via expose talon actions
-ctx.settings["user.echo_dictation"]: bool = settings.get("user.echo_dictation", False)
-ctx.settings["user.echo_context"]: bool = settings.get("user.echo_context", False)
+    # them locally here so we can change them globally via expose talon actions
 
+def initialize_settings():
+    ctx.settings["user.echo_dictation"]: bool = settings.get("user.echo_dictation")
+    ctx.settings["user.echo_context"]: bool = settings.get("user.echo_context")
+
+# initialize the settings only after the user settings have been loaded
+app.register('ready', initialize_settings)
 
 @mod.action_class
 class Actions:
@@ -53,7 +57,7 @@ class Actions:
         else:
             actions.user.robot_tts("echo enabled")
             ctx.settings["user.echo_dictation"] = True
-    
+
     def toggle_echo_context():
         """Toggles echo context on and off"""
 

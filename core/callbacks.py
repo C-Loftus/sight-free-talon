@@ -48,7 +48,9 @@ def on_update_contexts():
     global last_mode
     modes = scope.get("mode") or []
     if last_mode == 'sleep' and 'sleep' not in modes:
-        actions.user.robot_tts(f'Talon has waken up')
+        actions.user.robot_tts(f'Talon has woken up')
+    elif last_mode != 'sleep' and 'sleep' in modes:
+        actions.user.robot_tts(f'Talon has gone to sleep')
     last_mode = "sleep" if "sleep" in modes else "other"
         
 def on_ready():

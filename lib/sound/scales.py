@@ -65,4 +65,3 @@ CChromaticScale = Scale({
     "B": 493.88,
     "C2": 523.25,
 })
-

@@ -111,7 +111,7 @@ def remove_special(text):
     specialChars = ["'", '"', "(", ")", "[", "]", "{", "}", 
                     "<", ">", "|", "\\", "/", "_", "-", "+",
                     "=", "*", "&", "^", "%", "$", "#", "@", 
-                    "!", "`", "~", "?", ",", ".",]
+                    "!", "`", "~", "?", ",", ".", ":", ";"]
     
     for char in specialChars:
         text = text.replace(char, "")
@@ -136,6 +136,7 @@ class UserActions:
         # change the directory to the directory of this file
         # so we can run the command from the correct directory
         model_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "additional_voices", "models")
+        piper = os.path.expanduser("~/.local/bin/piper")
 
         os.chdir(model_dir)
 
@@ -143,15 +144,23 @@ class UserActions:
 
         high = 22050
         low = 16000
-        text = remove_special(text)
 
-        command = (
-            f'pwd; echo "{text}" | piper --model {modes[0]} --length_scale 0.5 --output_raw | '
-            f'aplay -r {low} -c 1 -f S16_LE -t raw'
-        )
+        #  we need this more verbose representation here so we don't use this 
+        # shell and have risks of shell expansion
+        command1 = ["echo", f"{text}"]
 
-        # Run the command using subprocess
-        subprocess.Popen(command, shell=True)
+        command2 = [piper, "--model", modes[0], "--length_scale", "0.5", "--output_raw"]
+
+        command3 = ["aplay", "-r", str(low), "-c", "1", "-f", "S16_LE", "-t", "raw"]
+
+        process1 = subprocess.Popen(command1, stdout=subprocess.PIPE)
+        process2 = subprocess.Popen(command2, stdin=process1.stdout, stdout=subprocess.PIPE)
+        process1.stdout.close()
+        process3 = subprocess.Popen(command3, stdin=process2.stdout)
+        process2.stdout.close()
+
+
+
 
 ctxMac = Context()
 ctxMac.matches = r"""

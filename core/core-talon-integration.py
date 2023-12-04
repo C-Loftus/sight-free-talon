@@ -86,6 +86,9 @@ class Actions:
     def robot_tts(text: str):
         '''text to speech with robot voice'''
 
+    def espeak(text: str):
+        '''text to speech with espeak'''
+
 
 ctxWindows = Context()
 ctxWindows.matches = r"""
@@ -104,23 +107,51 @@ ctxLinux.matches = r"""
 os: linux
 """
 
+def remove_special(text):
+    specialChars = ["'", '"', "(", ")", "[", "]", "{", "}", 
+                    "<", ">", "|", "\\", "/", "_", "-", "+",
+                    "=", "*", "&", "^", "%", "$", "#", "@", 
+                    "!", "`", "~", "?", ",", ".",]
+    
+    for char in specialChars:
+        text = text.replace(char, "")
+    
+    return text
+
+
 @ctxLinux.action_class('user')
 class UserActions:
-    def robot_tts(text: str):
+    def espeak(text: str):
         """Text to speech with a robotic/narrator voice"""
         rate = settings.get("user.tts_speed", 0)
         # convert -5 to 5 to -100 to 100 
         rate = rate * 20
-        # remove all special characters  from text that espeak might interpret
-        specialChars = ["'", '"', "(", ")", "[", "]", "{", "}", 
-                        "<", ">", "|", "\\", "/", "_", "-", "+",
-                        "=", "*", "&", "^", "%", "$", "#", "@", 
-                        "!", "`", "~", "?", ",", ".",]
-        
-        for char in specialChars:
-            text = text.replace(char, "")
+        text = remove_special(text)
 
-        os.system(f"spd-say '{text}' --rate {rate}")
+        subprocess.Popen(["spd-say", text, "--rate", str(rate)])
+
+
+    def robot_tts(text: str):
+        """Text to speech with a robotic/narrator voice"""
+        # change the directory to the directory of this file
+        # so we can run the command from the correct directory
+        model_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "additional_voices", "models")
+
+        os.chdir(model_dir)
+
+        modes = ['en_US-amy-low.onnx', 'en_US-lessac-medium.onnx']
+
+        high = 22050
+        low = 16000
+        text = remove_special(text)
+
+        command = (
+            f'pwd; echo "{text}" | piper --model {modes[0]} --length_scale 0.5 --output_raw | '
+            f'aplay -r {low} -c 1 -f S16_LE -t raw'
+        )
+
+        # Run the command using subprocess
+        subprocess.Popen(command, shell=True)
 
 ctxMac = Context()
 ctxMac.matches = r"""
@@ -132,3 +163,5 @@ class UserActions:
     def robot_tts(text: str):
         """Text to speech with a robotic/narrator voice"""
         os.system(f"say '{text}'")
+
+    

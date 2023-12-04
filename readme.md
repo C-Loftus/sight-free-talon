@@ -46,4 +46,7 @@ Documentation for this controller client can be found at
 - https://github.com/EmpowermentZone/EdSharp
 - https://github.com/accessibleapps/accessible_output2
 - https://github.com/qtnc/UniversalSpeech
+- https://www.techrxiv.org/articles/preprint/Image_Captioning_for_the_Visually_Impaired_and_Blind_A_Recipe_for_Low-Resource_Languages/22133894
   - contains JAWS dll
+- https://rhasspy.github.io/piper-samples/
+  - more voices

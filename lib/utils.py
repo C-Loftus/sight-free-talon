@@ -121,4 +121,6 @@ class ActionsWin:
         winsound.Beep(freq, duration)
 
 
-        
+from ..lib import scheduling as scheduling
+scheduling.Scheduler.send(actions.user.robot_tts, "hello world")
+

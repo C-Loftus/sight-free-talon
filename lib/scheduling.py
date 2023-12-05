@@ -1,42 +1,23 @@
 import threading
 import queue
-from talon import actions
 import time
+import os
+import signal
+from multiprocessing import Process
+from typing import Optional
 
-class StoppableThread(threading.Thread):
-    """Thread class with a stop() method. The thread itself has to check
-    regularly for the stopped() condition."""
-
-    def __init__(self,  *args, **kwargs):
-        super(StoppableThread, self).__init__(*args, **kwargs)
-        self._stop_event = threading.Event()
-
-    def stop(self):
-        self._stop_event.set()
-        
-
-    def stopped(self):
-        return self._stop_event.is_set()
-
-
-# TTS blocks the main thread. If we spawn multiple threads we get many errors in the log
-# Intead of spawning many threads, we use a queue to send the text to a single thread
 class Scheduler:
     queue = queue.Queue()
     is_running = False
+    processes: list = []
 
     @classmethod
     def _start(cls):
         if not cls.is_running:
             cls.is_running = True
-            cls.thread = StoppableThread(target=cls._handler, daemon=True)
+            cls.thread = threading.Thread(target=cls._handler, daemon=True)
             cls.thread.start()
 
-    @classmethod
-    def cancel(cls):
-        cls.is_running = False
-        cls.thread.stop()
-        
     @classmethod
     def _handler(cls):
         while cls.is_running:
@@ -44,11 +25,16 @@ class Scheduler:
                 # Get a process from the queue with a timeout
                 proc = cls.queue.get(timeout=1)
                 (fn, *args) = proc
-                fn(*args)
+
+                # Run fn(*args) in a separate process so it can be interrupted
+                cls.process = Process(target=fn, args=args)
+                cls.processes.append(cls.process)
+                cls.process.start()
+                cls.process.join()
 
             except queue.Empty:
-                # Handle the case when the queue is empty
-                pass
+                cls.is_running = False
+
             time.sleep(0.1)
 
     @classmethod
@@ -58,8 +44,21 @@ class Scheduler:
 
         cls.queue.put((function, *args))
 
+    @classmethod
+    def cancel(cls):
+        if len(cls.processes) > 0:
+            os.kill(cls.processes[0].pid, signal.SIGINT)
+
+    @classmethod
+    def cancel_all(cls):
+        for process in cls.processes:
+            os.kill(process.pid, signal.SIGINT)
+
+
+
+
 # Make the Mutex generic over the value it stores.
-# In this way we can get proper typing from the `lock` method.
+# In this way we can get proper typing from the `lock` method.-
 # class Mutex(Generic[T:=TypeVar("T")]):
 #   # Store the protected value inside the mutex 
 #   def __init__(self, value: T):

@@ -153,11 +153,14 @@ class UserActions:
 
         command3 = ["aplay", "-r", str(low), "-c", "1", "-f", "S16_LE", "-t", "raw"]
 
-        process1 = subprocess.Popen(command1, stdout=subprocess.PIPE)
-        process2 = subprocess.Popen(command2, stdin=process1.stdout, stdout=subprocess.PIPE)
-        process1.stdout.close()
-        process3 = subprocess.Popen(command3, stdin=process2.stdout)
-        process2.stdout.close()
+        def piper():
+            process1 = subprocess.Popen(command1, stdout=subprocess.PIPE)
+            process2 = subprocess.Popen(command2, stdin=process1.stdout, stdout=subprocess.PIPE)
+            process1.stdout.close()
+            process3 = subprocess.Popen(command3, stdin=process2.stdout)
+            process2.stdout.close()
+    
+        scheduling.Scheduler.send(piper)
 
 
 

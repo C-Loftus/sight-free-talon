@@ -1,44 +1,44 @@
-from talon import  actions, registry, resource
-from talon_init import TALON_HOME
-import os, time
-from typing import Optional, Literal
+# from talon import  actions, registry, resource
+# from talon_init import TALON_HOME
+# import os, time
+# from typing import Optional, Literal
 
 
-talon_log = os.path.join(TALON_HOME, "talon.log")
-if not os.path.exists(talon_log):
-    raise Exception("talon.log does not exist")
+# talon_log = os.path.join(TALON_HOME, "talon.log")
+# if not os.path.exists(talon_log):
+#     raise Exception("talon.log does not exist")
 
-last_line = None   
+# last_line = None   
 
-caller = resource.watch(talon_log, 'r')
-def on_change(_):
-    # read the last line of the log file until the last line 
-    with open(talon_log, "r") as f:
-        global last_line
+# caller = resource.watch(talon_log, 'r')
+# def on_change(_):
+#     # read the last line of the log file until the last line 
+#     with open(talon_log, "r") as f:
+#         global last_line
 
-        initial_output = ""
-        final_output = ""
-        output_type: Optional[Literal["DEBUG", "ERROR"]] = None
+#         initial_output = ""
+#         final_output = ""
+#         output_type: Optional[Literal["DEBUG", "ERROR"]] = None
 
-        log = list(reversed(f.readlines()))
-        for line in log:
-            if line == last_line:
-                break
+#         log = list(reversed(f.readlines()))
+#         for line in log:
+#             if line == last_line:
+#                 break
 
-            if "WARNING" in line:
-                output_type = "WARNING"
-            elif "ERROR" in line:
-                output_type = "ERROR"
-            elif "DEBUG" in line:
-                output_type = "DEBUG"
+#             if "WARNING" in line:
+#                 output_type = "WARNING"
+#             elif "ERROR" in line:
+#                 output_type = "ERROR"
+#             elif "DEBUG" in line:
+#                 output_type = "DEBUG"
             
-            initial_output = log[0]
-            last_line = line
+#             initial_output = log[0]
+#             last_line = line
 
-            actions.user.notify(f"{initial_output}\n{final_output}")
-            break
+#             actions.user.notify(f"{initial_output}\n{final_output}")
+#             break
 
-caller(on_change)
+# caller(on_change)
 
 
 # # watch the log file for changes

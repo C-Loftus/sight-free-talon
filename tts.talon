@@ -1,7 +1,8 @@
-natural echo this:
-    key(ctrl-c)
-    sleep(0.1)
-    user.elevenlabs_tts(clip.text())
+# Global TTS commands that are OS independent
+# See each folder for specific contextual commands
+
+toggle echo:
+    user.toggle_echo()
 
 echo this:
     key(ctrl-c)
@@ -11,16 +12,11 @@ echo this:
 echo clipboard:
     user.robot_tts(clip.text())
 
-edge echo this:
+echo line:
+    edit.select_line()
     key(ctrl-c)
     sleep(0.1)
-    user.edge_tts(clip.text())
-
-toggle echo:
-    user.toggle_echo()
-
-toggle echo all:
-    user.toggle_echo_all()
+    user.robot_tts(clip.text())
 
 echo context:
     user.echo_context(true)
@@ -28,11 +24,9 @@ echo context:
 toggle echo context:
     user.toggle_echo_context()
 
-echo line:
-    edit.select_line()
-    key(ctrl-c)
-    sleep(0.1)
-    user.robot_tts(clip.text())
+# Toogles both echo on dictation and echo on context
+toggle echo all:
+    user.toggle_echo_all()
 
 echo tab level:
     key(ctrl-l)
@@ -42,14 +36,5 @@ echo tab level:
     level = user.indentation_level(clip.text())
     user.robot_tts('{level}')
 
-extract text:
-    user.extract_text()
-
 toggle reader:
     user.toggle_nvda()
-
-explore tags:
-    user.explore_tags()
-
-explore settings:
-    user.explore_settings()

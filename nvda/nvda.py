@@ -63,14 +63,17 @@ class Actions:
     def nvda_tts(text: str, use_clipboard: bool= False):
         '''text to speech with NVDA'''
 
-ctxNVDARunning = Context()
-ctxNVDARunning.matches = r"""
+
+
+ctxWindowsNVDARunning = Context()
+ctxWindowsNVDARunning.matches = r"""
+os: windows
 tag: user.nvda_running
 """
 
+@ctxWindowsNVDARunning.action_class('user')
+class UserActions:
 
-@ctxNVDARunning.action_class("user")
-class NVDAActions:
     def nvda_tts(text: str, use_clipboard: bool= False):
         """text to speech with NVDA"""
 
@@ -89,15 +92,6 @@ class NVDAActions:
                 actions.user.with_nvda_mod_press('c')
         else:
             nvda_client.nvdaController_speakText(text)
-
-
-ctxWindowsNVDARunning = Context()
-ctxWindowsNVDARunning.matches = r"""
-os: windows
-tag: user.nvda_running
-"""
-@ctxWindowsNVDARunning.action_class('user')
-class UserActions:
     
     def robot_tts(text: str):
         """Text to speech"""
@@ -119,6 +113,5 @@ class UserActions:
 
     def braille(text: str):
         """Output braille with NVDA"""
-        if settings.get("user.braille_output"):
-            nvda_client.nvdaController_brailleMessage(text)
+        nvda_client.nvdaController_brailleMessage(text)
 

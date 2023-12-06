@@ -13,8 +13,11 @@ def on_phrase(parsed_phrase):
             except Exception as e:
                 pass
         
-
             actions.user.robot_tts(command_chain)
+
+            if settings.get("user.braille_output"):
+                actions.user.braille(command_chain)
+
 speech_system.register('phrase', on_phrase)
 
 def on_app_switch(app):

@@ -1,4 +1,5 @@
 tag: user.nvda_running
+os: windows
 
 -
 

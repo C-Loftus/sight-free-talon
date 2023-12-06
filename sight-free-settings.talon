@@ -25,4 +25,5 @@ settings():
     # not need to disable the screenreader's speech for characters and words for normal typing
     user.paste_to_insert_threshold = -1
 
+    # Requires a 
     user.braille_output = true

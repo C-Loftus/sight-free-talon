@@ -2,6 +2,8 @@ from typing import Optional
 from talon import Module, actions, Context, settings, cron, ui, registry, scope, clip, app  
 import os,  subprocess
 from ..lib import scheduling
+from ..lib.utils import remove_special, SpeakerType
+import enum
 
 
 if os.name == 'nt':
@@ -12,7 +14,6 @@ ctx = Context()
 
 # We want to get the settings from the talon file but then update 
     # them locally here so we can change them globally via expose talon actions
-
 def initialize_settings():
     ctx.settings["user.echo_dictation"]: bool = settings.get("user.echo_dictation")
     ctx.settings["user.echo_context"]: bool = settings.get("user.echo_context")
@@ -20,25 +21,34 @@ def initialize_settings():
 # initialize the settings only after the user settings have been loaded
 app.register('ready', initialize_settings)
 
+
+current_speaker: tuple[SpeakerType, Optional[subprocess.Popen]]
+
 @mod.action_class
 class Actions:
+    def set_current_speaker(type: SpeakerType, process: Optional[subprocess.Popen]):
+        """Sets the current speaker"""
+        global current_speaker 
+        current_speaker = (type, process)
+
+    def cancel_current_speaker():
+        """Cancels the current speaker"""
+        global current_speaker
+        if current_speaker:
+            match SPEAKER_TYPE := current_speaker[0], \
+                  SPEAKER_PROCESS := current_speaker[1]:
+                
+                case SpeakerType.LIBRARY_CONTROLLER, _:
+                    # should be handled in the library / dll itself
+                    pass
+                case SpeakerType.SCHEDULED, _:
+                    scheduling.Scheduler.cancel()
+                case SpeakerType.NON_BLOCKING, _:
+                    SPEAKER_PROCESS.kill()
+
+
     def braille(text: str):
         """Output braille with the screenreader"""
-
-    def cancel_robot_tts():
-        """Stop the currently spoken tts phrase"""
-
-    def windows_native_tts(text: str):
-        """text to speech with windows voice
-         this function should never be overwritten and is used to be called from within the robot
-         function which can be overwritten by the user
-        """
-        speaker = win32com.client.Dispatch("SAPI.SpVoice")
-        speaker.rate = settings.get("user.tts_speed", 1.0)
-        
-        # send it to a central scheduler thread so it can be cancelled and so
-        # it doesn't block the main thread or clog the log with warnings
-        scheduling.Scheduler.send(speaker.Speak, text)
 
     def echo_dictation_enabled() -> bool:
         """Returns true if echo dictation is enabled"""
@@ -98,8 +108,15 @@ os: windows
 @ctxWindows.action_class('user')
 class UserActions:
     def robot_tts(text: str):
-        """Text to speech with a robotic/narrator voice"""
-        actions.user.windows_native_tts(text)
+        """text to speech with windows voice"""
+        speaker = win32com.client.Dispatch("SAPI.SpVoice")
+        speaker.rate = settings.get("user.tts_speed", 1.0)
+        
+        # send it to a central scheduler thread so it can be cancelled and so
+        # it doesn't block the main thread or clog the log with warnings
+        scheduling.Scheduler.send(speaker.Speak, text)
+        actions.user.set_current_speaker(SpeakerType.SCHEDULED, speaker)
+        
 
 
 ctxLinux = Context()
@@ -107,16 +124,6 @@ ctxLinux.matches = r"""
 os: linux
 """
 
-def remove_special(text):
-    specialChars = ["'", '"', "(", ")", "[", "]", "{", "}", 
-                    "<", ">", "|", "\\", "/", "_", "-", "+",
-                    "=", "*", "&", "^", "%", "$", "#", "@", 
-                    "!", "`", "~", "?", ",", ".", ":", ";"]
-    
-    for char in specialChars:
-        text = text.replace(char, "")
-    
-    return text
 
 
 @ctxLinux.action_class('user')
@@ -128,7 +135,8 @@ class UserActions:
         rate = rate * 20
         text = remove_special(text)
 
-        subprocess.Popen(["spd-say", text, "--rate", str(rate)])
+        proc = subprocess.Popen(["spd-say", text, "--rate", str(rate)])
+        actions.user.set_current_speaker(SpeakerType.NON_BLOCKING, proc)
 
 
     def robot_tts(text: str):
@@ -145,7 +153,7 @@ class UserActions:
         high = 22050
         low = 16000
 
-        #  we need this more verbose representation here so we don't use this 
+        #  we need this more verbose representation here so we don't use the 
         # shell and have risks of shell expansion
         command1 = ["echo", f"{text}"]
 
@@ -153,13 +161,12 @@ class UserActions:
 
         command3 = ["aplay", "-r", str(low), "-c", "1", "-f", "S16_LE", "-t", "raw"]
 
-        process1 = subprocess.Popen(command1, stdout=subprocess.PIPE)
-        process2 = subprocess.Popen(command2, stdin=process1.stdout, stdout=subprocess.PIPE)
-        process1.stdout.close()
-        process3 = subprocess.Popen(command3, stdin=process2.stdout)
-        process2.stdout.close()
-
-
+        echo = subprocess.Popen(command1, stdout=subprocess.PIPE)
+        piper = subprocess.Popen(command2, stdin=echo.stdout, stdout=subprocess.PIPE)
+        echo.stdout.close()
+        aplay = subprocess.Popen(command3, stdin=piper.stdout)
+        piper.stdout.close()
+        actions.user.set_current_speaker(SpeakerType.NON_BLOCKING, aplay)
 
 
 ctxMac = Context()
@@ -171,6 +178,9 @@ os: mac
 class UserActions:
     def robot_tts(text: str):
         """Text to speech with a robotic/narrator voice"""
-        os.system(f"say '{text}'")
+        # We can't really schedule this since it is a system command, so we
+        # have to spawn a new process each time unfortunately
+        proc = subprocess.Popen(["say", text])
+        actions.user.set_current_speaker(SpeakerType.NON_BLOCKING, proc)
 
     

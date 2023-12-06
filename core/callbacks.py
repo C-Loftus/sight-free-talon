@@ -9,9 +9,9 @@ def on_phrase(parsed_phrase):
             # Not all tts engines support canceling
             # Easier to just catch the exception
             try:
-                actions.user.cancel_robot_tts()
+                actions.user.cancel_current_speaker()
             except:
-                pass
+                print("Talon cannot cancel the current speaker")
 
             actions.user.robot_tts(command_chain)
 speech_system.register('phrase', on_phrase)

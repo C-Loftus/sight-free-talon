@@ -1,5 +1,7 @@
 from talon import actions, Module, settings, cron, Context, clip, registry, app 
-import os, ctypes, time 
+import os, ctypes, time  
+from ..lib import utils
+
 
 mod = Module()
 ctx = Context()
@@ -98,10 +100,12 @@ class UserActions:
         """Text to speech"""
         if settings.get("user.tts_via_screenreader"):
             actions.user.nvda_tts(text)
+            actions.user.set_current_speaker(utils.SpeakerType.LIBRARY_CONTROLLER, None)
         else:
+            # don't need to set the speaker here because we set it in the fn below
             actions.user.windows_native_tts(text)
 
-    def cancel_robot_tts():
+    def cancel_current_speaker():
         """Cancel the narrator tts from NVDA"""
         nvda_client.nvdaController_cancelSpeech()
 

@@ -1,4 +1,4 @@
-import base64
+import base64, enum
 from talon import Module, actions, ui, Context, ctrl, clip, registry
 import os, requests
 
@@ -6,7 +6,23 @@ mod = Module()
 
 if os.name == 'nt':
     import winsound
+ 
+class SpeakerType(enum.Enum):
+    LIBRARY_CONTROLLER = 1
+    SCHEDULED = 2
+    NON_BLOCKING = 3
 
+    
+def remove_special(text):
+    specialChars = ["'", '"', "(", ")", "[", "]", "{", "}", 
+                    "<", ">", "|", "\\", "/", "_", "-", "+",
+                    "=", "*", "&", "^", "%", "$", "#", "@", 
+                    "!", "`", "~", "?", ",", ".", ":", ";"]
+    
+    for char in specialChars:
+        text = text.replace(char, "")
+    
+    return text
 
 @mod.action_class
 class Actions:

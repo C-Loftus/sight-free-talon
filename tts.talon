@@ -36,5 +36,5 @@ echo tab level:
     level = user.indentation_level(clip.text())
     user.robot_tts('{level}')
 
-toggle reader:
-    user.toggle_nvda()
+toggle [screen] reader:
+    user.toggle_reader()

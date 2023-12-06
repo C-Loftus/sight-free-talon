@@ -103,6 +103,9 @@ class Actions:
     def espeak(text: str):
         '''text to speech with espeak'''
 
+    def toggle_reader():
+        """Toggles the screen reader on and off"""
+
 
 ctxWindows = Context()
 ctxWindows.matches = r"""
@@ -120,8 +123,11 @@ class UserActions:
         # it doesn't block the main thread or clog the log with warnings
         scheduling.Scheduler.send(speaker.Speak, text)
         actions.user.set_current_speaker(SpeakerType.SCHEDULED, speaker)
-        
 
+    def toggle_reader():
+        """Toggles the screen reader on and off"""
+        actions.user.toggle_nvda()
+        
 
 ctxLinux = Context()
 ctxLinux.matches = r"""
@@ -132,6 +138,11 @@ os: linux
 
 @ctxLinux.action_class('user')
 class UserActions:
+
+    def toggle_reader():
+        """Toggles the screen reader on and off"""
+        actions.user.toggle_orca()
+
     def espeak(text: str):
         """Text to speech with a robotic/narrator voice"""
         rate = settings.get("user.tts_speed", 0)

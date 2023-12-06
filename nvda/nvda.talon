@@ -1,6 +1,5 @@
 tag: user.nvda_running
 os: windows
-
 -
 
 next heading:

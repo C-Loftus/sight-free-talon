@@ -11,9 +11,18 @@ Use Talon while not needing to look at your computer. Especially helpful for tho
 
 # Installing
 
-Clone the repo into your Talon user directory. The repository works fine without a screenreader, but it will work alongside NVDA if you have NVDA installed.
+Clone the repo into your Talon user directory.
 
-On Linux you must install `spd-say` to play tts.
+## OS Specific Setup
+
+- Linux
+  - Install `spd-say` to play tts.
+  - Install `orca` to use the screen reader.
+  - Install `piper` to use the `omnx` model
+    - run `pipx install piper` to install (thus `pipx` is a dependency)
+- Windows
+  - Install NVDA to play tts through the screen reader.
+    - Disable `Speech interrupt for typed characters` in NVDA settings to make sure typing text from Talon is not interrupted with every typed character.
 
 ## Background and Motivation
 

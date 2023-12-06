@@ -4,7 +4,6 @@ tag: user.nvda_running
 
 next heading:
     key(h)
-
 previous heading:
     key(shift-h)
 
@@ -23,23 +22,23 @@ down option:
     user.with_nvda_mod_press('ctrl-down')
 
 # reads everything from the current position down
-echo below:
+read below:
     user.with_nvda_mod_press('down')
 
 # If the user is in the middle of an echoed text and this will posit otherwise it will resume
-pause echo:
+pause speech:
     key(shift)
 
 stop speech:
     key(ctrl)
 
-read current line:
+speak line:
     user.with_nvda_mod_press('up')
 
-move mouse to navigator object:
+mouse to navigator:
     user.with_nvda_mod_press('shift-m')
 
-navigate to mouse:
+navigator to mouse:
     user.with_nvda_mod_press('shift-n')
 
 next paragraph:
@@ -51,7 +50,7 @@ previous paragraph:
 change verbosity:
     user.with_nvda_mod_press('p')
 
-read title:
+speak title:
     user.with_nvda_mod_press('t')
 
 next focusable item:        key(tab)
@@ -59,6 +58,8 @@ next heading <number_small>: key("{number_small}")
 previous heading  <number_small>: key("shift-{number_small}")
 
 next landmark:              key(d)
+previous landmark:          key(shift-d)
+toggle speech mode:
 
 open element list:
     user.with_nvda_mod_press('f7')
@@ -86,23 +87,23 @@ toggle mouse tracking:
 open reader setings:
     user.with_nvda_mod_press('ctrl-g')
 
-open synthesizer settings:
+synthesizer settings:
     user.with_nvda_mod_press('ctrl-s')
 
-read time:
+speak time:
     user.with_nvda_mod_press('f12')
 
 # Reporting Location and Other Information
-read text formatting:
+speak text formatting:
     user.with_nvda_mod_press('f')
 
-read link destination:
+speak link destination:
     user.with_nvda_mod_press('k')
 
-read window:
+speak window:
     user.with_nvda_mod_press('b')
 
-read focus:
+speak focus:
     user.with_nvda_mod_press('tab')
 
 screen curtain:
@@ -116,14 +117,13 @@ screen curtain:
 toggle reader sleep:
     user.with_nvda_mod_press("shift-s")
 
-Go to next table:           key(T)
-Go to next list:            key(L)
-Go to next list item:       key(I)
-
-Go to next graphic:         key(G)
-Go to next link:            key(K)
-Go to next unvisited link:  key(U)
-Go to next visited link:    key(V)
+next table:                 key(T)
+next list:                  key(L)
+next list item:             key(I)
+next graphic:               key(G)
+next link:                  key(K)
+next unvisited link:        key(U)
+next visited link:          key(V)
 Next form field:            key(F)
 Next button:                key(B)
 

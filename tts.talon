@@ -48,5 +48,8 @@ extract text:
 toggle reader:
     user.toggle_nvda()
 
-echo tags:
-    user.echo_tags()
+explore tags:
+    user.explore_tags()
+
+explore settings:
+    user.explore_settings()

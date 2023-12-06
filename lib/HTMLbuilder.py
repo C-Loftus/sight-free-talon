@@ -113,7 +113,6 @@ class HTMLBuilder:
 
         webbrowser.open(temp_file_path)
 
-
 # API Demo
 # builder = HTMLBuilder()
 # builder.title("Generated Help Page from Talon")

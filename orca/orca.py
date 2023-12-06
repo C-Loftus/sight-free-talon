@@ -1,5 +1,5 @@
 from talon import actions, Module, settings, cron, Context, clip, registry, app 
-import os, ctypes, time 
+import os, ctypes, time , sys
 
 mod = Module()
 ctx = Context()
@@ -7,7 +7,7 @@ ctx = Context()
 mod.tag("orca_running", desc="If set, orca is running")
 
 @mod.scope
-def set_orcas_running_tag():
+def set_orca_running_tag():
     '''Update tags based on if Orca is running'''
     # TODO edge case on startup this might not be set yet
     try:
@@ -17,7 +17,7 @@ def set_orcas_running_tag():
     except:
         ctx.tags = []
 
-if os.name == 'linux':
+if sys.platform == "linux" or sys.platform.startswith("linux"):
     cron.interval("3s", set_orca_running_tag.update)
 
 

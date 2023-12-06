@@ -23,22 +23,65 @@ class StoppableThread(threading.Thread):
 
 # TTS blocks the main thread. If we spawn multiple threads we get many errors in the log
 # Intead of spawning many threads, we use a queue to send the text to a single thread
+class Scheduler:
+    queue = queue.Queue()
+    is_running = False
+    is_processing = False
+
+    @classmethod
+    def _start(cls):
+        if not cls.is_running:
+            cls.is_running = True
+            cls.thread = StoppableThread(target=cls._handler, daemon=True)
+            cls.thread.start()
+
+    @classmethod
+    def cancel(cls):
+        if not cls.is_processing or not cls.is_running:
+            return
+
+        cls.thread.stop()
+        cls.is_running = False
+        cls.is_processing = False
+
+        
+    @classmethod
+    def _handler(cls):
+        while cls.is_running:
+            try:
+                # Get a process from the queue with a timeout
+                proc = cls.queue.get(timeout=1)
+                (fn, *args) = proc
+                fn(*args)
+                cls.is_processing = False
+
+            except queue.Empty:
+                # Handle the case when the queue is empty
+                pass
+            time.sleep(0.1)
+
+    @classmethod
+    def send(cls, function, *args): 
+        if not cls.is_running:
+            cls._start()
+
+        cls.is_processing = True
+        cls.queue.put((function, *args))
+
 # class Scheduler:
 #     queue = queue.Queue()
 #     is_running = False
+#     procs = []
 
 #     @classmethod
 #     def _start(cls):
 #         if not cls.is_running:
 #             cls.is_running = True
-#             cls.thread = StoppableThread(target=cls._handler, daemon=True)
+#             cls.thread = threading.Thread(target=cls._handler, daemon=True)
 #             cls.thread.start()
 
-#     @classmethod
-#     def cancel(cls):
-#         cls.is_running = False
-#         cls.thread.stop()
-        
+#     # spawn processes that intentionally block a separate thread and 
+#     # can be cancelled (allows for ordered, interruptible tts)
 #     @classmethod
 #     def _handler(cls):
 #         while cls.is_running:
@@ -46,11 +89,16 @@ class StoppableThread(threading.Thread):
 #                 # Get a process from the queue with a timeout
 #                 proc = cls.queue.get(timeout=1)
 #                 (fn, *args) = proc
-#                 fn(*args)
+#                 proc = multiprocessing.Process(target=fn, args=args, daemon=False)
+#                 cls.procs.append(proc)
+#                 proc.start()
+#                 proc.join()
+#                 cls.procs.remove(proc)
 
 #             except queue.Empty:
 #                 # Handle the case when the queue is empty
 #                 pass
+
 #             time.sleep(0.1)
 
 #     @classmethod
@@ -60,70 +108,30 @@ class StoppableThread(threading.Thread):
 
 #         cls.queue.put((function, *args))
 
-# # TODO
-class Scheduler:
-    queue = queue.Queue()
-    is_running = False
-    procs = []
+#     @classmethod
+#     def cancel(cls):
+#         if len(cls.procs) == 0:
+#             return
 
-    @classmethod
-    def _start(cls):
-        if not cls.is_running:
-            cls.is_running = True
-            cls.thread = threading.Thread(target=cls._handler, daemon=True)
-            cls.thread.start()
+#         proc = cls.procs[0]
+#         print(type(proc))
 
-    # spawn processes that intentionally block a separate thread and 
-    # can be cancelled (allows for ordered, interruptible tts)
-    @classmethod
-    def _handler(cls):
-        while cls.is_running:
-            try:
-                # Get a process from the queue with a timeout
-                proc = cls.queue.get(timeout=1)
-                cls.procs.append(proc)
-                (fn, *args) = proc
-                proc = multiprocessing.Process(target=fn, args=args, daemon=True)
-                proc.start()
-                proc.join()
-                cls.procs.remove(proc)
+#         try:
+#             os.kill(proc.pid, 9)
+#         except Exception as e:
+#             proc.kill()
 
-            except queue.Empty:
-                # Handle the case when the queue is empty
-                pass
+#         cls.procs.remove(proc)
+  
 
-            time.sleep(0.1)
-
-    @classmethod
-    def send(cls, function, *args): 
-        if not cls.is_running:
-            cls._start()
-
-        cls.queue.put((function, *args))
-
-    @classmethod
-    def cancel(cls):
-        try:
-            if len(cls.procs) > 0:
-                proc = cls.procs[0]
-
-                try:
-                    os.kill(proc.pid, 9)
-                except Exception as e:
-                    proc.kill()
-
-                cls.procs.remove(proc)
-        except Exception as e:
-            print(e)
-
-    @classmethod
-    def cancel_all(cls):
-        try:
-            for proc in cls.procs:
-                os.kill(proc.pid, 9)
-            cls.procs = []
-        except Exception as e:
-            print(e)
+#     @classmethod
+#     def cancel_all(cls):
+#         try:
+#             for proc in cls.procs:
+#                 os.kill(proc.pid, 9)
+#             cls.procs = []
+#         except Exception as e:
+#             print(e)
 
 #     # create a contextlib lock that can be used to prevent multiple tts from happening at once
 #     @classmethod
@@ -135,7 +143,7 @@ class Scheduler:
 #         finally:
 #             cls.lock.release()
 
-# Make the Mutex generic over the value it stores.
+# # Make the Mutex generic over the value it stores.
 # # In this way we can get proper typing from the `lock` method.
 # class Mutex(Generic[T:=TypeVar("T")]):
 #   # Store the protected value inside the mutex 

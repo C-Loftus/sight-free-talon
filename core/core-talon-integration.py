@@ -22,7 +22,7 @@ def initialize_settings():
 app.register('ready', initialize_settings)
 
 
-current_speaker: tuple[SpeakerType, Optional[subprocess.Popen]]
+current_speaker: tuple[SpeakerType, Optional[subprocess.Popen]] = (None, None)
 
 @mod.action_class
 class Actions:
@@ -42,9 +42,13 @@ class Actions:
                     # should be handled in the library / dll itself
                     pass
                 case SpeakerType.SCHEDULED, _:
-                    scheduling.Scheduler.cancel()
+                    # TODO since you can't send an interrupt signal to a thread not sure how
+                    # scheduling.Scheduler.cancel()
+                    pass
                 case SpeakerType.NON_BLOCKING, _:
                     SPEAKER_PROCESS.kill()
+                case _, _:
+                    return
 
 
     def braille(text: str):

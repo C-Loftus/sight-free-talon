@@ -1,6 +1,6 @@
 from talon import actions, Module, settings, cron, Context, clip, registry, app 
 import os, ctypes, time  
-from ..lib import utils
+from ..lib import utils, scheduling
 
 
 mod = Module()
@@ -20,6 +20,9 @@ def set_nvda_running_tag():
         ctx.tags = []
 
 if os.name == 'nt':
+    import win32com
+
+
     # Load the NVDA client library
     dir_path = os.path.dirname(os.path.realpath(__file__))
     dll_path = os.path.join(dir_path, "nvdaControllerClient64.dll")
@@ -102,8 +105,13 @@ class UserActions:
             actions.user.nvda_tts(text)
             actions.user.set_current_speaker(utils.SpeakerType.LIBRARY_CONTROLLER, None)
         else:
-            # don't need to set the speaker here because we set it in the fn below
-            actions.user.windows_native_tts(text)
+            speaker = win32com.client.Dispatch("SAPI.SpVoice")
+            speaker.rate = settings.get("user.tts_speed", 1.0)
+            
+            # send it to a central scheduler thread so it can be cancelled and so
+            # it doesn't block the main thread or clog the log with warnings
+            scheduling.Scheduler.send(speaker.Speak, text)
+            actions.user.set_current_speaker(utils.SpeakerType.SCHEDULED, speaker)            
 
     def cancel_current_speaker():
         """Cancel the narrator tts from NVDA"""

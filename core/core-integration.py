@@ -22,33 +22,30 @@ def initialize_settings():
 app.register('ready', initialize_settings)
 
 
-current_speaker: tuple[SpeakerType, Optional[subprocess.Popen]] = (None, None)
+speaker_callback: Optional[callable] = None
 
 @mod.action_class
 class Actions:
-    def set_current_speaker(type: SpeakerType, process: Optional[subprocess.Popen]):
-        """Sets the current speaker"""
-        global current_speaker 
-        current_speaker = (type, process)
+    def set_cancel_callback(callback: callable):
+        """
+        Sets the callback to call when the current speaker is cancelled. Only 
+        necessary to set if the tts is coming from a subprocess where we need to store a handle
+        """
+        global speaker_callback 
+        speaker_callback = callback
 
     def cancel_current_speaker():
         """Cancels the current speaker"""
-        global current_speaker
-        if current_speaker:
-            match SPEAKER_TYPE := current_speaker[0], \
-                  SPEAKER_PROCESS := current_speaker[1]:
-                
-                case SpeakerType.LIBRARY_CONTROLLER, _:
-                    # should be handled in the library / dll itself
-                    pass
-                case SpeakerType.SCHEDULED, _:
-                    # TODO since you can't send an interrupt signal to a thread not sure how
-                    # scheduling.Scheduler.cancel()
-                    pass
-                case SpeakerType.NON_BLOCKING, _:
-                    SPEAKER_PROCESS.kill()
-                case _, _:
-                    return
+        global speaker_callback
+        if not current_speaker:
+            return
+        
+        try:
+            current_speaker()
+        except Exception as e:
+            print(e)
+        current_speaker = None
+            
 
 
     def braille(text: str):
@@ -116,13 +113,15 @@ os: windows
 class UserActions:
     def robot_tts(text: str):
         """text to speech with windows voice"""
-        speaker = win32com.client.Dispatch("SAPI.SpVoice")
-        speaker.rate = settings.get("user.tts_speed", 1.0)
-        
-        # send it to a central scheduler thread so it can be cancelled and so
-        # it doesn't block the main thread or clog the log with warnings
-        scheduling.Scheduler.send(speaker.Speak, text)
-        actions.user.set_current_speaker(SpeakerType.SCHEDULED, speaker)
+        rate = settings.get("user.tts_speed", 1)
+        command = [
+            "PowerShell", 
+            "-Command", 
+            f"Add-Type -TypeDefinition '[DllImport(\"sapi.dll\")] public static extern void SpVoice();' ; $speak = New-Object -ComObject SAPI.SpVoice ; $speak.rate = {rate} ; $speak.Speak('{text}')"
+        ]
+
+        proc =subprocess.Popen(command) 
+        actions.user.set_cancel_callback(proc.kill)
 
     def toggle_reader():
         """Toggles the screen reader on and off"""
@@ -151,7 +150,7 @@ class UserActions:
         text = remove_special(text)
 
         proc = subprocess.Popen(["spd-say", text, "--rate", str(rate)])
-        actions.user.set_current_speaker(SpeakerType.NON_BLOCKING, proc)
+        actions.user.set_cancel_callback(proc.kill)
 
 
     def robot_tts(text: str):
@@ -181,7 +180,7 @@ class UserActions:
         echo.stdout.close()
         aplay = subprocess.Popen(command3, stdin=piper.stdout)
         piper.stdout.close()
-        actions.user.set_current_speaker(SpeakerType.NON_BLOCKING, aplay)
+        actions.user.set_cancel_callback(aplay.kill)
 
 
 ctxMac = Context()
@@ -196,6 +195,6 @@ class UserActions:
         # We can't really schedule this since it is a system command, so we
         # have to spawn a new process each time unfortunately
         proc = subprocess.Popen(["say", text])
-        actions.user.set_current_speaker(SpeakerType.NON_BLOCKING, proc)
+        actions.user.set_cancel_callback(proc.kill)
 
     

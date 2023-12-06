@@ -2,6 +2,8 @@ from talon import actions, Module, settings, cron, Context, clip, registry, app
 import os, ctypes, time  
 from ..lib import utils, scheduling
 
+import subprocess
+
 
 mod = Module()
 ctx = Context()
@@ -97,15 +99,17 @@ class UserActions:
         """Text to speech"""
         if settings.get("user.tts_via_screenreader"):
             actions.user.nvda_tts(text)
-            actions.user.set_current_speaker(utils.SpeakerType.LIBRARY_CONTROLLER, None)
         else:
-            speaker = win32com.client.Dispatch("SAPI.SpVoice")
-            speaker.rate = settings.get("user.tts_speed", 1.0)
-            
-            # send it to a central scheduler thread so it can be cancelled and so
-            # it doesn't block the main thread or clog the log with warnings
-            scheduling.Scheduler.send(speaker.Speak, text)
-            actions.user.set_current_speaker(utils.SpeakerType.SCHEDULED, speaker)            
+            rate = settings.get("user.tts_speed", 1)
+            command = [
+                "PowerShell", 
+                "-Command", 
+                f"Add-Type -TypeDefinition '[DllImport(\"sapi.dll\")] public static extern void SpVoice();' ; $speak = New-Object -ComObject SAPI.SpVoice ; $speak.rate = {rate} ; $speak.Speak('{text}')"
+            ]
+
+            proc =subprocess.Popen(command) 
+            actions.user.set_cancel_callback(proc.kill)
+
 
     def cancel_current_speaker():
         """Cancel the narrator tts from NVDA"""

@@ -1,6 +1,7 @@
 import base64
 from talon import Module, actions, ui, Context, ctrl, clip, registry
 import os, requests
+from . import HTMLbuilder
 
 mod = Module()
 
@@ -33,11 +34,28 @@ class Actions:
         output = f"{friendly_name} {title}" if include_title else friendly_name
         actions.user.robot_tts(output)
 
-    def echo_tags():
-        """Echo the current tags"""
-        active_contexts = registry.tags
-        actions.user.robot_tts(" ".join(active_contexts))
+    # def echo_tags():
+    #     """Echo the current tags"""
+    #     active_contexts = registry.tags
+    #     actions.user.robot_tts(" ".join(active_contexts))
 
+    def explore_tags():
+        """Open the tags in the browser"""
+        active_contexts = registry.tags
+        builder = HTMLbuilder.HTMLBuilder()
+        builder.title("Talon Tags")
+        for context in active_contexts:
+            builder.p(context)
+        builder.render()
+
+    def explore_settings():
+        """Open the talon settings file"""
+        active_settings = registry.settings
+        builder = HTMLbuilder.HTMLBuilder()
+        builder.title("Talon Settings")
+        for setting in active_settings:
+            builder.p(f"{setting}, {active_settings[setting]}")
+        builder.render()
 
     def extract_text():
         """Extract the text from the current window"""
@@ -119,6 +137,3 @@ class ActionsWin:
     def beep(freq: int = 440, duration: int = 1000):
         """Beep"""
         winsound.Beep(freq, duration)
-
-
-        

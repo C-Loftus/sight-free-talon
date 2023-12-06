@@ -100,15 +100,22 @@ class UserActions:
         if settings.get("user.tts_via_screenreader"):
             actions.user.nvda_tts(text)
         else:
-            rate = settings.get("user.tts_speed", 1)
-            command = [
-                "PowerShell", 
-                "-Command", 
-                f"Add-Type -TypeDefinition '[DllImport(\"sapi.dll\")] public static extern void SpVoice();' ; $speak = New-Object -ComObject SAPI.SpVoice ; $speak.rate = {rate} ; $speak.Speak('{text}')"
-            ]
+            # rate = settings.get("user.tts_speed", 1)
+            # command = [
+            # 'powershell',
+            # '-Command',
+            #     'Add-Type -AssemblyName System.Speech; $synthesizer = New-Object System.Speech.Synthesis.SpeechSynthesizer; $synthesizer.Rate = {0}; $synthesizer.Speak("{1}")'.format(rate, text)
+            # ]
+            # command_line = subprocess.list2cmdline(command)
 
-            proc =subprocess.Popen(command) 
-            actions.user.set_cancel_callback(proc.kill)
+            # process = subprocess.Popen(command_line)
+            # actions.user.set_cancel_callback(process.kill)
+            speaker = win32com.client.Dispatch("SAPI.SpVoice")
+            speaker.rate = settings.get("user.tts_speed", 1.0)
+            
+            # send it to a central scheduler thread so it can be cancelled and so
+            # it doesn't block the main thread or clog the log with warnings
+            scheduling.Scheduler.send(speaker.Speak, text)
 
 
     def cancel_current_speaker():

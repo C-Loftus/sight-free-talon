@@ -21,7 +21,7 @@ def initialize_settings():
 app.register('ready', initialize_settings)
 
 
-speaker_callback: Optional[callable] = None
+speaker_cancel_callback: Optional[callable] = None
 
 @mod.action_class
 class Actions:
@@ -30,20 +30,21 @@ class Actions:
         Sets the callback to call when the current speaker is cancelled. Only 
         necessary to set if the tts is coming from a subprocess where we need to store a handle
         """
-        global speaker_callback 
-        speaker_callback = callback
+        global speaker_cancel_callback 
+        speaker_cancel_callback = callback
 
     def cancel_current_speaker():
         """Cancels the current speaker"""
-        global speaker_callback
-        if not current_speaker:
+        global speaker_cancel_callback
+        if not speaker_cancel_callback:
             return
         
         try:
-            current_speaker()
+            speaker_cancel_callback()
         except Exception as e:
             print(e)
-        current_speaker = None
+        finally:
+            speaker_cancel_callback = None
             
 
 

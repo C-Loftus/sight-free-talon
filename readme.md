@@ -1,6 +1,6 @@
 # Sight-Free-Talon
 
-Use Talon while not needing to look at your computer. Especially helpful for those with vision impairment, blindness, eye strain, or those who prefer alternative computer interaction. This repository integrates with Talon to:
+Use Talon while not needing to look at your computer. Especially helpful for those with vision impairment, blindness, eye strain, or those who prefer alternative computer interaction. Provides functionality to:
 
 - echo back dictation
 - speak info on context switch (mode, app, window, etc.)

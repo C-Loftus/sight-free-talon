@@ -1,6 +1,14 @@
 # Sight-Free-Talon
 
-Use Talon while not needing to look at your computer. Especially helpful for those with vision impairment, blindness, eye strain, or those who prefer alternative computer interaction. Integrates tools like:
+Use Talon while not needing to look at your computer. Especially helpful for those with vision impairment, blindness, eye strain, or those who prefer alternative computer interaction. This repository integrates with Talon to:
+
+- echo back dictation
+- speak info on context switch (mode, app, window, etc.)
+- speak user-given text
+- provide TTS libraries and other utilities for your own scripts
+
+
+This repository integrates with:
 
 - screen readers
 - text-to-speech
@@ -9,6 +17,10 @@ Use Talon while not needing to look at your computer. Especially helpful for tho
 - hardware rumble / tacile feedback
 - pedals
 
+# Usage
+
+View the `.talon` files in each subdirectory for commands corresponding to each application or context. View the settings file at the root of the repository for all relevant settings.
+
 # Installing
 
 Clone the repo into your Talon user directory.
@@ -16,9 +28,9 @@ Clone the repo into your Talon user directory.
 ## OS Specific Setup
 
 - Linux
-  - Install `spd-say` to play tts.
+  - Install `spd-say` to play espeak robotic tts.
   - Install `orca` to use the screen reader.
-  - Install `piper` to use the `omnx` model
+  - Install `piper` to use the `omnx` model for more natural speech
     - run `pipx install piper` to install (thus `pipx` is a dependency)
 - Windows
   - Install NVDA to play tts through the screen reader.

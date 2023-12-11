@@ -45,4 +45,4 @@ I appreciate all contributions, whether bug reports, feature requests, qualitati
 
 # Acknowledgements and Resources
 
-See [ATTRIBUTIONS.md](./ATTRIBUTIONS.md) for a list tools, resources, and individuals that have been helpful in the creation of this repository.
+See [ATTRIBUTIONS.md](./ATTRIBUTIONS.md) for a list of tools, resources, and individuals that have been helpful in the creation of this repository.

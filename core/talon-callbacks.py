@@ -21,7 +21,7 @@ def on_phrase(parsed_phrase):
 speech_system.register('phrase', on_phrase)
 
 def on_app_switch(app):
-    if not settings.get("user.echo_context"):
+    if not actions.user.echo_context_enabled():
         return 
     actions.user.echo_context()
 
@@ -31,8 +31,8 @@ def on_app_switch(app):
 # the title actually hasn't changed, i.e. when a text file is saved
 last_title = None
 def on_title_switch(win):
-    if not settings.get("user.echo_context"):
-        return
+    if not actions.user.echo_context_enabled():
+        return 
     window = ui.active_window()
     active_window_title = window.title
     # get just the first two words

@@ -24,24 +24,28 @@ if sys.platform == "linux" or sys.platform.startswith("linux"):
 
 @mod.action_class
 class Actions:
-     
-    def toggle_orca():
-
-
-        '''Toggles orca on and off'''
-        if not os.path.exists("/usr/bin/orca"):
-            actions.user.robot_tts("Orca not installed")
-            return
-
-        actions.key("alt-super-s")
-
-
     def is_orca_running() -> bool:
         '''Returns true if orca is running'''
         return True if "user.orca_running" in ctx.tags else False
     
     def orca_tts(text: str, use_clipboard: bool= False):
         '''text to speech with orca'''
+
+
+ctxLinux = Context()
+ctx.matches = r"""
+os: linux
+"""
+
+@ctxLinux.action_class("user")
+class LinuxActions:
+    def toggle_reader():
+        '''Toggles orca on and off'''
+        if not os.path.exists("/usr/bin/orca"):
+            actions.user.robot_tts("Orca is not installed")
+            return
+
+        actions.key("alt-super-s")
 
 ctxorcaRunning = Context()
 ctxorcaRunning.matches = r"""

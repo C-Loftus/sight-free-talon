@@ -137,3 +137,7 @@ Next radio button:          key(R)
 
 braille display dialog:
     user.with_nvda_mod_press('ctrl-a')
+
+pass through next:
+    user.with_nvda_mod_press('f2')
+

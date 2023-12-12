@@ -1,9 +1,5 @@
 from talon import actions, Module, settings, cron, Context, clip, registry, app 
 import os, ctypes, time  
-from ..lib import utils, scheduling
-
-import subprocess
-
 
 mod = Module()
 ctx = Context()
@@ -22,9 +18,6 @@ def set_nvda_running_tag():
         ctx.tags = []
 
 if os.name == 'nt':
-    import win32com
-
-
     # Load the NVDA client library
     dir_path = os.path.dirname(os.path.realpath(__file__))
     dll_path = os.path.join(dir_path, "nvdaControllerClient64.dll")
@@ -46,6 +39,9 @@ class Actions:
         elif actions.user.is_nvda_running():
             actions.user.with_nvda_mod_press('q')
             actions.user.robot_tts("Turning NVDA off")
+            time.sleep(1)
+            actions.key("enter")
+
 
 
     def with_nvda_mod_press(key: str):

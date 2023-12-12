@@ -59,3 +59,19 @@ mod.setting(
     default="capslock",
     desc="The key that is used as the NVDA key",
 )
+
+mod.setting(
+    "speak_errors",
+    type=bool,
+    default=True,
+    desc="If True, speaks errors when they occur",
+)
+
+# Must be between 1 and 100
+mod.setting(
+    "tts_volume",
+    type=int,
+    default=100,
+    desc="The volume of the text to speech",
+)
+

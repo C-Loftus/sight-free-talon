@@ -28,9 +28,10 @@ class Actions:
         response = requests.post(url, headers=headers, data=json.dumps(data))
 
         if response.status_code == 200:
-            with open("openai-speech.mp3", "wb") as f:
+            date = time.strftime("%Y-%m-%d-%H-%M-%S")
+            with open(f"openai-speech-{date}.mp3", "wb") as f:
                 f.write(response.content)
-            print("Speech successfully saved to speech.mp3")
+            print("Speech successfully saved to openai-speech.mp3")
         else:
             print(f"Error: {response.status_code}, {response.text}")
 

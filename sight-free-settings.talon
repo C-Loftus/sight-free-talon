@@ -6,7 +6,10 @@ settings():
     # if using the windows native tts. If
     # using the screenreader tts, this setting
     # is ignored and the screenreader's tts is used
-    user.tts_speed = 3
+    user.tts_speed = 6
+
+    # 1 through 100 (Not used if using screenreader tts)
+    user.tts_volume = 80
 
     # Automatically echo the context of the focused window when switching applications/tabs
     user.echo_context = false
@@ -25,4 +28,9 @@ settings():
     # not need to disable the screenreader's speech for characters and words for normal typing
     user.paste_to_insert_threshold = -1
 
+    # Requires screen reader
     user.braille_output = false
+
+    # Change key_wait if you want the screen reader to speak words
+    # at the same pace as if you were typing them manually.
+    # key_wait = 0

@@ -7,3 +7,5 @@ This repository is structured such that every screen reader or unique feature ge
 I greatly benefit from general qualitative design feedback and learning more about the particular workflows of users. My intention is for this repository to be useful for people of all abilities and technical skill levels, so I am very interested in hearing about any difficulties you may have with the repository or Talon in general.
 
 If you are a user with a vision impairment, I am curious to hear how you have interacted with voice dictation software in the past. I could also use qualitative feedback regarding things like alternative computer feedback mechanisms, such as braille, haptic feedback, or pitch-based audio feedback. I am curious to explore different ways of providing information to the user, and am excited about exploring more experimental ideas.
+
+

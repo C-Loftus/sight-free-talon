@@ -118,9 +118,10 @@ os: windows
 class UserActions:
     def base_win_tts(text: str):
         """Base function for windows tts. We expose this 
-        so we can share the speaker object across files since 
-        it won't get overridden by the other tts functions"""
-        speaker.rate = settings.get("user.tts_speed", 1.0)
+        so we can share the speaker object across files. We don't want 
+        it to get overridden by the other tts functions"""
+        speaker.set_rate(settings.get("user.tts_speed", 0))
+        speaker.set_volume(settings.get("user.tts_volume", 50))
         speaker.speak(text, interrupt=True)
 
     def robot_tts(text: str):
@@ -161,13 +162,14 @@ class UserActions:
         # change the directory to the directory of this file
         # so we can run the command from the correct directory
         model_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "additional_voices", "models")
+        # You have to install piper with pipx
         piper = os.path.expanduser("~/.local/bin/piper")
 
         os.chdir(model_dir)
 
         modes = ['en_US-amy-low.onnx', 'en_US-lessac-medium.onnx']
-
-        high = 22050
+        # high = 22050
+        # Hz for playback in low quality
         low = 16000
 
         #  we need this more verbose representation here so we don't use the 

@@ -4,6 +4,10 @@ on:
     branches:
       - main
 
+defaults:
+  run:
+    working-directory: docs
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -26,7 +30,6 @@ jobs:
         run: |
           # This assumes your book is in the root of your repository.
           # Just add a `cd` here if you need to change to another directory.
-          cd docs
           mdbook build
       - name: Setup Pages
         uses: actions/configure-pages@v2
@@ -34,7 +37,7 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           # Upload entire repository
-          path: "docs"
+          path: "book"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1

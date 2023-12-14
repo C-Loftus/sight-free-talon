@@ -1,10 +1,12 @@
+My goal is to make contributing as easy as possible. If you need help or ideas, feel free to directly reach out to me, either through the Talon Slack or my website, [https://colton.bio](https://colton.bio).
+
 # Technical Contribution
 
-This repository is structured such that every screen reader or unique feature gets its own folder. Each folder contains a `talon` file with the commands for that screen reader or feature. Any features related to global scope or settings are in the root settings `.talon` file. If you would like to add support for a new screen reader I encourage you to follow the format of the other screen readers and implement similar function overrides. All baseline declarations that are contextually overriden are in the `core` folder.
+The project repository is structured such that every screen reader or unique feature gets its own folder. Each folder contains a `talon` file with the commands for that screen reader or feature. Any features related to global scope or settings are in the root settings `.talon` file. If you would like to add support for a new screen reader I encourage you to follow the format of the other screen readers and implement similar function overrides. All baseline declarations that are contextually overriden are in the `core` folder.
 
 ## Testing with Your Own Setup
 
-I do not have the resources to test every combination of screen reader and operating system. If you would like to contribute to this repository, I encourage you to test the commands on your own setup and provide feedback. If you are not familiar with GitHub, you can also contact me through the Talon Slack or my website, [https://colton.bio](https://colton.bio).
+I do not have the resources to test every combination of screen reader and operating system. If you would like to contribute to this repository, I encourage you to test the commands on your own setup and provide feedback. If you are not familiar with GitHub, you can directly get in contact with me.
 
 To check for errors, you can send me a copy of your Talon log.
 

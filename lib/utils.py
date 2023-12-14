@@ -1,7 +1,7 @@
 import base64, enum
 from talon import Module, actions, ui, Context, ctrl, clip, registry
 import os, requests
-from . import HTMLbuilder
+from .HTMLbuilder import HTMLBuilder
 
 mod = Module()
 
@@ -53,7 +53,7 @@ class Actions:
     def explore_tags():
         """Open the tags in the browser"""
         active_contexts = registry.tags
-        builder = HTMLbuilder.HTMLBuilder()
+        builder = HTMLBuilder()
         builder.title("Talon Tags")
         for context in active_contexts:
             builder.p(context)
@@ -62,11 +62,14 @@ class Actions:
     def explore_settings():
         """Open the talon settings file"""
         active_settings = registry.settings
-        builder = HTMLbuilder.HTMLBuilder()
+        builder = HTMLBuilder()
         builder.title("Talon Settings")
         for setting in active_settings:
             builder.p(f"{setting}, {active_settings[setting]}")
         builder.render()
+
+    def explore_modes():
+        """Open the talon modes file"""
 
     def extract_text():
         """Extract the text from the current window"""

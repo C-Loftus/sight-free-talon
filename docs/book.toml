@@ -3,3 +3,7 @@ title = "Sight-Free-Talon Documentation"
 description = "Integrate Talon with TTS, screen readers, braille, and more!"
 authors = ["Colton Loftus"]
 language = "en"
+
+# [output.html]
+# git-repository-url = "https://github.com/rust-lang/mdBook/tree/master/guide"
+# edit-url-template = "https://github.com/rust-lang/mdBook/edit/master/guide/{path}"

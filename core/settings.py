@@ -75,3 +75,5 @@ mod.setting(
     desc="The volume of the text to speech",
 )
 
+mod.mode("strict_dictation", desc="Dictation mode with only a subset of dictation commands")
+mod.mode('strict_command', desc='Command mode with only a subset of command commands')

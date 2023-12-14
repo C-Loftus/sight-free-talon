@@ -35,19 +35,6 @@ class Actions:
         else:
             print(f"Error: {response.status_code}, {response.text}")
 
-    def edge_tts(text: str):
-            '''text to speech with edge'''
-            # edge-playback --text "Hello, world!"
-            #get path of this file
-            this_path = os.path.dirname(os.path.realpath(__file__))
-            script_path = os.path.join(this_path, 'edge-playback.ps1')
-
-            actions.user.notify('Starting edge TTS')
-            p = subprocess.Popen(["powershell.exe", script_path, text], shell=True, env=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            p_status = p.wait()
-            stdout, stderr = p.communicate()
-            print(stdout, stderr)
-            return (stdout, stderr)
 
     def elevenlabs_tts(text: str):
         """text to speech with natural voice from 11labs. NOTE: you need an API Key"""

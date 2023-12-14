@@ -2,6 +2,6 @@ os: windows
 
 -
 
-# Extracts text from the current window using OCR
+# Copies text with OCR from the current window
 extract text:
     user.extract_text()

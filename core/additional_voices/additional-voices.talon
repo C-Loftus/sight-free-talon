@@ -9,8 +9,3 @@ open save this:
     key(ctrl-c)
     sleep(0.1)
     user.openai_tts(clip.text())
-
-edge echo this:
-    key(ctrl-c)
-    sleep(0.1)
-    user.edge_tts(clip.text())

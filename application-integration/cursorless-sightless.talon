@@ -6,4 +6,3 @@ tag: user.cursorless
 speak <user.cursorless_target>:
     user.cursorless_command('copyToClipboard', cursorless_target)
     user.robot_tts(clip.text())
-

@@ -16,16 +16,20 @@ As I've thought more about such things, I think it is significant that many of t
 
 Cursorless has been so exciting to me since it proudly stands on its own, independent of the assumptions of keyboard use and is all the better for it. It also knows when to stop. It is an editing program. It does not try to be a version control program, an IDE, and a collaboration tool like Microsoft Word. Because of these self limitations, it is more accessible for a writer like myself, not less. That is why I can use it for my business consulting work, despite the fact it is intended for programmers.
 
-# Exploring Alternatives
+The one exception may come from the central controller itself. Our engine, like Talon or NVDA that calls our compositions. An analogy might be found in Kubernetes: We can only accomplish total decentralization through total centralization.
 
-The human body is such a wonderful dynamism of motion and feeling yet when we interact with the computer, we resign ourselves to often nothing but the eyes and hands. Why is this the case? It is friction.
+# For Better Accessibility, Eliminate the Task
 
 Friction is perhaps the most important consideration when building accessibility tools. If a program is accessible, but adds too much friction, it won't actually be used and the user will simply default to other more straightforward, but less accessible methods. In the case of users with chronic pain, this can end up making things worse by giving the illusion of alternative input, when in reality the default tools are the only ones recieving significant usage.
+
+When designing for accessibility, there is often the presupposition that differences in ability are static. Yet in fact, the majority of disabilities are short term, caused by chronic illness.
+
+The challenge when designing for chronic pain is that the user can easily chose to just work through pain. One needs to create tools with very little friction in order to have less than simply using one's hands or eyes. It becomes a tug of war between physical pain and the friction of new tools.
+
+Thus, the best way to reduce friction to such an extent it to simply eliminate the task all together with scripting. Another point for the Unix philosophy and composition.
+
+The human body is such a wonderful dynamism of motion and feeling yet when we interact with the computer, we resign ourselves to often nothing but the eyes and hands. Why is this the case? It is friction.
 
 Most users of all backgrounds and abilities don't use all potential input methods for their computer. They simply use the ones with the least friction at the moment. Sighted people generally have abnormally high amounts of mouse usage, often unoptimally so. Whereas visually impaired people generally have abnormally high amounts of keyboard usage, and often do not take advantage of voice commands.
 
 The challenge with voice interaction specifically is that it typically requires visual feedback to ensure the command was interpreted properly. Yet we do not want to spam the user with TTS messages after the execution of each command. The more messages we send to the user, the less useful they will be.
-
-When designing for accessibility, there is often the presupposition that differences in ability are static. Yet in fact, the majority of
-
-The challenge when designing for chronic pain is that the user can easily chose to just work through pain. One needs to create tools with very little friction in order to have less than simply using one's hands or eyes. IT becomes a tug of war between physical pain and

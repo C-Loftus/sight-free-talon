@@ -41,8 +41,8 @@ Many screen readers and tools for visual impairment are very dependent upon keyb
 
 # Contributing
 
-I appreciate all contributions, whether bug reports, feature requests, qualitative design feedback, or code. See the [CONTRIBUTING.md](./CONTRIBUTING.md) for more information. Please feel free to reach out to me personally through the links in my GitHub bio if you have any specific inquiries regarding this repo.
+I appreciate all contributions, whether bug reports, feature requests, qualitative design feedback, or code. See the [CONTRIBUTING.md](./docs/src/CONTRIBUTING.md) for more information. Please feel free to reach out to me personally through the links in my GitHub bio if you have any specific inquiries regarding this repo.
 
 # Acknowledgements and Resources
 
-See [ATTRIBUTIONS.md](./ATTRIBUTIONS.md) for a list of tools, resources, and individuals that have been helpful in the creation of this repository.
+See [ATTRIBUTIONS.md](./docs/src/ATTRIBUTIONS.md) for a list of tools, resources, and individuals that have been helpful in the creation of this repository.

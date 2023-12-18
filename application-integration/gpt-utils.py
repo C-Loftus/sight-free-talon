@@ -7,8 +7,6 @@ mod.tag("openai_defined", desc="The user has a valid openai API key")
 
 # TODO Check if there's a better way to do this other than updating on an interval
 ####################################################################
-## TODO:  check to see if there's a community standard 
-
 
 #  perhaps there's some sort of callback? 
 # def check_openai():

@@ -7,6 +7,7 @@ tag: user.openai_defined
 # it might be best to integrate my code with a broader more community based solution
 ^echo {user.promptNoArgument}$:
     result = user.gpt_prompt_no_argument(user.promptNoArgument)
+    user.cancel_current_speaker()
     user.robot_tts(result)
 
 describe image:

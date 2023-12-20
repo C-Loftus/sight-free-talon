@@ -1,3 +1,15 @@
+# Designing around Chronic Pain
+
+Within digital accessibility designers often assume conditions that are static binaries. for instance either a user is either blind or sighted. If a user has a vision impairment, it is implicitly expected to be a tournament condition, not one that might fluctuate based on pain levels
+
+When designing around chronic pain, all of these assumptions are knocked down. for instance in the case of carpal tunnel, the user can easily decide to simply type and work through the pain. in such a case accessibility is no longer about a binary of whether or not a product or service can be physically accessed. rather it becomes about whether or not the level of friction in the solution incentivizes its use instead of simply working with the standard option.
+
+the unconscious mind is not rational in the long term and it will easily pick a moderately uncomfortable solution in the short term if it can be done quickly with little friction. however as anyone with chronic pain knows, enough of these moderately uncomfortable actions can quickly accumulate two a flare up of significant pain.
+
+as such when we are designing around chronic pain we can't simply look at baseline accessibility. we need to have designs that are such low friction and in some way do something totally unique that the old way of computer interaction couldn't do.
+
+that is why cursorless is so successful as a product to reduce chronic hand pain.
+
 # For Better Accessibility, Do Less
 
 There are two main cliches in software accessibility: the first that it is a burden, accomplished only through extra labor, and the second being that we ought to make our applications universal, to include everyone. I wish to say the opposite. If it is a burden, it is because it requires us to limit our product, and scope our features to only that which is essential.
@@ -6,7 +18,7 @@ Once content is made accessible to a screen reader, the main problem becomes syn
 
 Large language models are the future of accessibility not just because they can dynamically create new content, but precisely because they are so good at eliminating that which is unnecessary.
 
-This reason is why I write so much in Markdown. It is not necessarily the most efficient, but it is undoubtedly the most flexible. It is easy to export to HTML, PDFs, and is essentially the thinnest wrapper possible over plaintext while still maintaining a syntactic structure on the document as a whole. And as stated previously, what we need isn't just the ability to read everything aloud, but the ability to tightly scope what _not_ to read. The more abstractions we place over the file that is being edited, the harder it becomes to process programmatically. That is why I do not like PowerPoint or Word. They have inaccessibility by obscurity.
+This reason is why I write so much in Markdown. It is not necessarily the most efficient, but it is undoubtedly the most flexible. It is easy to export to HTML, PDFs, and is essentially the thinnest wrapper possible over plaintext while still maintaining a syntactic structure on the document as a whole. And as stated previously, what we need isn't just the ability to read everything aloud, but the aBig accessbility to tightly scope what _not_ to read. The more abstractions we place over the file that is being edited, the harder it becomes to process programmatically. That is why I do not like PowerPoint or Word. They have inaccessibility by obscurity.
 
 The Unix philosophy on the other hand is true universal design since in it, every program knows its place. Universality is not accomplished by each program individually, but rather by their composition.
 

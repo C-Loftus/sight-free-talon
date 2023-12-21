@@ -38,3 +38,6 @@ echo tab level:
 
 toggle [screen] reader:
     user.toggle_reader()
+
+toggle keypress sound:
+    user.toggle_keypress_sound()

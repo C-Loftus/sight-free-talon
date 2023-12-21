@@ -25,6 +25,12 @@ settings():
     # Output dictated text to braille display through your screen reader
     user.braille_output = false
 
+    # To prevent errors from accidental key presses, play a sound each time a key is pressed
+    user.sound_on_keypress = false
+
+    # Disable keypresses from Talon in high risk contexts that cannot afford typos
+    user.disable_keypresses = false
+
     ### Relevant Community Settings Below ###
     # Change key_wait if you want the screen reader to speak words
     # at the same pace as if you were typing them manually.

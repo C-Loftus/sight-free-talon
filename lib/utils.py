@@ -1,7 +1,7 @@
-import base64, enum
 from talon import Module, actions, ui, Context, ctrl, clip, registry
 import os, requests
 from .HTMLbuilder import HTMLBuilder
+import threading
 
 mod = Module()
 
@@ -85,4 +85,5 @@ class ActionsWin:
     
     def beep(freq: int = 440, duration: int = 1000):
         """Beep"""
-        winsound.Beep(freq, duration)
+        t = threading.Thread(target=winsound.Beep, args=(freq, duration))
+        t.start()

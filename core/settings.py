@@ -75,12 +75,10 @@ mod.setting(
     desc="The volume of the text to speech",
 )
 
-mod.setting(
-    "tone_on_keypress",
-    type=bool,
-    default=False,
-    desc="If True, plays a tone on keypress to reduce the impact of accidental keypresses",
-)
+
+mod.setting("disable_keypresses", type=bool, default=False)
+mod.setting("sound_on_keypress", type=bool, default=False)
+
 
 mod.mode("strict_dictation", desc="Dictation mode with only a subset of dictation commands")
 mod.mode('strict_command', desc='Command mode with only a subset of command commands')

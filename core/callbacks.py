@@ -13,7 +13,7 @@ def on_phrase(parsed_phrase):
             except Exception as e:
                 pass
 
-            actions.user.robot_tts(command_chain)
+            actions.user.tts(command_chain)
 
             if settings.get("user.braille_output"):
                 actions.user.braille(command_chain)
@@ -44,7 +44,7 @@ def on_title_switch(win):
         return
 
     last_title = active_window_title
-    actions.user.robot_tts(f"{active_window_title}")
+    actions.user.tts(f"{active_window_title}")
 
 
 last_mode = None
@@ -52,9 +52,9 @@ def on_update_contexts():
     global last_mode
     modes = scope.get("mode") or []
     if last_mode == "sleep" and "sleep" not in modes:
-        actions.user.robot_tts(f"Talon has woken up")
+        actions.user.tts(f"Talon has woken up")
     elif last_mode != "sleep" and "sleep" in modes:
-        actions.user.robot_tts(f"Talon has gone to sleep")
+        actions.user.tts(f"Talon has gone to sleep")
     last_mode = "sleep" if "sleep" in modes else "other"
 
 
@@ -68,7 +68,7 @@ def on_ready():
 
     if settings.get("user.start_screenreader_on_startup"):
         actions.user.toggle_reader()
-    actions.user.robot_tts("Talon user scripts loaded")
+    actions.user.tts("Talon user scripts loaded")
 
 
 app.register("ready", on_ready)

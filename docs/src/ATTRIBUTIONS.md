@@ -10,6 +10,8 @@
 - [https://github.com/aPinix/indent-jump-vscode](https://github.com/aPinix/indent-jump-vscode)
 - [https://www.techrxiv.org/articles/preprint/Image_Captioning_for_the_Visually_Impaired_and_Blind_A_Recipe_for_Low-Resource_Languages/22133894](https://www.techrxiv.org/articles/preprint/Image_Captioning_for_the_Visually_Impaired_and_Blind_A_Recipe_for_Low-Resource_Languages/22133894)
 - [https://www.theverge.com/23203911/screen-readers-history-blind-henter-curran-teh-nvda](https://www.theverge.com/23203911/screen-readers-history-blind-henter-curran-teh-nvda)
+- [https://www.freedomscientific.com/SurfsUp/Speech_Sounds_Schemes.htm]
+- (https://www.freedomscientific.com/SurfsUp/Speech_Sounds_Schemes.htm)
 
 ## Emacspeak
 
@@ -23,6 +25,8 @@
 - NVDA Controller client `.dll` file can be found at: [https://www.nvaccess.org/files/nvda/releases/stable/](https://www.nvaccess.org/files/nvda/releases/stable/)
 - Documentation for this controller client can be found at [https://github.com/nvaccess/nvda/blob/master/extras/controllerClient/readme.md](https://github.com/nvaccess/nvda/blob/master/extras/controllerClient/readme.md)
 - [https://github.com/nvaccess/nvda/wiki/](https://github.com/nvaccess/nvda/wiki/)
+- [ https://addons.nvda-project.org/addons/AudioThemes.en.html](https://addons.nvda-project.org/addons/AudioThemes.en.html)
+- [https://addons.nvda-project.org/addons/phoneticPunctuation.en.html] (https://addons.nvda-project.org/addons/phoneticPunctuation.en.html)
 
 ## Libraries
 

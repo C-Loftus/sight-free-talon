@@ -43,12 +43,12 @@ class Actions:
         friendly_name = actions.app.name() 
         title = ui.active_window().title 
         output = f"{friendly_name} {title}" if include_title else friendly_name
-        actions.user.robot_tts(output)
+        actions.user.tts(output)
 
     # def echo_tags():
     #     """Echo the current tags"""
     #     active_contexts = registry.tags
-    #     actions.user.robot_tts(" ".join(active_contexts))
+    #     actions.user.tts(" ".join(active_contexts))
 
     def explore_tags():
         """Open the tags in the browser"""

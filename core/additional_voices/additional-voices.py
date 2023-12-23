@@ -11,7 +11,7 @@ class Actions:
         try:
             TOKEN = os.environ["OPENAI_API_KEY"]
         except:
-            actions.user.robot_tts("GPT Failure: No API Key")   
+            actions.user.tts("GPT Failure: No API Key")   
             return
         
         headers = {

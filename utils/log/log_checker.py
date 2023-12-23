@@ -68,25 +68,25 @@ class Actions:
     def echo_last_error():
         """Echo the last error"""
         get_log_updates()
-        actions.user.robot_tts(log_cache.get("last_error_line"))
+        actions.user.tts(log_cache.get("last_error_line"))
 
     def echo_last_warning():
         """Echo the last warning"""
         get_log_updates()
-        actions.user.robot_tts(log_cache.get("last_warning_line"))
+        actions.user.tts(log_cache.get("last_warning_line"))
 
     def echo_last_debug():
         """Echo the last debug"""
         get_log_updates()
-        actions.user.robot_tts(log_cache.get("last_debug_line"))
+        actions.user.tts(log_cache.get("last_debug_line"))
 
     def echo_last_print():
         """Echo the last IO"""
         get_log_updates()
-        actions.user.robot_tts(log_cache.get("last_io_line"))
+        actions.user.tts(log_cache.get("last_io_line"))
 
 
 # updated_vals = get_log_updates()
 # output = updates_as_dict(updated_vals)
 #     # if updated:
-# actions.user.robot_tts(json.dumps(output))
+# actions.user.tts(json.dumps(output))

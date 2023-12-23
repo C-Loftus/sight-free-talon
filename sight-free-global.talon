@@ -7,16 +7,16 @@ toggle echo:
 echo this:
     key(ctrl-c)
     sleep(0.1)
-    user.robot_tts(clip.text())
+    user.tts(clip.text())
 
 echo clipboard:
-    user.robot_tts(clip.text())
+    user.tts(clip.text())
 
 echo line:
     edit.select_line()
     key(ctrl-c)
     sleep(0.1)
-    user.robot_tts(clip.text())
+    user.tts(clip.text())
 
 echo context:
     user.echo_context(true)
@@ -34,10 +34,10 @@ echo tab level:
     key(ctrl-c)
     sleep(0.1)
     level = user.indentation_level(clip.text())
-    user.robot_tts('{level}')
+    user.tts('{level}')
 
 toggle [screen] reader:
     user.toggle_reader()
 
-toggle keypress sound:
+toggle key sound:
     user.toggle_keypress_sound()

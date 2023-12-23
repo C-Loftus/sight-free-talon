@@ -75,6 +75,13 @@ mod.setting(
     desc="The volume of the text to speech",
 )
 
+mod.setting(
+    "enable_break_timer",
+    type=bool,
+    default=False,
+    desc="If True, enables the eyestrain break timer to display a notification every 20 minutes",
+)
+
 
 mod.setting("disable_keypresses", type=bool, default=False)
 mod.setting("sound_on_keypress", type=bool, default=False)

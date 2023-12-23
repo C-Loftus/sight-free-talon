@@ -42,7 +42,7 @@ class LinuxActions:
     def toggle_reader():
         '''Toggles orca on and off'''
         if not os.path.exists("/usr/bin/orca"):
-            actions.user.robot_tts("Orca is not installed")
+            actions.user.tts("Orca is not installed")
             return
 
         actions.key("alt-super-s")

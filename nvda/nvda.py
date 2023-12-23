@@ -35,10 +35,10 @@ class Actions:
         '''Toggles NVDA on and off'''
         if not actions.user.is_nvda_running():
             actions.key("ctrl-alt-n") 
-            actions.user.robot_tts("Turning NVDA on")
+            actions.user.tts("Turning NVDA on")
         elif actions.user.is_nvda_running():
             actions.user.with_nvda_mod_press('q')
-            actions.user.robot_tts("Turning NVDA off")
+            actions.user.tts("Turning NVDA off")
             time.sleep(1)
             actions.key("enter")
 
@@ -91,7 +91,7 @@ class UserActions:
         else:
             nvda_client.nvdaController_speakText(text)
     
-    def robot_tts(text: str):
+    def tts(text: str):
         """Text to speech"""
         if settings.get("user.tts_via_screenreader"):
             actions.user.nvda_tts(text)

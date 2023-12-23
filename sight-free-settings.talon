@@ -2,7 +2,7 @@ settings():
     # Echo the subtitles from talon back via tts
     user.echo_dictation = true
 
-    # How fast to play back text-to-speech
+    # How fast to play back text-to-speech -10 to 10
     # Ignored if using screenreader tts
     user.tts_speed = 6
 
@@ -30,6 +30,9 @@ settings():
 
     # Disable keypresses from Talon in high risk contexts that cannot afford typos
     user.disable_keypresses = false
+
+    # Every 20 minutes, send a notification, prompting you to rest your eyes
+    # user.enable_break_timer = true
 
     ### Relevant Community Settings Below ###
     # Change key_wait if you want the screen reader to speak words

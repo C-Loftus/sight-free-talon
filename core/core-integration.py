@@ -63,20 +63,20 @@ class Actions:
         """Toggles echo dictation on and off"""
 
         if actions.user.echo_dictation_enabled():
-            actions.user.robot_tts("echo disabled")
+            actions.user.tts("echo disabled")
             ctx.settings["user.echo_dictation"] = False
         else:
-            actions.user.robot_tts("echo enabled")
+            actions.user.tts("echo enabled")
             ctx.settings["user.echo_dictation"] = True
 
     def toggle_echo_context():
         """Toggles echo context on and off"""
 
         if actions.user.echo_context_enabled():
-            actions.user.robot_tts("echo context disabled")
+            actions.user.tts("echo context disabled")
             ctx.settings["user.echo_context"] = False
         else:
-            actions.user.robot_tts("echo context enabled")
+            actions.user.tts("echo context enabled")
             ctx.settings["user.echo_context"] = True
 
     def toggle_echo_all():
@@ -85,16 +85,16 @@ class Actions:
         dictation, context = actions.user.echo_dictation_enabled(), actions.user.echo_context_enabled()
 
         if any([dictation, context]):
-            actions.user.robot_tts("echo disabled")
+            actions.user.tts("echo disabled")
             ctx.settings["user.echo_dictation"] = False
             ctx.settings["user.echo_context"] = False
         else:
-            actions.user.robot_tts("echo enabled")
+            actions.user.tts("echo enabled")
             ctx.settings["user.echo_dictation"] = True
             ctx.settings["user.echo_context"] = True
 
 
-    def robot_tts(text: str):
+    def tts(text: str):
         '''text to speech with robot voice'''
 
     def espeak(text: str):
@@ -124,7 +124,7 @@ class UserActions:
         speaker.set_volume(settings.get("user.tts_volume", 50))
         speaker.speak(text, interrupt=True)
 
-    def robot_tts(text: str):
+    def tts(text: str):
         """text to speech with windows voice"""
         actions.user.base_win_tts(text)
 
@@ -157,7 +157,7 @@ class UserActions:
         actions.user.set_cancel_callback(proc.kill)
 
 
-    def robot_tts(text: str):
+    def tts(text: str):
         """Text to speech with a robotic/narrator voice"""
         # change the directory to the directory of this file
         # so we can run the command from the correct directory
@@ -195,7 +195,7 @@ os: mac
 
 @ctxMac.action_class('user')
 class UserActions:
-    def robot_tts(text: str):
+    def tts(text: str):
         """Text to speech with a robotic/narrator voice"""
         # We can't really schedule this since it is a system command, so we
         # have to spawn a new process each time unfortunately

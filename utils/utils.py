@@ -1,6 +1,7 @@
 from talon import Module, actions, ui, Context, ctrl, clip, registry
 import os, requests
-from .HTMLbuilder import HTMLBuilder
+
+from ..lib.HTMLbuilder import HTMLBuilder
 import threading
 
 mod = Module()
@@ -55,6 +56,7 @@ class Actions:
         active_contexts = registry.tags
         builder = HTMLBuilder()
         builder.title("Talon Tags")
+        builder.h1("Currently Active Tags")
         for context in active_contexts:
             builder.p(context)
         builder.render()
@@ -64,6 +66,7 @@ class Actions:
         active_settings = registry.settings
         builder = HTMLBuilder()
         builder.title("Talon Settings")
+        builder.h1("Talon Settings and their Values")
         for setting in active_settings:
             builder.p(f"{setting}, {active_settings[setting]}")
         builder.render()

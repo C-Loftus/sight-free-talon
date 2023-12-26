@@ -18,7 +18,9 @@ This repository integrates with:
 
 # Usage
 
-View the `.talon` files in each subdirectory for commands corresponding to each application or context. View the settings file at the root of the repository for all relevant settings.
+* Watch [my demo video](https://www.youtube.com/watch?v=i-XcpnVwvR0) for a quick overview 
+* The `.talon` files in each subdirectory contain scoped commands corresponding to each application or specific context
+* The settings file at the root of the repository contains all user-configurable settings for this repo
 
 # Installing
 

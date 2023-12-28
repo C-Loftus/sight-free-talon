@@ -5,5 +5,5 @@ authors = ["Colton Loftus"]
 language = "en"
 
 # [output.html]
-# git-repository-url = "https://github.com/rust-lang/mdBook/tree/master/guide"
-# edit-url-template = "https://github.com/rust-lang/mdBook/edit/master/guide/{path}"
+git-repository-url = "https://github.com/C-Loftus/sight-free-talon/tree/main/docs"
+edit-url-template = "https://github.com/C-Loftus/sight-free-talon/tree/main/docs/{path}"

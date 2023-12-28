@@ -4,6 +4,6 @@ description = "Integrate Talon with TTS, screen readers, braille, and more!"
 authors = ["Colton Loftus"]
 language = "en"
 
-# [output.html]
+[output.html]
 git-repository-url = "https://github.com/C-Loftus/sight-free-talon/tree/main/docs"
 edit-url-template = "https://github.com/C-Loftus/sight-free-talon/tree/main/docs/{path}"

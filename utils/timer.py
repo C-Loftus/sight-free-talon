@@ -1,13 +1,17 @@
 from talon import cron, Module, actions, app, settings
+import os
+if os.name == "nt":
+    import ctypes
+
 
 """
-Every 20 minutes, remind the user to take a break
+Every certain amount of minutes, remind the user to take a break
 to rest their eyes by looking at something 20 feet away
-for 20 seconds.
+for at least 20 seconds.
 """
 
-# Used for 20 / 20 / 20 rule
-twenty_min = cron.seconds_to_timespec(20 * 60)
+#Convert minutes to seconds
+ten_min = cron.seconds_to_timespec(settings.get("user.min_until_break") * 60)
 
 # Defaults to Andreas' notification system, but falls back to Talon's
 def notify(message: str):
@@ -18,6 +22,7 @@ def notify(message: str):
     print(message)
 
 mod = Module()
+
 
 def break_wrapper():
     if settings.get("user.enable_break_timer"):
@@ -31,6 +36,12 @@ class Actions:
         the timer is triggered
         """
         # Intentionally vague in case you are in a meeting
-        notify("20 Elapsed")
+        if os.name == "nt":
+            # ctypes.windll.user32.MessageBoxW(0, "Elapsed", "Notification", 1)
+            actions.user.tts("Elapsed")
+            actions.user.with_nvda_mod_press('ctrl-escape')
+        else:
+            notify("Elapsed")
 
-cron.interval(twenty_min, break_wrapper)
+cron.interval(ten_min, break_wrapper)
+

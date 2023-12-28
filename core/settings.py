@@ -86,6 +86,8 @@ mod.setting(
 mod.setting("disable_keypresses", type=bool, default=False)
 mod.setting("sound_on_keypress", type=bool, default=False)
 
+mod.setting("min_until_break", type=int, default=10)
+# mod.setting("break_length", type=int, default=10)
 
-mod.mode("strict_dictation", desc="Dictation mode with only a subset of dictation commands")
-mod.mode('strict_command', desc='Command mode with only a subset of command commands')
+# mod.mode("strict_dictation", desc="Dictation mode with only a subset of dictation commands")
+# mod.mode('strict_command', desc='Command mode with only a subset of command commands')

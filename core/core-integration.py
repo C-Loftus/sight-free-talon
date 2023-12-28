@@ -1,7 +1,7 @@
 from typing import Optional
 from talon import Module, actions, Context, settings, cron, ui, registry, scope, clip, app  
 import os,  subprocess
-from ..lib.utils import remove_special
+from ..utils.utils import remove_special
 from .sapi import SAPI5
 
 if os.name == 'nt':

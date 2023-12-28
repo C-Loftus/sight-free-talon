@@ -1,14 +1,12 @@
-# Designing around Chronic Pain
+# Accessibility Design alongside Chronic Pain
 
-Within digital accessibility designers often assume conditions that are static binaries. for instance either a user is either blind or sighted. If a user has a vision impairment, it is implicitly expected to be a tournament condition, not one that might fluctuate based on pain levels
+Within digital accessibility, designers often assume conditions that are static binaries. for instance either a user is either blind or sighted. If a user has a vision impairment, designers often implicitly expect it to be a permanent condition, not one that might fluctuate based on pain levels.
 
 When designing around chronic pain, all of these assumptions are knocked down. for instance in the case of carpal tunnel, the user can easily decide to simply type and work through the pain. in such a case accessibility is no longer about a binary of whether or not a product or service can be physically accessed. rather it becomes about whether or not the level of friction in the solution incentivizes its use instead of simply working with the standard option.
 
-the unconscious mind is not rational in the long term and it will easily pick a moderately uncomfortable solution in the short term if it can be done quickly with little friction. however as anyone with chronic pain knows, enough of these moderately uncomfortable actions can quickly accumulate two a flare up of significant pain.
+The unconscious mind is often not rational in the long term and it will easily pick a moderately uncomfortable solution if it can be done quickly with little friction. however as anyone with chronic pain knows, enough of these moderately uncomfortable actions can quickly accumulate two a flare up of significant pain.
 
-as such when we are designing around chronic pain we can't simply look at baseline accessibility. we need to have designs that are such low friction and in some way do something totally unique that the old way of computer interaction couldn't do.
-
-that is why cursorless is so successful as a product to reduce chronic hand pain.
+As such when we are designing around chronic pain we can't simply look at baseline accessibility. we need to have designs that are such low friction and in some way do something totally unique that the old way of computer interaction couldn't do.
 
 # For Better Accessibility, Do Less
 

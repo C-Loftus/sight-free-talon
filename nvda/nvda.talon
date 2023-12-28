@@ -2,6 +2,8 @@ tag: user.nvda_running
 os: windows
 -
 
+reader press <user.keys>: user.with_nvda_mod_press(keys)
+
 next heading:
     key(h)
 previous heading:

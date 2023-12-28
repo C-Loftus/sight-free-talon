@@ -23,7 +23,7 @@ class MainOverrides():
             return
         
         elif settings.get("user.sound_on_keypress", False) or sound_on_keypress:
-            actions.user.beep(freq = 440, duration = 100)
+            actions.user.beep(freq = 180, duration = 100)
  
         actions.next(key)
 
@@ -36,12 +36,12 @@ class ActionsToCall():
         """Toggles whether or not to play a sound on keypress"""
         global sound_on_keypress
         sound_on_keypress = not sound_on_keypress
-        message = f"Keypress sound is now {'on' if sound_on_keypress else 'off'}"
+        message = f"Keypress sound {'on' if sound_on_keypress else 'off'}"
         actions.user.tts(message)
 
     def toggle_keypresses():
         """Toggles whether or not to pass keypresses through to the OS"""
         global sound_on_keypress
         sound_on_keypress = not sound_on_keypress
-        message = f"Keypresses are now {'enabled' if sound_on_keypress else 'disabled'}"
+        message = f"Keypresses {'enabled' if sound_on_keypress else 'disabled'}"
         actions.user.tts(message)

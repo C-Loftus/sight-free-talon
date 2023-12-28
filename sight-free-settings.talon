@@ -31,8 +31,9 @@ settings():
     # Disable keypresses from Talon in high risk contexts that cannot afford typos
     user.disable_keypresses = false
 
-    # Every 20 minutes, send a notification, prompting you to rest your eyes
+    # Every given number of minutes, send a notification, prompting you to rest your eyes
     # user.enable_break_timer = true
+    # user.user.min_until_break = 10
 
     ### Relevant Community Settings Below ###
     # Change key_wait if you want the screen reader to speak words

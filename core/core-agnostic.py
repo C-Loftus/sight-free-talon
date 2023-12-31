@@ -1,11 +1,10 @@
-from typing import Optional
-from talon import Module, actions, Context, settings, cron, ui, registry, scope, clip, app  
-import os,  subprocess
-from ..utils.utils import remove_special
-from .sapi import SAPI5
+"""
+This file contains actions that are core to the talon tts system
+and are agnostic to the tts engine being used or the operating system
+"""
 
-if os.name == 'nt':
-    speaker = SAPI5()
+from typing import Optional
+from talon import Module, actions, Context, settings, app  
 
 
 mod = Module()
@@ -108,98 +107,10 @@ class Actions:
         so we can share the speaker object across files since 
         it won't get overridden by the other tts functions"""
 
-
-ctxWindows = Context()
-ctxWindows.matches = r"""
-os: windows
-"""
-
-@ctxWindows.action_class('user')
-class UserActions:
-    def base_win_tts(text: str):
-        """Base function for windows tts. We expose this 
-        so we can share the speaker object across files. We don't want 
-        it to get overridden by the other tts functions"""
-        speaker.set_rate(settings.get("user.tts_speed", 0))
-        speaker.set_volume(settings.get("user.tts_volume", 50))
-        speaker.speak(text, interrupt=True)
-
-    def tts(text: str):
-        """text to speech with windows voice"""
-        actions.user.base_win_tts(text)
-
-    def toggle_reader():
-        """Toggles the screen reader on and off"""
-        actions.user.toggle_nvda()
-        
-
-ctxLinux = Context()
-ctxLinux.matches = r"""
-os: linux
-"""
-
-
-@ctxLinux.action_class('user')
-class UserActions:
-
-    def toggle_reader():
-        """Toggles the screen reader on and off"""
-        actions.user.toggle_orca()
-
-    def espeak(text: str):
-        """Text to speech with a robotic/narrator voice"""
-        rate = settings.get("user.tts_speed", 0)
-        # convert -5 to 5 to -100 to 100 
-        rate = rate * 20
-        text = remove_special(text)
-
-        proc = subprocess.Popen(["spd-say", text, "--rate", str(rate)])
-        actions.user.set_cancel_callback(proc.kill)
-
-
-    def tts(text: str):
-        """Text to speech with a robotic/narrator voice"""
-        # change the directory to the directory of this file
-        # so we can run the command from the correct directory
-        model_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "additional_voices", "models")
-        # You have to install piper with pipx
-        piper = os.path.expanduser("~/.local/bin/piper")
-
-        os.chdir(model_dir)
-
-        modes = ['en_US-amy-low.onnx', 'en_US-lessac-medium.onnx']
-        # high = 22050
-        # Hz for playback in low quality
-        low = 16000
-
-        #  we need this more verbose representation here so we don't use the 
-        # shell and have risks of shell expansion
-        command1 = ["echo", f"{text}"]
-
-        command2 = [piper, "--model", modes[0], "--length_scale", "0.5", "--output_raw"]
-
-        command3 = ["aplay", "-r", str(low), "-c", "1", "-f", "S16_LE", "-t", "raw"]
-
-        echo = subprocess.Popen(command1, stdout=subprocess.PIPE)
-        piper = subprocess.Popen(command2, stdin=echo.stdout, stdout=subprocess.PIPE)
-        echo.stdout.close()
-        aplay = subprocess.Popen(command3, stdin=piper.stdout)
-        piper.stdout.close()
-        actions.user.set_cancel_callback(aplay.kill)
-
-
-ctxMac = Context()
-ctxMac.matches = r"""
-os: mac
-"""
-
-@ctxMac.action_class('user')
-class UserActions:
-    def tts(text: str):
-        """Text to speech with a robotic/narrator voice"""
-        # We can't really schedule this since it is a system command, so we
-        # have to spawn a new process each time unfortunately
-        proc = subprocess.Popen(["say", text])
-        actions.user.set_cancel_callback(proc.kill)
+    def switch_voice():
+        """Switches the tts voice"""
+        actions.user.tts("Switching Not Supported In This Context")
 
     
+    def piper(text: str):
+        """Text to speech with a piper model"""

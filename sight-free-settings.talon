@@ -4,7 +4,7 @@ settings():
 
     # How fast to play back text-to-speech -10 to 10
     # Ignored if using screenreader tts
-    user.tts_speed = 6
+    user.tts_speed = 8
 
     # How loud to play back text-to-speech from 0 to 100
     # Ignored if using screenreader tts

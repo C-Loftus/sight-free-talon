@@ -1,8 +1,7 @@
-from talon import cron, Module, actions, app, settings
+from talon import cron, Module, actions, app, settings, app
 import os
 if os.name == "nt":
     import ctypes
-
 
 """
 Every certain amount of minutes, remind the user to take a break
@@ -10,8 +9,6 @@ to rest their eyes by looking at something 20 feet away
 for at least 20 seconds.
 """
 
-#Convert minutes to seconds
-ten_min = cron.seconds_to_timespec(settings.get("user.min_until_break") * 60)
 
 # Defaults to Andreas' notification system, but falls back to Talon's
 def notify(message: str):
@@ -43,5 +40,11 @@ class Actions:
         else:
             notify("Elapsed")
 
-cron.interval(ten_min, break_wrapper)
+
+def set_timer():
+    ten_min = cron.seconds_to_timespec(settings.get("user.min_until_break") * 60)
+    cron.interval(ten_min, break_wrapper)
+
+app.register("ready", set_timer)
+
 

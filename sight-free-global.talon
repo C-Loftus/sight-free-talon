@@ -41,3 +41,6 @@ toggle [screen] reader:
 
 toggle (key | keypress) sound:
     user.toggle_keypress_sound()
+
+swtich voice:
+    user.switch_voice()

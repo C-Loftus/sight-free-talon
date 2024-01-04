@@ -24,8 +24,9 @@ This repository integrates with:
 
 # Installing
 
-Clone the repo into your Talon user directory.
-
+* Clone the repo into your Talon user directory.
+* Clone the [Talon community script repository](https://github.com/talonhub/community). That is the sole OS-agnostic dependency of this project.
+  
 ## OS Specific Setup
 
 - Linux

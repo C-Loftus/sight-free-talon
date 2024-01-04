@@ -1,11 +1,10 @@
 """
 This file contains actions that are core to the talon tts system
-and are agnostic to the tts engine being used or the operating system
+and are agnostic to the tts voice being used or the operating system
 """
 
 from typing import Optional
-from talon import Module, actions, Context, settings, app  
-
+from talon import Module, actions, Context, settings, app
 
 mod = Module()
 ctx = Context()
@@ -98,9 +97,11 @@ class Actions:
 
     def espeak(text: str):
         '''text to speech with espeak'''
+        actions.user.tts("Espeak Not Supported In This Context")
 
     def toggle_reader():
         """Toggles the screen reader on and off"""
+        actions.user.tts("Toggle Reader Not Supported In This Context")
 
     def base_win_tts(text: str):
         """Base function for windows tts. We expose this 

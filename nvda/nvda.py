@@ -1,4 +1,4 @@
-from talon import actions, Module, settings, cron, Context, clip, registry, app 
+from talon import actions, Module, settings, cron, Context, clip, registry, app , speech_system
 import os, ctypes, time  
 
 mod = Module()
@@ -106,4 +106,15 @@ class UserActions:
     def braille(text: str):
         """Output braille with NVDA"""
         nvda_client.nvdaController_brailleMessage(text)
+
+
+
+# Not sure how to usually have speak words on
+# since if we have it on all the time then it will mess 
+# def toggle_speak_typed_words(_):
+#     """Toggles the speak typed words setting"""
+#     actions.user.with_nvda_mod_press("3")
+
+# speech_system.register("pre:phrase", toggle_speak_typed_words)
+# speech_system.register("post:phrase", toggle_speak_typed_words)
 

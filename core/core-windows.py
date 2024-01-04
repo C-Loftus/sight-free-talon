@@ -1,4 +1,4 @@
-from talon import Context, settings
+from talon import Context, settings, actions
 import os
 
 from .sapi import SAPI5

@@ -31,6 +31,9 @@ class Actions:
     def orca_tts(text: str, use_clipboard: bool= False):
         '''text to speech with orca'''
 
+    def with_orca_mod_press(key: str):
+        ''' Presses the given key with the orca modifier key'''
+
 
 ctxLinux = Context()
 ctx.matches = r"""
@@ -46,6 +49,15 @@ class LinuxActions:
             return
 
         actions.key("alt-super-s")
+    
+    def with_orca_mod_press(key: str):
+        ''' Presses the given key with the orca modifier key'''
+        orca_key = settings.get("user.orca_key")
+        actions.key(f'{orca_key}:down') 
+        actions.sleep("50ms")
+        actions.key(key)
+        actions.sleep("10ms")
+        actions.key(f'{orca_key}:up') 
 
 ctxorcaRunning = Context()
 ctxorcaRunning.matches = r"""

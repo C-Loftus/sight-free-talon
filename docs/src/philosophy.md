@@ -1,3 +1,5 @@
+<!-- Less is more: Prioritize Plain Text -->
+
 # Accessibility Design alongside Chronic Pain
 
 Within digital accessibility, designers often assume conditions that are static binaries. for instance either a user is either blind or sighted. If a user has a vision impairment, designers often implicitly expect it to be a permanent condition, not one that might fluctuate based on pain levels.
@@ -6,7 +8,7 @@ When designing around chronic pain, all of these assumptions are knocked down. f
 
 The unconscious mind is often not rational in the long term and it will easily pick a moderately uncomfortable solution if it can be done quickly with little friction. however as anyone with chronic pain knows, enough of these moderately uncomfortable actions can quickly accumulate two a flare up of significant pain.
 
-As such when we are designing around chronic pain we can't simply look at baseline accessibility. we need to have designs that are such low friction and in some way do something totally unique that the old way of computer interaction couldn't do.
+As such when we are designing around chronic pain we can't simply look at baseline accessibility. We need to have designs that are such low friction and in some way do something totally unique that the old way of computer interaction couldn't do.
 
 # For Better Accessibility, Do Less
 

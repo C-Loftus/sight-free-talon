@@ -1,8 +1,30 @@
-from talon import Module, actions, ui, Context, ctrl, clip, registry
+from talon import Module, actions, ui, Context, ctrl, clip, registry, scope
 import os, requests
+from html.parser import HTMLParser
+import urllib
 
 from ..lib.HTMLbuilder import HTMLBuilder
 import threading
+
+class VisibleTextParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.text = []
+        self.ignore = False
+        self.ignore_tags = ['style', 'script', 'head', 'title', 'meta', '[document]']
+
+    def handle_starttag(self, tag, attrs):
+        if tag in self.ignore_tags:
+            self.ignore = True
+
+    def handle_endtag(self, tag):
+        if tag in self.ignore_tags:
+            self.ignore = False
+
+    def handle_data(self, data):
+        if not self.ignore:
+            self.text.append(data.strip())
+
 
 mod = Module()
 
@@ -76,6 +98,37 @@ class Actions:
 
     def extract_text():
         """Extract the text from the current window"""
+
+    def echo_mode():
+        """Echo the current modes"""
+        modes = scope.get("mode")
+        # if dictation or command is in the modes, say that first
+        if "dictation" in modes and "command" in modes:
+            actions.user.tts("mixed")
+        elif "dictation" in modes:
+            actions.user.tts("dictation")
+        elif "command" in modes:
+            actions.user.tts("command")
+
+    def get_website_text(url: str) -> str:
+        """Get the visible text from a website"""
+        try:
+            # Download HTML content
+            with urllib.request.urlopen(url) as response:
+                html_content = response.read()
+
+            # Parse HTML and extract visible text
+            parser = VisibleTextParser()
+            parser.feed(html_content.decode('utf-8', errors='ignore'))
+
+            # Combine and return the visible text
+            return ' '.join(parser.text)
+
+        except Exception as e:
+            print("Error Parsing:", e)
+            return f"Error Parsing"
+
+
 
     
 ctxWindows = Context()

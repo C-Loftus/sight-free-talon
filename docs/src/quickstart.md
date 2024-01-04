@@ -4,7 +4,9 @@
 
 # Installing
 
-This repository is in frequent development. I suggest using git to clone the repository into your user directory by running the following,
+First, clone the [Talon community script repository](https://github.com/talonhub/community). That is the sole OS-agnostic dependency of this project.
+
+Next, clone this repository into your user directory by running the following,
 
 ```
 git clone https://github.com/C-Loftus/sight-free-talon

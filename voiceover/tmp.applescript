@@ -28,3 +28,9 @@ do shell script "say " & quoted form of textToSpeak
 tell application "VoiceOver" 
     tell commander to perform command item chooser
 end tell
+
+
+---
+tell application "VoiceOver"
+    output "VoiceOver is now on"
+end tell

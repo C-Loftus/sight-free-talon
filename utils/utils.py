@@ -93,9 +93,6 @@ class Actions:
             builder.p(f"{setting}, {active_settings[setting]}")
         builder.render()
 
-    def explore_modes():
-        """Open the talon modes file"""
-
     def extract_text():
         """Extract the text from the current window"""
 

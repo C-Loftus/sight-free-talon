@@ -41,7 +41,16 @@ class Actions:
             actions.user.tts("Turning NVDA off")
             time.sleep(1)
             actions.key("enter")
-
+    
+    def restart_nvda(): 
+        """Restarts NVDA"""
+        if actions.user.is_nvda_running():
+            actions.user.with_nvda_mod_press('q')
+            time.sleep(0.5)
+            actions.key("down")
+            time.sleep(0.5)
+            actions.key("enter")
+            actions.user.tts("Restarting NVDA")
 
 
     def with_nvda_mod_press(key: str):
@@ -117,4 +126,3 @@ class UserActions:
 
 # speech_system.register("pre:phrase", toggle_speak_typed_words)
 # speech_system.register("post:phrase", toggle_speak_typed_words)
-

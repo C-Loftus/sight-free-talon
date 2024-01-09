@@ -10,8 +10,7 @@
 - [https://github.com/aPinix/indent-jump-vscode](https://github.com/aPinix/indent-jump-vscode)
 - [https://www.techrxiv.org/articles/preprint/Image_Captioning_for_the_Visually_Impaired_and_Blind_A_Recipe_for_Low-Resource_Languages/22133894](https://www.techrxiv.org/articles/preprint/Image_Captioning_for_the_Visually_Impaired_and_Blind_A_Recipe_for_Low-Resource_Languages/22133894)
 - [https://www.theverge.com/23203911/screen-readers-history-blind-henter-curran-teh-nvda](https://www.theverge.com/23203911/screen-readers-history-blind-henter-curran-teh-nvda)
-- [https://www.freedomscientific.com/SurfsUp/Speech_Sounds_Schemes.htm]
-- (https://www.freedomscientific.com/SurfsUp/Speech_Sounds_Schemes.htm)
+- [https://www.freedomscientific.com/SurfsUp/Speech_Sounds_Schemes.htm](https://www.freedomscientific.com/SurfsUp/Speech_Sounds_Schemes.htm)
 
 ## Emacspeak
 
@@ -19,6 +18,8 @@
 - [https://emacspeak.blogspot.com/](https://emacspeak.blogspot.com/)
 - [https://www.emacswiki.org/emacs/BrailleMode](https://www.emacswiki.org/emacs/BrailleMode)
 - [https://www.emacswiki.org/emacs/EmacSpeak](https://www.emacswiki.org/emacs/EmacSpeak)
+- [https://emacspeak.sourceforge.net/tips.html](https://emacspeak.sourceforge.net/tips.html)
+- [https://tvraman.github.io/emacspeak/manual/TTS-Servers.html](https://tvraman.github.io/emacspeak/manual/TTS-Servers.html)
 
 ## NVDA
 
@@ -26,9 +27,14 @@
 - Documentation for this controller client can be found at [https://github.com/nvaccess/nvda/blob/master/extras/controllerClient/readme.md](https://github.com/nvaccess/nvda/blob/master/extras/controllerClient/readme.md)
 - [https://github.com/nvaccess/nvda/wiki/](https://github.com/nvaccess/nvda/wiki/)
 - [ https://addons.nvda-project.org/addons/AudioThemes.en.html](https://addons.nvda-project.org/addons/AudioThemes.en.html)
-- [https://addons.nvda-project.org/addons/phoneticPunctuation.en.html] (https://addons.nvda-project.org/addons/phoneticPunctuation.en.html)
+- [https://addons.nvda-project.org/addons/phoneticPunctuation.en.html](https://addons.nvda-project.org/addons/phoneticPunctuation.en.html)
 - Helpful settings
   - Document Formatting: "Line Indentation Reporting" set to "Tones"
+  - Scratchpad located within the NVDA advanced settings, there you can import python scripts during development
+
+## JAWS
+
+- [https://www.freelists.org/post/jawsscripts/FW-FSAPIdll](https://www.freelists.org/post/jawsscripts/FW-FSAPIdll)
 
 ## Libraries
 
@@ -41,3 +47,4 @@
 
 - [https://github.com/actions/runner-images/issues/4770](https://github.com/actions/runner-images/issues/4770)
 - [https://github.com/AccessLint/screenreaders/tree/main/packages/voiceover](https://github.com/AccessLint/screenreaders/tree/main/packages/voiceover)
+- [https://support.apple.com/en-gb/guide/voiceover/cpvougen/mac](https://support.apple.com/en-gb/guide/voiceover/cpvougen/mac)

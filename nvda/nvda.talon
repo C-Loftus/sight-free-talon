@@ -143,3 +143,5 @@ braille display dialog:
 pass through next:
     user.with_nvda_mod_press('f2')
 
+restart reader:
+    user.restart_nvda()

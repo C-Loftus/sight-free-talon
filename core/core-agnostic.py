@@ -12,8 +12,8 @@ ctx = Context()
 # We want to get the settings from the talon file but then update 
     # them locally here so we can change them globally via expose talon actions
 def initialize_settings():
-    ctx.settings["user.echo_dictation"]: bool = settings.get("user.echo_dictation")
-    ctx.settings["user.echo_context"]: bool = settings.get("user.echo_context")
+    ctx.settings["user.echo_dictation"]: bool = settings.get("user.echo_dictation", True)
+    ctx.settings["user.echo_context"]: bool = settings.get("user.echo_context", False)
 
 # initialize the settings only after the user settings have been loaded
 app.register('ready', initialize_settings)
@@ -94,6 +94,7 @@ class Actions:
 
     def tts(text: str):
         '''text to speech with robot voice'''
+        print("Sight-Free-Talon Error: TTS not implemented in this context")
 
     def espeak(text: str):
         '''text to speech with espeak'''

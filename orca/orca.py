@@ -69,3 +69,4 @@ tag: user.orca_running
 class orcaActions:
     def orca_tts(text: str, use_clipboard: bool= False):
         """text to speech with orca"""
+        # blocked until orca supports tts via a socket

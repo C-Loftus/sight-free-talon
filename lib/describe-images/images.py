@@ -72,7 +72,6 @@ class ActionsWin:
 
         active_win = ui.active_window().rect
         actions.mouse_move(active_win.x, active_win.y)
-        actions.user.notify(str(active_win.x) + " " + str(active_win.y) + " " + str(active_win.width) + " " + str(active_win.height))
         actions.key('super-shift-t')
         actions.sleep("2s")
         actions.mouse_drag(0)

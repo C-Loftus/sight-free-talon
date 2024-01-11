@@ -51,12 +51,46 @@ last_mode = None
 def on_update_contexts():
     global last_mode
     modes = scope.get("mode") or []
-    if last_mode == "sleep" and "sleep" not in modes:
-        actions.user.tts(f"Talon has woken up")
-    elif last_mode != "sleep" and "sleep" in modes:
-        actions.user.tts(f"Talon has gone to sleep")
-    last_mode = "sleep" if "sleep" in modes else "other"
 
+    MIXED =  ("command" in modes and "dictation" in modes)
+    COMMAND = ("command" in modes and "dictation" not in modes)
+    DICTATION = ("dictation" in modes and "command" not in modes)
+    SLEEP = ("sleep" in modes)
+    ANNOUNCE = settings.get("user.announce_mode_updates")
+
+    if last_mode == "sleep" and not SLEEP:
+        # ALways announce wake up
+        actions.user.tts(f"Talon now listening")    
+
+    elif last_mode != "sleep" and SLEEP:
+        # Always announce sleep
+        actions.user.tts(f"Talon asleep")
+
+    elif last_mode != "sleep" and MIXED and last_mode != "mixed":
+        if ANNOUNCE:
+            actions.user.tts(f"Talon mixed mode")
+
+    elif last_mode != "sleep" and COMMAND \
+        and not DICTATION and not SLEEP and last_mode != "command":
+        if ANNOUNCE:
+            actions.user.tts(f"Talon command mode")
+
+    elif last_mode != "sleep" and \
+        DICTATION and not COMMAND \
+        and not SLEEP and \
+        last_mode != "dictation" \
+        and last_mode != "mixed":
+        if ANNOUNCE:
+            actions.user.tts(f"Talon dictation mode") 
+
+    if SLEEP:
+        last_mode = "sleep"
+    elif MIXED:
+        last_mode = "mixed"
+    elif COMMAND:
+        last_mode = "command"
+    elif DICTATION:
+        last_mode = "dictation"
 
 def on_ready():
     # Only register these callbacks once all user settings and Talon

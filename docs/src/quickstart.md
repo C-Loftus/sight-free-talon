@@ -14,7 +14,7 @@ git clone https://github.com/C-Loftus/sight-free-talon
 
 and then updating it frequently with `git pull`. On Windows your user directory is located at `%APPDATA%\Talon\user`. On MacOS and Linux your user directory is located at `~/.talon/user`.
 
-For GPT functionality, install the `talon-ai-tools` repo dependency in your Talon user directory by running
+For AI/GPT functionality, install the `talon-ai-tools` repo dependency in your Talon user directory by running
 
 ```
 git clone https://github.com/C-Loftus/talon-ai-tools

@@ -83,13 +83,34 @@ mod.setting(
 )
 
 
-mod.setting("disable_keypresses", type=bool, default=False)
-mod.setting("sound_on_keypress", type=bool, default=False)
+mod.setting("disable_keypresses", 
+    type=bool, 
+    default=False, 
+    desc="If True, disables all keypresses to prevent accidental keypresses"
+)
 
-mod.setting("min_until_break", type=int, default=10)
-# mod.setting("break_length", type=int, default=10)
+mod.setting("sound_on_keypress", 
+    type=bool,
+    default=False, 
+    desc="If True, plays a sound on every keypress to help prevent accidental keypresses"
+)
 
-mod.setting("orca_key", type=str, default="capslock")
+mod.setting("min_until_break", 
+    type=int,
+    default=10
+)
+
+mod.setting("orca_key",
+    type=str,
+    default="capslock",
+    desc="The key that is used as the Orca modifier key"
+)
+
+mod.setting("announce_mode_updates",
+    type=bool,
+    default=True
+)
+
 
 # mod.mode("strict_dictation", desc="Dictation mode with only a subset of dictation commands")
 # mod.mode('strict_command', desc='Command mode with only a subset of command commands')

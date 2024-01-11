@@ -1,3 +1,9 @@
+/*
+Go program to parse the Talon log file and extract the last lines for each category.
+We used a Go program instead of a Python program because we have to run
+a subprocess and we can't be sure that another Python interpreter is available.
+*/
+
 package main
 
 import (

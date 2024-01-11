@@ -18,15 +18,16 @@ This repository integrates with:
 
 # Usage
 
-* Watch [my demo video](https://www.youtube.com/watch?v=i-XcpnVwvR0) for a quick overview 
-* The `.talon` files in each subdirectory contain scoped commands corresponding to each application or specific context
-* The settings file at the root of the repository contains all user-configurable settings for this repo
+- Watch [my demo video](https://www.youtube.com/watch?v=i-XcpnVwvR0) for a quick overview
+- The `.talon` files in each subdirectory contain scoped commands corresponding to each application or specific context
+- The settings file at the root of the repository contains all user-configurable settings for this repo
 
 # Installing
 
-* Clone the repo into your Talon user directory.
-* Clone the [Talon community script repository](https://github.com/talonhub/community). That is the sole OS-agnostic dependency of this project.
-  
+- Clone the repo into your Talon user directory.
+- Clone the [Talon community repository](https://github.com/talonhub/community).
+  - This is the sole OS-agnostic dependency of this project.
+
 ## OS Specific Setup
 
 - Linux

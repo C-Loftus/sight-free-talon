@@ -31,6 +31,9 @@ settings():
     # Disable keypresses from Talon in high risk contexts that cannot afford typos
     user.disable_keypresses = false
 
+    # Speak Talon's mode (command, dictation, mixed) whenever it is changed
+    user.announce_mode_updates = true
+
     # Every given number of minutes, send a notification, prompting you to rest your eyes
     # user.enable_break_timer = true
     # user.user.min_until_break = 10

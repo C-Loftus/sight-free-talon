@@ -45,17 +45,24 @@ class Actions:
             speaker_cancel_callback = None
             
 
-
     def braille(text: str):
         """Output braille with the screenreader"""
 
     def echo_dictation_enabled() -> bool:
         """Returns true if echo dictation is enabled"""
-        return ctx.settings["user.echo_dictation"]
+        # Catch potential race condition where settings haven't been loaded yet
+        try:
+            return ctx.settings["user.echo_dictation"]
+        except:
+            return False
     
     def echo_context_enabled() -> bool:
         """Returns true if echo context is enabled"""
-        return ctx.settings["user.echo_context"]
+        # Catch potential race condition where settings haven't been loaded yet
+        try:
+            return ctx.settings["user.echo_context"]
+        except:
+            return False
 
     def toggle_echo():
         """Toggles echo dictation on and off"""
@@ -94,7 +101,7 @@ class Actions:
 
     def tts(text: str):
         '''text to speech with robot voice'''
-        print("Sight-Free-Talon Error: TTS not implemented in this context")
+        raise NotImplementedError("Sight-Free-Talon Error: TTS not implemented in this context")
 
     def espeak(text: str):
         '''text to speech with espeak'''

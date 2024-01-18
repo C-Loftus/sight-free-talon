@@ -59,8 +59,10 @@ def on_update_contexts():
     ANNOUNCE = settings.get("user.announce_mode_updates")
 
     if last_mode == "sleep" and not SLEEP:
-        # ALways announce wake up
-        actions.user.tts(f"Talon now listening")    
+        # Always announce wake up
+        # Cancel any current speaker, weird edge case where it will speak twice otherwise
+        actions.user.cancel_current_speaker()
+        actions.user.tts(f"Talon now listening")   
 
     elif last_mode != "sleep" and SLEEP:
         # Always announce sleep

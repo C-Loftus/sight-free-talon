@@ -66,9 +66,7 @@ class UserActions:
         #  we need this more verbose representation here so we don't use the 
         # shell and have risks of shell expansion
         command1 = ["echo", f"{text}"]
-
         command2 = [piper, "--model", modes[0], "--length_scale", "0.5", "--output_raw"]
-
         command3 = ["aplay", "-r", str(low), "-c", "1", "-f", "S16_LE", "-t", "raw"]
 
         echo = subprocess.Popen(command1, stdout=subprocess.PIPE)

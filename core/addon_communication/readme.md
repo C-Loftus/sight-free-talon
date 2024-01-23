@@ -1,0 +1,3 @@
+This directory contains client code for communicating with a screen reader addon from Talon. Since we are using sockets, much of the code is platform agnostic. Any code for creating the addons themselves (ie the server to handler the bytes from the socket connection) is placed in the corresponding screen reader directory, not here.
+
+In general, you should prioritize using an officially supported controller client if the screen reader has one. This reduces the amouunt of code that we have to package in an external addon and thus makes it easier to maintain. However, the code in this directory exists for when there is no way to easily communicate with the screen reader without a custom addon, and thus IPC directly from Talon via a socket.

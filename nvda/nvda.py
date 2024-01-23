@@ -118,11 +118,14 @@ class UserActions:
 
 
 
-# Not sure how to usually have speak words on
-# since if we have it on all the time then it will mess 
-# def toggle_speak_typed_words(_):
-#     """Toggles the speak typed words setting"""
-#     actions.user.with_nvda_mod_press("3")
+def disable_interrupt(_):
+    if actions.user.is_nvda_running():
+        actions.user.send_ipc_command("disableSpeechInterruptForCharacters")
 
-# speech_system.register("pre:phrase", toggle_speak_typed_words)
-# speech_system.register("post:phrase", toggle_speak_typed_words)
+def restore_interrupt_setting(_):
+    if actions.user.is_nvda_running():
+        actions.user.send_ipc_command("restoreSpeechInterruptForCharacters")
+
+
+speech_system.register("pre:phrase", disable_interrupt)
+speech_system.register("post:phrase", restore_interrupt_setting)

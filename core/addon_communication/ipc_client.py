@@ -1,17 +1,12 @@
 from talon import Module, Context, actions
 import os, ipaddress, json, socket
 from .ipc_helpers import Mutex
+import threading
 
 
 mod = Module()
+mutex = threading.Lock()
 
-# We want to make sure only one connection is open at a time
-mutex = Mutex(socket.socket(socket.AF_INET, socket.SOCK_STREAM))
-
-# Lock the mutex for the scope of the `with` block
-with mutex.lock() as value:
-  # value is typed as `list` here
-  value.append(1)
 communication_socket = None
 
 @mod.action_class
@@ -60,14 +55,17 @@ class NVDAActions:
         if command not in valid_commands:
             raise ValueError(f"Invalid NVDA IPC command: '{command}'")
 
-        with mutex.lock() as socket:
-            socket.connect((ip, port))
+
+        with mutex:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.connect((ip, int(port)))
             try:
-                socket.sendall(command.encode("utf-8"))
-            except:
+                encoded = command.encode("utf-8")
+                sock.sendall(encoded)
+            except: 
                 print("Error Communicating with NVDA extension")
             finally:
-                socket.close()
+                sock.close()
             
 
 ORCAContext = Context()

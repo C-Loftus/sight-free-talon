@@ -26,6 +26,7 @@
 - NVDA Controller client `.dll` file can be found at: [https://www.nvaccess.org/files/nvda/releases/stable/](https://www.nvaccess.org/files/nvda/releases/stable/)
 - Documentation for this controller client can be found at [https://github.com/nvaccess/nvda/blob/master/extras/controllerClient/readme.md](https://github.com/nvaccess/nvda/blob/master/extras/controllerClient/readme.md)
 - [https://github.com/nvaccess/nvda/wiki/](https://github.com/nvaccess/nvda/wiki/)
+- [https://github.com/nvda-es/devguides_translation/blob/master/original_docs/NVDA-Add-on-Development-Guide.md](https://github.com/nvda-es/devguides_translation/blob/master/original_docs/NVDA-Add-on-Development-Guide.md)
 - [ https://addons.nvda-project.org/addons/AudioThemes.en.html](https://addons.nvda-project.org/addons/AudioThemes.en.html)
 - [https://addons.nvda-project.org/addons/phoneticPunctuation.en.html](https://addons.nvda-project.org/addons/phoneticPunctuation.en.html)
 - Helpful settings

@@ -6,7 +6,6 @@ import os, json, socket, threading
 
 commands = ["disableSpeechInterruptForCharacters", "restoreSpeechInterruptForCharacters", "debug", "playWAV"]
 
-
 def bind_to_available_port(server_socket, start_port, end_port):
     for port in range(start_port, end_port):
         try:

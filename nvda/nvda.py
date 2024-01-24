@@ -1,4 +1,4 @@
-from talon import actions, Module, settings, cron, Context, clip, registry, app , speech_system
+from talon import actions, Module, settings, cron, Context, clip, speech_system
 import os, ctypes, time  
 
 mod = Module()
@@ -9,7 +9,6 @@ mod.tag("nvda_running", desc="If set, NVDA is running")
 @mod.scope
 def set_nvda_running_tag():
     '''Update tags based on if NVDA is running'''
-    # TODO edge case on startup this might not be set yet
     try:
         ctx.tags = ["user.nvda_running"] \
             if actions.user.is_nvda_running() \
@@ -64,6 +63,8 @@ class Actions:
 
     def is_nvda_running() -> bool:
         '''Returns true if NVDA is running'''
+        if os.name != 'nt' or not nvda_client:
+            return False
         NVDA_RUNNING_CONSTANT = 0
         return True if nvda_client.nvdaController_testIfRunning() == NVDA_RUNNING_CONSTANT else False
     
@@ -116,8 +117,10 @@ class UserActions:
         """Output braille with NVDA"""
         nvda_client.nvdaController_brailleMessage(text)
 
-
-
+# By default the screen rader will allow you to press a key and interrupt the ph
+# rase however this does not work alongside typing given the fact that we are pres
+# sing keys.  so we need to temporally disable it then re enable it at the end of 
+# the phrase
 def disable_interrupt(_):
     if actions.user.is_nvda_running():
         actions.user.send_ipc_command("disableSpeechInterruptForCharacters")
@@ -126,6 +129,6 @@ def restore_interrupt_setting(_):
     if actions.user.is_nvda_running():
         actions.user.send_ipc_command("restoreSpeechInterruptForCharacters")
 
-
-speech_system.register("pre:phrase", disable_interrupt)
-speech_system.register("post:phrase", restore_interrupt_setting)
+if os.name == 'nt': 
+    speech_system.register("pre:phrase", disable_interrupt)
+    speech_system.register("post:phrase", restore_interrupt_setting)

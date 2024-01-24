@@ -48,8 +48,3 @@ class UserActions:
             config.write(configfile)  # Write the rest of the config
         print(f"Set NVDA setting: {setting} to {value}")
         actions.user.with_nvda_mod_press("ctrl-r")
-
-
-        # cron.after then refresh after the dictation is done. Hard to figure out
-        # how to do this though since we don't have a callback for when the dictatio
-        # is done. 

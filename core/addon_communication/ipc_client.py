@@ -62,6 +62,12 @@ class NVDAActions:
             try:
                 encoded = command.encode("utf-8")
                 sock.sendall(encoded)
+                # Block until we receive a response
+                # We don't want to execute commands until
+                # we know the screen reader has the proper settings
+                response = sock.recv(1024)
+                
+                # print('Received', repr(response))
             except: 
                 print("Error Communicating with NVDA extension")
             finally:

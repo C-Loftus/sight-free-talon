@@ -33,6 +33,7 @@
 - Helpful settings
   - Document Formatting: "Line Indentation Reporting" set to "Tones"
   - Scratchpad located within the NVDA advanced settings, there you can import python scripts during development
+  - Disable insert as a modifier key in order to work with Rango
 
 ## JAWS
 

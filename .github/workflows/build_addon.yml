@@ -34,18 +34,21 @@ jobs:
 
       - name: Code checks
         run: export SKIP=no-commit-to-branch
-        #  ignore precommit for now pre-commit run --all
+      #  ignore precommit for now pre-commit run --all
 
       - name: building addon
-        run: cd nvda/.addOn/sight-free-talon-server && scons
+        run: cd nvda/.addOn/sight-free-talon-server && scons -v
 
       - name: Display structure of downloaded files
         run: ls -R
 
+      - name: Find .nvda-addon file
+        run: find . -name "*.nvda-addon"
+
       - uses: actions/upload-artifact@v3
         with:
           name: packaged_addon
-          path: ./**.nvda-addon
+          path: nvda/.addOn/sight-free-talon-server/**/*.nvda-addon
 
   upload_release:
     runs-on: ubuntu-latest

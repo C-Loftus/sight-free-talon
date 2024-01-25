@@ -39,11 +39,14 @@ jobs:
       - name: building addon
         run: cd nvda/.addOn/sight-free-talon-server && scons -v
 
-      - name: Display structure of downloaded files
-        run: ls -R
+      - name: Print working directory
+        run: pwd
+
+      - name: List directory contents
+        run: ls -la ./nvda/.addOn/sight-free-talon-server/
 
       - name: Find .nvda-addon file
-        run: find . -name "*.nvda-addon" -print
+        run: cd; find . -name "*.nvda-addon" -print
 
       - uses: actions/upload-artifact@v3
         with:

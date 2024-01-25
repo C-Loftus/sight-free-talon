@@ -43,12 +43,12 @@ jobs:
         run: ls -R
 
       - name: Find .nvda-addon file
-        run: find . -name "*.nvda-addon"
+        run: find . -name "*.nvda-addon" -print
 
       - uses: actions/upload-artifact@v3
         with:
           name: packaged_addon
-          path: nvda/.addOn/sight-free-talon-server/**/*.nvda-addon
+          path: ./nvda/.addOn/sight-free-talon-server/*.nvda-addon
 
   upload_release:
     runs-on: ubuntu-latest
@@ -58,12 +58,15 @@ jobs:
       - uses: actions/checkout@v3
       - name: download releases files
         uses: actions/download-artifact@v3
+        with:
+          name: packaged_addon
+          path: ./nvda/.addOn/sight-free-talon-server/
       - name: Display structure of downloaded files
         run: ls -R
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: ./nvda/.addOn/sight-free-talon-server/packaged_addon/*.nvda-addon
+          files: ./nvda/.addOn/sight-free-talon-server/*.nvda-addon
           fail_on_unmatched_files: true
           prerelease: ${{ contains(github.ref, '-') }}

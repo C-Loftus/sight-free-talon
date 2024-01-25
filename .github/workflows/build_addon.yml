@@ -37,10 +37,7 @@ jobs:
       #  ignore precommit for now pre-commit run --all
 
       - name: building addon
-        run: cd nvda/.addOn/sight-free-talon-server && scons -v
-
-      - name: Print working directory
-        run: pwd
+        run: cd nvda/.addOn/sight-free-talon-server && scons
 
       - name: List directory contents
         run: ls -R
@@ -48,7 +45,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: packaged_addon
-          path: ./**/*.nvda-addon
+          path: ./nvda/.addOn/sight-free-talon-server/*.nvda-addon
 
   upload_release:
     runs-on: ubuntu-latest

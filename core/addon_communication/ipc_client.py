@@ -1,4 +1,4 @@
-from talon import Module, Context, actions
+from talon import Module, Context, actions, settings
 import os, ipaddress, json, socket
 from .ipc_helpers import Mutex
 import threading
@@ -55,7 +55,6 @@ class NVDAActions:
         if command not in valid_commands:
             raise ValueError(f"Invalid NVDA IPC command: '{command}'")
 
-
         with lock:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(0.1)
@@ -68,7 +67,8 @@ class NVDAActions:
                 # We don't want to execute commands until
                 # we know the screen reader has the proper settings
                 response = sock.recv(1024)
-                print('Received', repr(response))
+                if settings.get("user.addon_debug"):
+                    print('Received', repr(response))
             except socket.timeout:
                 print("NVDA Connection timed out")
             except: 

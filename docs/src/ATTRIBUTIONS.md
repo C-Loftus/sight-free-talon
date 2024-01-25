@@ -32,7 +32,7 @@
 - [https://addons.nvda-project.org/addons/phoneticPunctuation.en.html](https://addons.nvda-project.org/addons/phoneticPunctuation.en.html)
 - Helpful settings
   - Document Formatting: "Line Indentation Reporting" set to "Tones"
-  - Scratchpad located within the NVDA advanced settings, there you can import python scripts during development
+  - Scratchpad located within the NVDA advanced settings, there you can import python scripts during developmentBlunder
   - Disable insert as a modifier key in order to work with Rango
 
 ## JAWS

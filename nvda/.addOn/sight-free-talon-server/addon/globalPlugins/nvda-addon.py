@@ -18,16 +18,22 @@ def bind_to_available_port(server_socket, start_port, end_port):
 interrupt_value = False
 def handle_command(command: str):
     global interrupt_value
+    debug_message = ""
     if command == "disableSpeechInterruptForCharacters":
         interrupt = config.conf["keyboard"]["speechInterruptForCharacters"]
         interrupt_value = interrupt
         config.conf["keyboard"]["speechInterruptForCharacters"] = False
+        debug_message = f"Speech interrupt changed from {interrupt} to False"
     if command == "restoreSpeechInterruptForCharacters": 
         config.conf["keyboard"]["speechInterruptForCharacters"] = interrupt_value
+        debug_message = f"Speech interrupt changed from False to {interrupt_value}"
     elif command == "debug":
         tones.beep(640, 100) 
+        debug_message = "Debug connection successful"
     else:
         print(f"Invalid command: {command}")
+        debug_message = f"Invalid command: {command}"
+    return debug_message
         
 class IPC_Server():
     port = None
@@ -35,9 +41,8 @@ class IPC_Server():
     def handle_client(self, client_socket: socket.socket):
         data = client_socket.recv(1024)
         message = data.decode().strip()
-        handle_command(message)
-        print(f"Received {message}")
-        response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nMessage received. Success".encode()  # Create a HTTP response
+        result = handle_command(message)
+        response = f"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nMessage received. Success: {result}".encode()  # Create a HTTP response
         client_socket.send(response)
 
     def output_spec_file(self):

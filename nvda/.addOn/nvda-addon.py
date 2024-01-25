@@ -24,14 +24,14 @@ def handle_command(command: str):
         interrupt_value = interrupt
         config.conf["keyboard"]["speechInterruptForCharacters"] = False
         debug_message = f"Speech interrupt changed from {interrupt} to False"
-    if command == "restoreSpeechInterruptForCharacters": 
+    elif command == "restoreSpeechInterruptForCharacters": 
         config.conf["keyboard"]["speechInterruptForCharacters"] = interrupt_value
         debug_message = f"Speech interrupt restored to {interrupt_value}"
     elif command == "debug":
         tones.beep(640, 100) 
         debug_message = "Debug connection successful"
     else:
-        debug_message = f"Invalid command: '{command}', {type(command)=}"
+        debug_message = f"Invalid command: '{command}', type='{type(command)}'"
     print(debug_message)
     return debug_message
         

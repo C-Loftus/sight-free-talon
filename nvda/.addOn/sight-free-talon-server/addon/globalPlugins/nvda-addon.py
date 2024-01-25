@@ -31,7 +31,7 @@ def handle_command(command: str):
         tones.beep(640, 100) 
         debug_message = "Debug connection successful"
     else:
-        debug_message = f"Invalid command: '{command}', {type(command)=}"
+        debug_message = f"Invalid command: '{command}', type='{type(command)}'"
     print(debug_message)
     return debug_message
         

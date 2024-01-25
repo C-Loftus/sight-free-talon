@@ -15,7 +15,7 @@ def bind_to_available_port(server_socket, start_port, end_port):
             continue
     raise OSError(f"No available ports in the range {start_port}-{end_port}")
 
-interrupt_value = False
+interrupt_value = True
 def handle_command(command: str):
     global interrupt_value
     debug_message = ""
@@ -24,7 +24,7 @@ def handle_command(command: str):
         interrupt_value = interrupt
         config.conf["keyboard"]["speechInterruptForCharacters"] = False
         debug_message = f"Speech interrupt changed from {interrupt} to False"
-    if command == "restoreSpeechInterruptForCharacters": 
+    elif command == "restoreSpeechInterruptForCharacters": 
         config.conf["keyboard"]["speechInterruptForCharacters"] = interrupt_value
         debug_message = f"Speech interrupt restored to {interrupt_value}"
     elif command == "debug":

@@ -58,16 +58,19 @@ class NVDAActions:
 
         with lock:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.connect((ip, int(port)))
+            sock.settimeout(0.1)
+
             try:
+                sock.connect((ip, int(port)))
                 encoded = command.encode("utf-8")
                 sock.sendall(encoded)
                 # Block until we receive a response
                 # We don't want to execute commands until
                 # we know the screen reader has the proper settings
                 response = sock.recv(1024)
-                
                 # print('Received', repr(response))
+            except socket.timeout:
+                print("NVDA Connection timed out")
             except: 
                 print("Error Communicating with NVDA extension")
             finally:

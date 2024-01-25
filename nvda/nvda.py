@@ -123,10 +123,16 @@ class UserActions:
 # the phrase
 def disable_interrupt(_):
     if actions.user.is_nvda_running():
+        SPEC_FILE = os.path.expanduser("~\\AppData\\Roaming\\nvda\\talon_server_spec.json")
+        if not os.path.exists(SPEC_FILE):
+            return
         actions.user.send_ipc_command("disableSpeechInterruptForCharacters")
 
 def restore_interrupt_setting(_):
     if actions.user.is_nvda_running():
+        SPEC_FILE = os.path.expanduser("~\\AppData\\Roaming\\nvda\\talon_server_spec.json")
+        if not os.path.exists(SPEC_FILE):
+            return
         actions.user.send_ipc_command("restoreSpeechInterruptForCharacters")
 
 if os.name == 'nt': 

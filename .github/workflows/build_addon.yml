@@ -1,4 +1,6 @@
 name: build addon
+permissions:
+  contents: write
 
 on:
   push:
@@ -38,9 +40,6 @@ jobs:
 
       - name: building addon
         run: cd nvda/.addOn/sight-free-talon-server && scons
-
-      - name: List directory contents
-        run: ls -R
 
       - uses: actions/upload-artifact@v3
         with:

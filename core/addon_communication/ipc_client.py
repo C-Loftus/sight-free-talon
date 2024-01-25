@@ -68,7 +68,7 @@ class NVDAActions:
                 # We don't want to execute commands until
                 # we know the screen reader has the proper settings
                 response = sock.recv(1024)
-                # print('Received', repr(response))
+                print('Received', repr(response))
             except socket.timeout:
                 print("NVDA Connection timed out")
             except: 

@@ -148,5 +148,3 @@ restart reader:
 
 test reader add on:
     user.send_ipc_command("debug")
-
-    

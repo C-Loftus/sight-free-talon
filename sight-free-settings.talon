@@ -28,7 +28,7 @@ settings():
     # To prevent errors from accidental key presses, play a sound each time a key is pressed
     user.sound_on_keypress = false
 
-    # Disable keypresses from Talon in high risk contexts that cannot afford typos
+    # Disable all keypresses from Talon in high risk contexts that cannot afford typos
     user.disable_keypresses = false
 
     # Speak Talon's mode (command, dictation, mixed) whenever it is changed

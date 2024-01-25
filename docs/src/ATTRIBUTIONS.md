@@ -28,6 +28,7 @@
 - [https://github.com/nvaccess/nvda/wiki/](https://github.com/nvaccess/nvda/wiki/)
 - [https://github.com/nvda-es/devguides_translation/blob/master/original_docs/NVDA-Add-on-Development-Guide.md](https://github.com/nvda-es/devguides_translation/blob/master/original_docs/NVDA-Add-on-Development-Guide.md)
 - [ https://addons.nvda-project.org/addons/AudioThemes.en.html](https://addons.nvda-project.org/addons/AudioThemes.en.html)
+- [https://github.com/nvdaaddons/DevGuide/wiki/NVDA-Add-on-Development-Guide](https://github.com/nvdaaddons/DevGuide/wiki/NVDA-Add-on-Development-Guide)
 - [https://addons.nvda-project.org/addons/phoneticPunctuation.en.html](https://addons.nvda-project.org/addons/phoneticPunctuation.en.html)
 - Helpful settings
   - Document Formatting: "Line Indentation Reporting" set to "Tones"

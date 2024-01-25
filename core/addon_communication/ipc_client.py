@@ -5,7 +5,7 @@ import threading
 
 
 mod = Module()
-mutex = threading.Lock()
+lock = threading.Lock()
 
 communication_socket = None
 
@@ -56,7 +56,7 @@ class NVDAActions:
             raise ValueError(f"Invalid NVDA IPC command: '{command}'")
 
 
-        with mutex:
+        with lock:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.connect((ip, int(port)))
             try:

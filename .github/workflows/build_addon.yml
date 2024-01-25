@@ -42,7 +42,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: packaged_addon
-          path: ./*.nvda-addon
+          path: .nvda/.addOn/sight-free-talon-server/*.nvda-addon
 
   upload_release:
     runs-on: ubuntu-latest

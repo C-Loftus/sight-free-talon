@@ -12,8 +12,7 @@ This repository integrates with:
 - screen readers
 - text-to-speech
 - braille
-- software beeps
-- hardware rumble / tacile feedback
+- alternative feedback like noises / beeps
 - pedals
 
 # Usage
@@ -25,7 +24,7 @@ This repository integrates with:
 # Installing
 
 - Clone the repo into your Talon user directory.
-- Clone the [Talon community repository](https://github.com/talonhub/community).
+- Clone the [Talon community repository](https://github.com/talonhub/community) for general Talon commands
   - This is the sole OS-agnostic dependency of this project.
 
 ## OS Specific Setup
@@ -37,7 +36,8 @@ This repository integrates with:
     - run `pipx install piper` to install it (thus `pipx` is a dependency)
 - Windows
   - Install NVDA to play tts through the screen reader.
-    - Disable `Speech interrupt for typed characters` in NVDA settings to make sure typing text from Talon is not interrupted with every typed character.
+    - If you do not want to install the addon, disable `Speech interrupt for typed characters` in NVDA settings to make sure typing text from Talon is not interrupted with every typed character.
+    - Otherwise, install the NVDA addon file from the repo [releases page](https://github.com/C-Loftus/sight-free-talon/releases/)
 
 ## Background and Motivation
 

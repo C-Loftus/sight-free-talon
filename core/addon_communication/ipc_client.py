@@ -1,24 +1,20 @@
 from talon import Module, Context, actions, settings
 import os, ipaddress, json, socket
-from .ipc_helpers import Mutex
 import threading
-
+from typing import Tuple
+from .ipc_schema import IPC_COMMAND
 
 mod = Module()
 lock = threading.Lock()
 
-communication_socket = None
-
 @mod.action_class
 class Actions:
-    def addon_server_endpoint() -> (str, str):
+    def addon_server_endpoint() -> Tuple[str, str, str]:
         """Returns the address and port of the addon server"""
 
-    def send_ipc_command(command: str):
+    def send_ipc_commands(commands: list[str]):
         """Sends a command to the screenreader"""
 
-    def sanitize_ipc_command(command: str):
-        """Make sure the IPC command is valid"""
 
 NVDAContext = Context()
 NVDAContext.matches = r"""
@@ -28,7 +24,7 @@ tag: user.nvda_running
 @NVDAContext.action_class("user")
 class NVDAActions:
 
-    def addon_server_endpoint() -> (str, str):
+    def addon_server_endpoint() -> Tuple[str, str, str]:
         """Returns the address and port of the addon server"""
         SPEC_FILE = os.path.expanduser("~\\AppData\\Roaming\\nvda\\talon_server_spec.json")
 
@@ -38,7 +34,6 @@ class NVDAActions:
             port = spec["port"]
             valid_commands = spec["valid_commands"]
             
-        # assert the address is a valid IP address
         try:
             ip = ipaddress.ip_address(address)
             assert ip.is_private, "Address is not a local IP address"
@@ -46,22 +41,26 @@ class NVDAActions:
             raise ValueError(f"Invalid IP address: {address}")
         
         return address, port, valid_commands
-
-    
-    def send_ipc_command(command: str):
-        """Sends a command to the NVDA screenreader"""
-        ip, port, valid_commands = actions.user.addon_server_endpoint()
         
-        if command not in valid_commands:
-            raise ValueError(f"Invalid NVDA IPC command: '{command}'")
+
+    def send_ipc_commands(commands: list[str]):
+        """Sends a list of commands to the NVDA screenreader"""
+        ip, port, valid_commands = actions.user.addon_server_endpoint()
+
+
+        for command in commands:
+            if command not in valid_commands:
+                raise ValueError(f"Invalid command: {command}")
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(0.1)
+        encoded = json.dumps(commands).encode()
+
+        if settings.get("user.addon_debug"):
+            print(f"Sending {commands} to {ip}:{port}")
 
         with lock:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.settimeout(0.1)
-
             try:
                 sock.connect((ip, int(port)))
-                encoded = command.encode("utf-8")
                 sock.sendall(encoded)
                 # Block until we receive a response
                 # We don't want to execute commands until
@@ -70,7 +69,7 @@ class NVDAActions:
                 if settings.get("user.addon_debug"):
                     print('Received', repr(response))
             except socket.timeout:
-                print("NVDA Connection timed out")
+                print("NVDA Addon Connection timed out")
             except: 
                 print("Error Communicating with NVDA extension")
             finally:

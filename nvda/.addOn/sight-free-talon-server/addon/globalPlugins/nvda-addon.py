@@ -3,8 +3,21 @@ from scriptHandler import script
 import config
 import tones, nvwave, ui
 import os, json, socket, threading
+import globalPluginHandler
 
-commands = ["disableSpeechInterruptForCharacters", "restoreSpeechInterruptForCharacters", "debug", "playWAV"]
+schema = [
+    "disableSpeechInterruptForCharacters",
+    "enableSpeechInterruptForCharacters",
+
+    "disableSpeakTypedWords",
+    "enableSpeakTypedWords",
+
+    "disableSpeakTypedCharacters",
+    "enableSpeakTypedCharacters",
+
+    "debug"
+]
+
 
 def bind_to_available_port(server_socket, start_port, end_port):
     for port in range(start_port, end_port):
@@ -16,30 +29,44 @@ def bind_to_available_port(server_socket, start_port, end_port):
     raise OSError(f"No available ports in the range {start_port}-{end_port}")
 
 def handle_command(command: str):
-    debug_message = ""
+    if command not  in schema:
+        return f"Invalid command: '{command}', type='{type(command)}'"
+
     if command == "disableSpeechInterruptForCharacters":
-        interrupt = config.conf["keyboard"]["speechInterruptForCharacters"]
         config.conf["keyboard"]["speechInterruptForCharacters"] = False
-        debug_message = f"Speech interrupt changed from {interrupt} to False"
-    elif command == "restoreSpeechInterruptForCharacters": 
+
+    elif command == "enableSpeechInterruptForCharacters": 
         config.conf["keyboard"]["speechInterruptForCharacters"] = True 
-        debug_message = f"Speech interrupt restored to True"
+
+    elif command == "disableSpeakTypedWords": 
+        config.conf["keyboard"]["speakTypedWords"] = False 
+
+    elif command == "enableSpeakTypedWords":
+        config.conf["keyboard"]["speakTypedWords"] = True
+
+    elif command == "disableSpeakTypedCharacters": 
+        config.conf["keyboard"]["speakTypedCharacters"] = False 
+
+    elif command == "enableSpeakTypedCharacters":
+        config.conf["keyboard"]["speakTypedCharacters"] = True
+        
     elif command == "debug":
         tones.beep(640, 100) 
-        debug_message = "Debug connection successful"
-    else:
-        debug_message = f"Invalid command: '{command}', type='{type(command)}'"
-    print(debug_message)
-    return debug_message
+
+    return f"Success: {command}"
         
 class IPC_Server():
     port = None
 
     def handle_client(self, client_socket: socket.socket):
         data = client_socket.recv(1024)
-        message = data.decode().strip()
-        result = handle_command(message)
-        response = f"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nMessage received. Success: {result}".encode()  # Create a HTTP response
+
+        messages = json.loads(data.decode().strip())
+        result = ""
+        for message in messages:
+            result += handle_command(message)
+
+        response = f"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nMessage received: Result: {result}".encode()  # Create a HTTP response
         client_socket.send(response)
 
     def output_spec_file(self):
@@ -48,7 +75,7 @@ class IPC_Server():
         spec = {
             "address": "127.0.0.1",
             "port": str(self.get_port()),
-            "valid_commands": commands    
+            "valid_commands": schema    
         }
         with open(PATH, "w") as f:
             json.dump(spec, f)
@@ -74,6 +101,20 @@ class IPC_Server():
             print(f"Connection from {addr}")
             self.handle_client(client_socket)
             client_socket.close()
+
+
+class GlobalPlugin(globalPluginHandler.GlobalPlugin):
+
+
+
+    def __init__(self):
+        super(GlobalPlugin, self).__init__()
+
+
+    def terminate(self):
+        # delete this file when NVDA exits     
+        PATH = os.path.expanduser("~\\AppData\\Roaming\\nvda\\talon_server_spec.json")
+        os.remove(PATH)
 
 server = IPC_Server()
 server_thread = threading.Thread(target=server.create_server)

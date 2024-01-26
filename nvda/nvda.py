@@ -1,4 +1,4 @@
-from talon import actions, Module, settings, cron, Context, clip, speech_system
+from talon import actions, Module, settings, cron, Context, clip, speech_system, scope 
 import os, ctypes, time  
 
 mod = Module()
@@ -122,19 +122,35 @@ class UserActions:
 # sing keys.  so we need to temporally disable it then re enable it at the end of 
 # the phrase
 def disable_interrupt(_):
-    if actions.user.is_nvda_running():
+    SLEEP_MODE = 'sleep' in scope.get("mode")
+    if actions.user.is_nvda_running() and not SLEEP_MODE:
         SPEC_FILE = os.path.expanduser("~\\AppData\\Roaming\\nvda\\talon_server_spec.json")
         if not os.path.exists(SPEC_FILE):
             return
-        actions.user.send_ipc_command("disableSpeechInterruptForCharacters")
+        commands = ["disableSpeechInterruptForCharacters",
+                    "disableSpeakTypedWords",
+                    "disableSpeakTypedCharacters"
+                    ]
+        actions.user.send_ipc_commands(commands)
 
 def restore_interrupt_setting(_):
-    if actions.user.is_nvda_running():
+    SLEEP_MODE = 'sleep' in scope.get('mode')
+    if actions.user.is_nvda_running() and not SLEEP_MODE:
         SPEC_FILE = os.path.expanduser("~\\AppData\\Roaming\\nvda\\talon_server_spec.json")
         if not os.path.exists(SPEC_FILE):
             return
-        actions.user.send_ipc_command("restoreSpeechInterruptForCharacters")
-
+        
+        commands = ["enableSpeechInterruptForCharacters",
+                    "enableSpeakTypedWords",
+                    "enableSpeakTypedCharacters"
+                    ]
+        
+        #  this is kind of a hack since we don't know exactly when to re enable it
+        #  because we don't have a callback at the end of the last keypress
+        update = lambda: actions.user.send_ipc_commands(commands)
+        cron.after("1s", update)
+        
 if os.name == 'nt': 
     speech_system.register("pre:phrase", disable_interrupt)
     speech_system.register("post:phrase", restore_interrupt_setting)
+

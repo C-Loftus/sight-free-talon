@@ -5,6 +5,7 @@ import tones, nvwave, ui
 import os, json, socket, threading
 import globalPluginHandler
 
+# Valid changeable settings or commands
 schema = [
     "disableSpeechInterruptForCharacters",
     "enableSpeechInterruptForCharacters",
@@ -18,7 +19,7 @@ schema = [
     "debug"
 ]
 
-
+# BInd to an open port in case the specified port is not available
 def bind_to_available_port(server_socket, start_port, end_port):
     for port in range(start_port, end_port):
         try:
@@ -28,6 +29,7 @@ def bind_to_available_port(server_socket, start_port, end_port):
             continue
     raise OSError(f"No available ports in the range {start_port}-{end_port}")
 
+# Change a setting based on a message from the client
 def handle_command(command: str):
     if command not  in schema:
         return f"Invalid command: '{command}', type='{type(command)}'"
@@ -56,7 +58,8 @@ def handle_command(command: str):
     return f"Success: {command}"
         
 class IPC_Server():
-    port = None
+    port = None 
+    server_socket = None
 
     def handle_client(self, client_socket: socket.socket):
         data = client_socket.recv(1024)
@@ -87,34 +90,33 @@ class IPC_Server():
         return self.port
 
     def create_server(self):
-        server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        port = bind_to_available_port(server_socket, 8888, 9000)
+        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        port = bind_to_available_port(self.server_socket, 8888, 9000)
         self.set_port(port)
         self.output_spec_file()
         
-        server_socket.listen(1)
-        server_socket.settimeout(None)  # Set the timeout to None
-        print(f'Serving on {server_socket.getsockname()}')
+        self.server_socket.listen(1)
+        self.server_socket.settimeout(None)  # Set the timeout to None
+        print(f'Serving on {self.server_socket.getsockname()}')
 
         while True:
-            client_socket, addr = server_socket.accept()
+            client_socket, addr = self.server_socket.accept()
             print(f"Connection from {addr}")
             self.handle_client(client_socket)
             client_socket.close()
 
-
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
-
-
 
     def __init__(self):
         super(GlobalPlugin, self).__init__()
 
-
     def terminate(self):
-        # delete this file when NVDA exits     
+        # clean up when NVDA exits     
         PATH = os.path.expanduser("~\\AppData\\Roaming\\nvda\\talon_server_spec.json")
         os.remove(PATH)
+        if server.server_socket:
+            server.server_socket.close()
+        
 
 server = IPC_Server()
 server_thread = threading.Thread(target=server.create_server)

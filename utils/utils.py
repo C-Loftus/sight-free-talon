@@ -3,7 +3,7 @@ import os, requests
 from html.parser import HTMLParser
 import urllib
 
-from ..lib.HTMLbuilder import HTMLBuilder
+from ..lib.HTMLbuilder import Builder
 import threading
 
 class VisibleTextParser(HTMLParser):
@@ -76,7 +76,7 @@ class Actions:
     def explore_tags():
         """Open the tags in the browser"""
         active_contexts = registry.tags
-        builder = HTMLBuilder()
+        builder = Builder()
         builder.title("Talon Tags")
         builder.h1("Currently Active Tags")
         for context in active_contexts:
@@ -86,7 +86,7 @@ class Actions:
     def explore_settings():
         """Open the talon settings file"""
         active_settings = registry.settings
-        builder = HTMLBuilder()
+        builder = Builder()
         builder.title("Talon Settings")
         builder.h1("Talon Settings and their Values")
         for setting in active_settings:

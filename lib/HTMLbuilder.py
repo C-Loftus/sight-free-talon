@@ -4,8 +4,7 @@
 
 import tempfile
 import webbrowser
-import enum
-
+import enum, os, platform
 
 STYLE = """
 <style>
@@ -21,7 +20,7 @@ STYLE = """
         padding: 20px;
         box-sizing: border-box;
     }
-    h1, p, h2, h3, ul, ol {
+    h1, p, h2, h3, ul, ol, table, a {
         color: #ECEFF4  ;
         margin: 20px 0;
     }
@@ -35,7 +34,7 @@ class ARIARole(enum.Enum):
     FOOTER = "contentinfo"
     # TODO other roles?
 
-class HTMLBuilder:
+class Builder:
 
     '''
     Easily build HTML pages and add aria roles to elements
@@ -87,6 +86,22 @@ class HTMLBuilder:
             self._li(item)
         self.elements.append("</ol>")
 
+    def start_table(self, headers, role=None):
+        self.elements.append(f"<table role='{role.value}'>" if role else "<table>")
+        self.elements.append("<thead><tr>")
+        for header in headers:
+            self.elements.append(f"<th>{header}</th>")
+        self.elements.append("</tr></thead><tbody>")
+
+    def add_row(self, cells):
+        self.elements.append("<tr>")
+        for cell in cells:
+            self.elements.append(f"<td>{cell}</td>")
+        self.elements.append("</tr>")
+
+    def end_table(self):
+        self.elements.append("</tbody></table>")
+
 
     def render(self):
         html_content = '\n'.join(self.elements)
@@ -107,14 +122,22 @@ class HTMLBuilder:
         </html>
         """
 
-        with tempfile.NamedTemporaryFile(mode='w+', suffix='.html', delete=False) as temp_file:
+        # If you are using a browser through a snap package on Linux you cannot 
+        # open many directories so we just default to the downloads folder since that is one we can use
+        if platform.system() == 'Linux':
+            dir_path = os.path.expanduser('~/Downloads')
+        else:
+            dir_path = None
+
+        with tempfile.NamedTemporaryFile(mode='w+', suffix='.html', delete=False, encoding='utf-8', dir=dir_path) as temp_file:
             temp_file.write(full_html)
             temp_file_path = temp_file.name
 
         webbrowser.open(temp_file_path)
+                
 
 # API Demo
-# builder = HTMLBuilder()
+# builder = Builder()
 # builder.title("Generated Help Page from Talon")
 # builder.h1("Banner Heading", role=ARIARole.BANNER)
 # builder.h1("Header 1 for the page")
@@ -127,4 +150,3 @@ class HTMLBuilder:
 # builder.ol("First element: Hello", "Second one: World")
 # builder.p("This is labeled as an aria footer within the article", role=ARIARole.FOOTER)
 # builder.render()
-

@@ -1,11 +1,9 @@
-import speech
-from scriptHandler import script
 import config
-import tones, nvwave, ui
-import os, json, socket, threading
+import tones
 import globalPluginHandler
+import os, json, socket, threading
 
-# Valid changeable settings or commands
+# Exhaustive list of valid commands
 schema = [
     "disableSpeechInterruptForCharacters",
     "enableSpeechInterruptForCharacters",
@@ -19,7 +17,7 @@ schema = [
     "debug"
 ]
 
-# BInd to an open port in case the specified port is not available
+# Bind to an open port in case the specified port is not available
 def bind_to_available_port(server_socket, start_port, end_port):
     for port in range(start_port, end_port):
         try:
@@ -31,7 +29,7 @@ def bind_to_available_port(server_socket, start_port, end_port):
 
 # Change a setting based on a message from the client
 def handle_command(command: str):
-    if command not  in schema:
+    if command not in schema:
         return f"Invalid command: '{command}', type='{type(command)}'"
 
     if command == "disableSpeechInterruptForCharacters":
@@ -100,10 +98,14 @@ class IPC_Server():
         print(f'Serving on {self.server_socket.getsockname()}')
 
         while True:
-            client_socket, addr = self.server_socket.accept()
-            print(f"Connection from {addr}")
-            self.handle_client(client_socket)
-            client_socket.close()
+            try:
+                client_socket, addr = self.server_socket.accept()
+                print(f"Connection from {addr}")
+                self.handle_client(client_socket)
+            except Exception as e:
+                print(f"Error handling message from client: {e}")
+            finally:
+                client_socket.close()
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 

@@ -153,4 +153,3 @@ def restore_interrupt_setting(_):
 if os.name == 'nt': 
     speech_system.register("pre:phrase", disable_interrupt)
     speech_system.register("post:phrase", restore_interrupt_setting)
-

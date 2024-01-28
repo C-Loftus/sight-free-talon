@@ -12,7 +12,7 @@ class Actions:
     def addon_server_endpoint() -> Tuple[str, str, str]:
         """Returns the address and port of the addon server"""
 
-    def send_ipc_commands(commands: list[str]):
+    def send_ipc_commands(commands: list[str] | str):
         """Sends a command to the screenreader"""
 
 

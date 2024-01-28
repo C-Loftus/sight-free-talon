@@ -43,10 +43,12 @@ class NVDAActions:
         return address, port, valid_commands
         
 
-    def send_ipc_commands(commands: list[str]):
+    def send_ipc_commands(commands: list[str] | str):
         """Sends a list of commands to the NVDA screenreader"""
         ip, port, valid_commands = actions.user.addon_server_endpoint()
 
+        if isinstance(commands, str):
+            commands = [commands]
 
         for command in commands:
             if command not in valid_commands:
@@ -68,6 +70,8 @@ class NVDAActions:
                 response = sock.recv(1024)
                 if settings.get("user.addon_debug"):
                     print('Received', repr(response))
+                if command == ['debug'] or command == 'debug':
+                    actions.user.tts("Sent Message to NVDA Successfully")
             except socket.timeout:
                 print("NVDA Addon Connection timed out")
             except: 
@@ -86,5 +90,3 @@ JAWSContext = Context()
 JAWSContext.matches = r"""
 tag: user.jaws_running
 """
-
-

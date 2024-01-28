@@ -147,4 +147,4 @@ restart reader:
     user.restart_nvda()
 
 test reader add on:
-    user.send_ipc_command("debug")
+    user.send_ipc_commands("debug")

@@ -23,7 +23,7 @@ settings():
     user.start_screenreader_on_startup = false
 
     # Output dictated text to braille display through your screen reader
-    user.braille_output = false
+    user.echo_braille = false
 
     # To prevent errors from accidental key presses, play a sound each time a key is pressed
     user.sound_on_keypress = false

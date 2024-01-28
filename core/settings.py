@@ -25,7 +25,7 @@ mod.setting(
 )
 
 mod.setting(
-    "braille_output",
+    "echo_braille",
     type=bool,
     default=False,
     desc="If true, outputs braille through your screenreader",

@@ -10,10 +10,11 @@ mod = Module()
 ctx = Context()
 
 # We want to get the settings from the talon file but then update 
-    # them locally here so we can change them globally via expose talon actions
+# them locally here so we can change them globally via expose talon actions
 def initialize_settings():
     ctx.settings["user.echo_dictation"]: bool = settings.get("user.echo_dictation", True)
     ctx.settings["user.echo_context"]: bool = settings.get("user.echo_context", False)
+    ctx.settings["user.echo_braille"]: bool = settings.get("user.echo_braille", True)
 
 # initialize the settings only after the user settings have been loaded
 app.register('ready', initialize_settings)
@@ -48,17 +49,34 @@ class Actions:
     def braille(text: str):
         """Output braille with the screenreader"""
 
+    def toggle_braille():
+        """Toggles braille on and off"""
+        if actions.user.braille_enabled():
+            actions.user.tts("braille disabled")
+            ctx.settings["user.echo_braille"] = False
+        else:
+            actions.user.tts("braille enabled")
+            ctx.settings["user.echo_braille"] = True
+
     def echo_dictation_enabled() -> bool:
         """Returns true if echo dictation is enabled"""
-        # Catch potential race condition where settings haven't been loaded yet
+        # Catch potential race condition where settings haven't been loaded at startup
         try:
             return ctx.settings["user.echo_dictation"]
+        except:
+            return False
+        
+    def braille_enabled() -> bool:
+        """Returns true if braille is enabled"""
+        # Catch potential race condition where settings haven't been loaded at startup
+        try:
+            return ctx.settings["user.echo_braille"]
         except:
             return False
     
     def echo_context_enabled() -> bool:
         """Returns true if echo context is enabled"""
-        # Catch potential race condition where settings haven't been loaded yet
+        # Catch potential race condition where settings haven't been loaded at startup
         try:
             return ctx.settings["user.echo_context"]
         except:

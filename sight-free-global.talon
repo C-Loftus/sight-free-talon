@@ -45,3 +45,5 @@ toggle (key | keypress) sound:
 (swtich | change) voice:
     user.switch_voice()
 
+toggle braille:
+    user.toggle_braille()

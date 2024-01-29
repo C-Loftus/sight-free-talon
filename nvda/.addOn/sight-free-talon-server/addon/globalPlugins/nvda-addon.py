@@ -17,6 +17,8 @@ schema = [
     "debug"
 ]
 
+SPEC_PATH = os.path.expanduser("~\\AppData\\Roaming\\nvda\\talon_server_spec.json")
+
 # Bind to an open port in case the specified port is not available
 def bind_to_available_port(server_socket, start_port, end_port):
     for port in range(start_port, end_port):
@@ -72,13 +74,12 @@ class IPC_Server():
 
     def output_spec_file(self):
         # write a json file to let clients know how to connect and what commands are available
-        PATH = os.path.expanduser("~\\AppData\\Roaming\\nvda\\talon_server_spec.json")
         spec = {
             "address": "127.0.0.1",
             "port": str(self.get_port()),
             "valid_commands": schema    
         }
-        with open(PATH, "w") as f:
+        with open(SPEC_PATH, "w") as f:
             json.dump(spec, f)
         
     def set_port(self, port):
@@ -114,8 +115,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
     def terminate(self):
         # clean up when NVDA exits     
-        PATH = os.path.expanduser("~\\AppData\\Roaming\\nvda\\talon_server_spec.json")
-        os.remove(PATH)
+        if os.path.exists(SPEC_PATH):
+            os.remove(SPEC_PATH)
         if server.server_socket:
             server.server_socket.close()
         

@@ -65,8 +65,15 @@ class Actions:
         '''Returns true if NVDA is running'''
         if os.name != 'nt' or not nvda_client:
             return False
+        
         NVDA_RUNNING_CONSTANT = 0
-        return True if nvda_client.nvdaController_testIfRunning() == NVDA_RUNNING_CONSTANT else False
+        CLIENT_RESPONSE = nvda_client.nvdaController_testIfRunning()
+        if CLIENT_RESPONSE == NVDA_RUNNING_CONSTANT:
+            return True
+        else:
+            if settings.get("user.addon_debug"):
+                print(f"NVDA is not running: {CLIENT_RESPONSE}")
+            return False
     
     def nvda_tts(text: str, use_clipboard: bool= False):
         '''text to speech with NVDA'''

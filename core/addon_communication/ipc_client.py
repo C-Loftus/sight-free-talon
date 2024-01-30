@@ -10,10 +10,10 @@ lock = threading.Lock()
 @mod.action_class
 class Actions:
     def addon_server_endpoint() -> Tuple[str, str, str]:
-        """Returns the address and port of the addon server"""
+        """Returns the address, port, and valid commands for the addon server"""
 
     def send_ipc_commands(commands: list[str] | str):
-        """Sends a command to the screenreader"""
+        """Sends a command or commands to the screenreader"""
 
 
 NVDAContext = Context()
@@ -44,7 +44,7 @@ class NVDAActions:
         
 
     def send_ipc_commands(commands: list[str] | str):
-        """Sends a list of commands to the NVDA screenreader"""
+        """Sends a list of commands or a single command string to the NVDA screenreader"""
         ip, port, valid_commands = actions.user.addon_server_endpoint()
 
         if isinstance(commands, str):
@@ -53,13 +53,16 @@ class NVDAActions:
         for command in commands:
             if command not in valid_commands:
                 raise ValueError(f"Invalid command: {command}")
+            
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(0.1)
         encoded = json.dumps(commands).encode()
 
         if settings.get("user.addon_debug"):
             print(f"Sending {commands} to {ip}:{port}")
-
+            
+        # Although the screenreader server will block while processing commands,
+        # having a lock clientside reduces errors when sending multiple commands
         with lock:
             try:
                 sock.connect((ip, int(port)))
@@ -70,8 +73,10 @@ class NVDAActions:
                 response = sock.recv(1024)
                 if settings.get("user.addon_debug"):
                     print('Received', repr(response))
-                if command == ['debug'] or command == 'debug':
+
+                if 'debug' in commands:
                     actions.user.tts("Sent Message to NVDA Successfully")
+                    
             except socket.timeout:
                 print("NVDA Addon Connection timed out")
             except: 

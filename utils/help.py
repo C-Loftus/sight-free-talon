@@ -12,19 +12,21 @@ class Actions:
 		"""Returns a list of all commands"""
 		command_dict = {}
 		for ctx in registry.active_contexts():
-			phrases = [html.escape(command.trigger) for command in ctx.commands.values()]
-			line_numbers = [command.lineno for command in ctx.commands.values()]
-			code = [html.escape(
-				str(command.script).replace("TalonScript(code='", "")[0:-2] 
-		   		)
+			phrases = [str(command.rule).replace('Rule("', "")[0:-2] 
+			  for command in ctx.commands.values()]
+
+
+			# line_numbers = [command.lineno for command in ctx.commands.values()]
+			code = [html.escape(str(command.script)
+					   )
 					for command in 
 					ctx.commands.values()
 				]
 			
-			ctx_name = html.escape(ctx.__repr__().replace("Context(", "")[0:-1])
+			ctx_name = ctx
 			command_dict[ctx_name] = {
 				"phrases": phrases,
-				"line_numbers": line_numbers,
+				# "line_numbers": line_numbers,
 				"code": code
 			}	
 		return command_dict
@@ -37,15 +39,15 @@ class Actions:
 		for ctx in commands_list:
 
 			phrases = commands_list[ctx]["phrases"]
-			line_numbers = commands_list[ctx]["line_numbers"]
+			# line_numbers = commands_list[ctx]["line_numbers"]
 			fns = commands_list[ctx]["code"]
 
-			if len(phrases) == 0 or len(line_numbers) == 0:
-				continue	
+			if len(phrases) == 0:
+				continue
 
 			builder.h1(ctx)
-			builder.start_table(["Command Phrase", "Code", "Line Number"])  # Removed extra comma
-			for phrase, line_number, code in zip(phrases, line_numbers, fns):
-				builder.add_row([phrase, code, line_number])
+			builder.start_table(["Command Phrase", "Code"])  # Removed extra comma
+			for phrase, code in zip(phrases, fns):
+				builder.add_row([phrase, code])
 			builder.end_table()
 		builder.render()

@@ -78,6 +78,9 @@ class Actions:
     def nvda_tts(text: str, use_clipboard: bool= False):
         '''text to speech with NVDA'''
 
+    def test_controller_client():
+        """Tests the NVDA controller client"""
+        actions.user.tts(f"Controller client value is: {nvda_client.nvdaController_testIfRunning()}")
 
 ctxWindowsNVDARunning = Context()
 ctxWindowsNVDARunning.matches = r"""

@@ -146,5 +146,3 @@ pass through next:
 restart reader:
     user.restart_nvda()
 
-test reader add on:
-    user.send_ipc_commands("debug")

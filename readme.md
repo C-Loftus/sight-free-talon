@@ -1,6 +1,6 @@
 # Sight-Free-Talon
 
-Use Talon while not needing to look at your computer. Especially helpful for those with vision impairment, blindness, eye strain, or those who prefer alternative computer interaction. Provides functionality to:
+Use Talon non-visually. Intended to be universal for all abilities, but especially helpful for those with eye strain, vision impairment, or blindness. Provides functionality to:
 
 - echo back dictation
 - speak info on context switch (mode, app, window, etc.)
@@ -12,8 +12,6 @@ This repository integrates with:
 - screen readers
 - text-to-speech
 - braille
-- alternative feedback like noises / beeps
-- pedals
 
 # Usage
 
@@ -27,6 +25,8 @@ This repository integrates with:
 - Clone the [Talon community repository](https://github.com/talonhub/community) for general Talon commands
   - This is the sole OS-agnostic dependency of this project.
 
+**NOTE FOR SIGHTED USERS**: Please clone the entire repository. The repo is explicitly designed to be helpful for all abilities and the `.talon` files are tightly scoped such that any functionality that isn't relevant to you (i.e. screen reader support) will not impact your general Talon usage or be easy to change in a settings file.
+
 ## OS Specific Setup
 
 - Linux
@@ -38,15 +38,15 @@ This repository integrates with:
   - Install NVDA to play tts through the screen reader.
     - If you do not want to install the addon, disable `Speech interrupt for typed characters` in NVDA settings to make sure typing text from Talon is not interrupted with every typed character.
     - Otherwise, install the NVDA addon file from the repo [releases page](https://github.com/C-Loftus/sight-free-talon/releases/)
+- Mac
+  - No extra dependencies
 
-## Background and Motivation
+# Contributing / Support
 
-Many screen readers and tools for visual impairment are very dependent upon keyboard and hand usage. By leveraging Talon, we can reduce hand usage and automate tasks, especially those that would be difficult with a screen reader. Talon also allows easier integration of tools like foot pedals and the significant pre-existing ecosystem of tools to help automate user input or navigation.
+If you benefit from this repo, please star it on GitHub. It helps put more attention on an otherwise niche accessibility challenge.
 
-# Contributing
-
-I appreciate all contributions, whether bug reports, feature requests, qualitative design feedback, or code. See the [CONTRIBUTING.md](./docs/src/CONTRIBUTING.md) for more information. Please feel free to reach out to me personally through the links in my GitHub bio if you have any specific inquiries regarding this repo.
+I appreciate _all contributions in any form_. For more info read [CONTRIBUTING.md](./docs/src/CONTRIBUTING.md). Feel free to reach out personally through the links in my bio if you have any personal inquiries regarding this repo.
 
 # Acknowledgements and Resources
 
-See [ATTRIBUTIONS.md](./docs/src/ATTRIBUTIONS.md) for a list of tools, resources, and individuals that have been helpful in the creation of this repository.
+See [ATTRIBUTIONS.md](./docs/src/ATTRIBUTIONS.md)

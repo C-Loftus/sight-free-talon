@@ -1,8 +1,18 @@
 from talon import registry, Module, actions
 from ..lib.HTMLbuilder import Builder
-import html
+import html, re
 
 mod = Module()
+
+def remove_wrapper(text: str):
+	if text.startswith("Context("):
+		text = text.replace("Context(", "", 1)  # Remove the first occurrence of "Context("
+		text = text.rstrip(")") 
+		return text
+	
+	regex = r"[^\"']+[\"']([^\"']+)[\"']"
+	match = re.search(regex, text)
+	return match.group(1) if match else None
 
 
 @mod.action_class
@@ -12,18 +22,19 @@ class Actions:
 		"""Returns a list of all commands"""
 		command_dict = {}
 		for ctx in registry.active_contexts():
-			phrases = [str(command.rule).replace('Rule("', "")[0:-2] 
+
+			phrases = [remove_wrapper(str(command.rule))
 			  for command in ctx.commands.values()]
 
 
-			# line_numbers = [command.lineno for command in ctx.commands.values()]
-			code = [html.escape(str(command.script)
+			code = [remove_wrapper(str(command.script)
 					   )
 					for command in 
 					ctx.commands.values()
 				]
 			
-			ctx_name = ctx
+			ctx_name = remove_wrapper(str(ctx)) 
+
 			command_dict[ctx_name] = {
 				"phrases": phrases,
 				# "line_numbers": line_numbers,

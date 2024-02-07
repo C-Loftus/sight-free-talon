@@ -19,7 +19,6 @@ def initialize_settings():
 # initialize the settings only after the user settings have been loaded
 app.register('ready', initialize_settings)
 
-
 speaker_cancel_callback: Optional[callable] = None
 
 @mod.action_class
@@ -117,7 +116,7 @@ class Actions:
             ctx.settings["user.echo_context"] = True
 
 
-    def tts(text: str):
+    def tts(text: str, interrupt:bool = True):
         '''text to speech with robot voice'''
         raise NotImplementedError("Sight-Free-Talon Error: TTS not implemented in this context")
 
@@ -129,7 +128,7 @@ class Actions:
         """Toggles the screen reader on and off"""
         actions.user.tts("Toggle Reader Not Supported In This Context")
 
-    def base_win_tts(text: str):
+    def base_win_tts(text: str,  interrupt: bool):
         """Base function for windows tts. We expose this 
         so we can share the speaker object across files since 
         it won't get overridden by the other tts functions"""
@@ -138,6 +137,5 @@ class Actions:
         """Switches the tts voice"""
         actions.user.tts("Switching Not Supported In This Context")
 
-    
     def piper(text: str):
         """Text to speech with a piper model"""

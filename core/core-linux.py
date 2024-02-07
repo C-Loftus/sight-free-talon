@@ -27,8 +27,11 @@ class UserActions:
             speaker = "espeak"
             actions.user.tts("Switched to espeak")
 
-    def tts(text: str): 
+    def tts(text: str, interrupt:bool =True): 
         """Text to speech with a robotic/narrator voice"""
+        if interrupt:
+            actions.user.cancel_current_speaker()
+
         match speaker:
             case "espeak":
                 actions.user.espeak(text)
@@ -40,7 +43,7 @@ class UserActions:
     def espeak(text: str):
         """Text to speech with a robotic/narrator voice"""
         rate = settings.get("user.tts_speed", 0)
-        # convert -5 to 5 to -100 to 100 
+        # convert -10 to 10 to -100 to 100 
         rate = rate * 10
         # text = remove_special(text)
 

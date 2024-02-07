@@ -70,7 +70,7 @@ class IPC_Server():
             result += handle_command(message)
 
         response = f"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nMessage received: Result: {result}".encode()  # Create a HTTP response
-        client_socket.send(response)
+        client_socket.sendall(response)
 
     def output_spec_file(self):
         # write a json file to let clients know how to connect and what commands are available
@@ -106,7 +106,7 @@ class IPC_Server():
             except Exception as e:
                 print(f"Error handling message from client: {e}")
             finally:
-                client_socket.close()
+                client_socket.close()   
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 

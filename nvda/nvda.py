@@ -20,7 +20,7 @@ if os.name == 'nt':
     # Load the NVDA client library
     dir_path = os.path.dirname(os.path.realpath(__file__))
     dll_path = os.path.join(dir_path, "nvdaControllerClient64.dll")
-    nvda_client: ctypes.WinDLL = ctypes.windll.LoadLibrary(dll_path)
+    nvda_client: ctypes.WinDLL = ctypes.windll.LoadLibrary(dll_path) 
 
     cron.interval("3s", set_nvda_running_tag.update)
 else:
@@ -68,12 +68,21 @@ class Actions:
         
         NVDA_RUNNING_CONSTANT = 0
         client_response = nvda_client.nvdaController_testIfRunning()
+
         if client_response == NVDA_RUNNING_CONSTANT:
             return True
         else:
             if settings.get("user.addon_debug"):
-                print(f"NVDA not running. Client response value: {client_response}")
+                print(f"NVDA not running. Client response value: {client_response}") 
+            # if client_response == 1717:
+            #     # reload the dll if there is an error
+            #     print("Reloading NVDA dll")
+            #     ctypes.windll.kernel32.FreeLibrary(nvda_client._handle)
+            #     nvda_client: ctypes.WinDLL = ctypes.windll.LoadLibrary(dll_path)
+            #     return nvda_client.nvdaController_testIfRunning()
+            # else:
             return False
+
     
     def nvda_tts(text: str, use_clipboard: bool= False):
         '''text to speech with NVDA'''
@@ -110,12 +119,13 @@ class UserActions:
         else:
             nvda_client.nvdaController_speakText(text)
     
-    def tts(text: str):
-        """Text to speech"""
+    def tts(text: str, interrupt:bool =True):
+        """Text to speech within NVDA"""
         if settings.get("user.tts_via_screenreader"):
+        # we ignore interrupt since that is done by NVDA
             actions.user.nvda_tts(text)
         else:
-            actions.user.base_win_tts(text)
+            actions.user.base_win_tts(text, interrupt)
 
 
     def cancel_current_speaker():

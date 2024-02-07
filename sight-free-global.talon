@@ -4,10 +4,17 @@
 toggle echo:
     user.toggle_echo()
 
+# Echo and interrupt the current speaker
 echo this:
     key(ctrl-c)
     sleep(0.1)
     user.tts(clip.text())
+
+echo no interrupt:
+    key(ctrl-c)
+    sleep(0.1)
+    interrupt = false
+    user.tts(clip.text(), interrupt)
 
 echo clipboard:
     user.tts(clip.text())
@@ -42,7 +49,7 @@ toggle [screen] reader:
 toggle (key | keypress) sound:
     user.toggle_keypress_sound()
 
-(swtich | change) voice:
+(switch | change) voice:
     user.switch_voice()
 
 toggle braille:

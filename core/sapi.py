@@ -1,5 +1,5 @@
-from collections import OrderedDict
 import os
+from collections import OrderedDict
 
 if os.name == "nt":
     import pywintypes
@@ -14,7 +14,7 @@ SVSFIsNotXML = 16
 SVSFPersistXML = 32
 
 
-class SAPI5():
+class SAPI5:
     """Supports the microsoft speech API version 5."""
 
     has_volume = True
@@ -95,4 +95,3 @@ class SAPI5():
         if self.object:
             return True
         return False
-

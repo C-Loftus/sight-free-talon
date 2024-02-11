@@ -1,5 +1,7 @@
+import os
+import subprocess
+
 from talon import Context, actions, settings
-import os, subprocess
 
 ctxLinux = Context()
 ctxLinux.matches = r"""
@@ -7,10 +9,11 @@ os: linux
 """
 
 from typing import Literal
+
 speaker: Literal["espeak", "piper"] = "espeak"
 
 
-@ctxLinux.action_class('user')
+@ctxLinux.action_class("user")
 class UserActions:
 
     def toggle_reader():
@@ -27,7 +30,7 @@ class UserActions:
             speaker = "espeak"
             actions.user.tts("Switched to espeak")
 
-    def tts(text: str, interrupt:bool =True): 
+    def tts(text: str, interrupt: bool = True):
         """Text to speech with a robotic/narrator voice"""
         if interrupt:
             actions.user.cancel_current_speaker()
@@ -43,30 +46,31 @@ class UserActions:
     def espeak(text: str):
         """Text to speech with a robotic/narrator voice"""
         rate = settings.get("user.tts_speed", 0)
-        # convert -10 to 10 to -100 to 100 
+        # convert -10 to 10 to -100 to 100
         rate = rate * 10
         # text = remove_special(text)
 
         proc = subprocess.Popen(["spd-say", text, "--rate", str(rate)])
         actions.user.set_cancel_callback(proc.kill)
 
-
     def piper(text: str):
         """Text to speech with a robotic/narrator voice"""
         # change the directory to the directory of this file
         # so we can run the command from the correct directory
-        model_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "additional_voices", "models")
+        model_dir = os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), "additional_voices", "models"
+        )
         # You have to install piper with pipx
         piper = os.path.expanduser("~/.local/bin/piper")
 
         os.chdir(model_dir)
 
-        modes = ['en_US-amy-low.onnx', 'en_US-lessac-medium.onnx']
+        modes = ["en_US-amy-low.onnx", "en_US-lessac-medium.onnx"]
         # high = 22050
         # Hz for playback in low quality
         low = 16000
 
-        #  we need this more verbose representation here so we don't use the 
+        #  we need this more verbose representation here so we don't use the
         # shell and have risks of shell expansion
         command1 = ["echo", f"{text}"]
         command2 = [piper, "--model", modes[0], "--length_scale", "0.5", "--output_raw"]

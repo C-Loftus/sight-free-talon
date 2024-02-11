@@ -1,33 +1,36 @@
+import json
+import os
+import socket
+import threading
+
 import config
-import tones
 import globalPluginHandler
-import os, json, socket, threading
+import tones
 
 # Exhaustive list of valid commands
 schema = [
     "disableSpeechInterruptForCharacters",
     "enableSpeechInterruptForCharacters",
-
     "disableSpeakTypedWords",
     "enableSpeakTypedWords",
-
     "disableSpeakTypedCharacters",
     "enableSpeakTypedCharacters",
-
-    "debug"
+    "debug",
 ]
 
 SPEC_PATH = os.path.expanduser("~\\AppData\\Roaming\\nvda\\talon_server_spec.json")
+
 
 # Bind to an open port in case the specified port is not available
 def bind_to_available_port(server_socket, start_port, end_port):
     for port in range(start_port, end_port):
         try:
-            server_socket.bind(('127.0.0.1', port))
+            server_socket.bind(("127.0.0.1", port))
             return port
         except OSError:
             continue
     raise OSError(f"No available ports in the range {start_port}-{end_port}")
+
 
 # Change a setting based on a message from the client
 def handle_command(command: str):
@@ -37,28 +40,29 @@ def handle_command(command: str):
     if command == "disableSpeechInterruptForCharacters":
         config.conf["keyboard"]["speechInterruptForCharacters"] = False
 
-    elif command == "enableSpeechInterruptForCharacters": 
-        config.conf["keyboard"]["speechInterruptForCharacters"] = True 
+    elif command == "enableSpeechInterruptForCharacters":
+        config.conf["keyboard"]["speechInterruptForCharacters"] = True
 
-    elif command == "disableSpeakTypedWords": 
-        config.conf["keyboard"]["speakTypedWords"] = False 
+    elif command == "disableSpeakTypedWords":
+        config.conf["keyboard"]["speakTypedWords"] = False
 
     elif command == "enableSpeakTypedWords":
         config.conf["keyboard"]["speakTypedWords"] = True
 
-    elif command == "disableSpeakTypedCharacters": 
-        config.conf["keyboard"]["speakTypedCharacters"] = False 
+    elif command == "disableSpeakTypedCharacters":
+        config.conf["keyboard"]["speakTypedCharacters"] = False
 
     elif command == "enableSpeakTypedCharacters":
         config.conf["keyboard"]["speakTypedCharacters"] = True
-        
+
     elif command == "debug":
-        tones.beep(640, 100) 
+        tones.beep(640, 100)
 
     return f"Success: {command}"
-        
-class IPC_Server():
-    port = None 
+
+
+class IPC_Server:
+    port = None
     server_socket = None
     running = False
 
@@ -78,11 +82,11 @@ class IPC_Server():
         spec = {
             "address": "127.0.0.1",
             "port": str(self.get_port()),
-            "valid_commands": schema    
+            "valid_commands": schema,
         }
         with open(SPEC_PATH, "w") as f:
             json.dump(spec, f)
-        
+
     def set_port(self, port):
         self.port = port
 
@@ -94,10 +98,10 @@ class IPC_Server():
         port = bind_to_available_port(self.server_socket, 8888, 9000)
         self.set_port(port)
         self.output_spec_file()
-        
+
         self.server_socket.listen(1)
         self.server_socket.settimeout(0.2)  # Set the timeout to None
-        print(f'Serving on {self.server_socket.getsockname()}')
+        print(f"Serving on {self.server_socket.getsockname()}")
 
         while self.running:
             try:
@@ -114,7 +118,7 @@ class IPC_Server():
                 print(f"Talon Addon Crash: {e}")
                 self.stop()
                 break
-        
+
     def stop(self):
         self.running = False
         if self.server_socket:
@@ -124,15 +128,16 @@ class IPC_Server():
         if os.path.exists(SPEC_PATH):
             os.remove(SPEC_PATH)
 
+
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
     def __init__(self):
         super(GlobalPlugin, self).__init__()
 
     def terminate(self):
-        # clean up when NVDA exits     
+        # clean up when NVDA exits
         server.stop()
-        
+
 
 server = IPC_Server()
 server_thread = threading.Thread(target=server.create_server)

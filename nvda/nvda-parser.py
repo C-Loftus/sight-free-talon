@@ -1,5 +1,7 @@
-import os, configparser
-from talon import actions, Module, Context
+import configparser
+import os
+
+from talon import Context, Module, actions
 
 PATH = os.path.expanduser("~\\AppData\\Roaming\\nvda\\nvda.ini")
 
@@ -11,22 +13,26 @@ and would otherwise cause the configparser to fail since it isn't valid ini
 
 
 mod = Module()
+
+
 @mod.action_class
 class Actions:
     def nvda_set_setting(setting: str, value: bool):
         """Sets an NVDA setting to a given value"""
+
 
 ctx = Context()
 ctx.matches = r"""
 os: windows
 """
 
+
 @ctx.action_class("user")
 class UserActions:
     def nvda_set_setting(setting: str, value: bool):
 
         # Load the nvda.ini file, skipping the first line
-        with open(PATH, 'r') as f:
+        with open(PATH, "r") as f:
             next(f)  # Skip the first line
             config_string = f.read()
 
@@ -40,10 +46,10 @@ class UserActions:
                 config[section][setting] = str(value)
 
         # Save the changes back to the nvda.ini file, preserving the first line
-        with open(PATH, 'r') as f:
+        with open(PATH, "r") as f:
             first_line = next(f)  # Save the first line
 
-        with open(PATH, 'w') as configfile:
+        with open(PATH, "w") as configfile:
             configfile.write(first_line)  # Write the first line back to the file
             config.write(configfile)  # Write the rest of the config
         print(f"Set NVDA setting: {setting} to {value}")

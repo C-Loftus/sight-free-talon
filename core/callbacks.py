@@ -1,4 +1,5 @@
-from talon import scope, registry, ui, actions, settings, speech_system, app
+from talon import actions, app, registry, scope, settings, speech_system, ui
+
 
 def on_phrase(parsed_phrase):
     if actions.speech.enabled() and actions.user.echo_dictation_enabled():
@@ -29,6 +30,8 @@ def on_app_switch(app):
 # since sometimes Talon triggers a "title switch" when
 # the title actually hasn't changed, i.e. when a text file is saved
 last_title = None
+
+
 def on_title_switch(win):
     if not actions.user.echo_context_enabled():
         return
@@ -48,21 +51,23 @@ def on_title_switch(win):
 
 
 last_mode = None
+
+
 def on_update_contexts():
     global last_mode
     modes = scope.get("mode") or []
 
-    MIXED =  ("command" in modes and "dictation" in modes)
-    COMMAND = ("command" in modes and "dictation" not in modes)
-    DICTATION = ("dictation" in modes and "command" not in modes)
-    SLEEP = ("sleep" in modes)
+    MIXED = "command" in modes and "dictation" in modes
+    COMMAND = "command" in modes and "dictation" not in modes
+    DICTATION = "dictation" in modes and "command" not in modes
+    SLEEP = "sleep" in modes
     ANNOUNCE = settings.get("user.announce_mode_updates")
 
     if last_mode == "sleep" and not SLEEP:
         # Always announce wake up
         # Cancel any current speaker, weird edge case where it will speak twice otherwise
         actions.user.cancel_current_speaker()
-        actions.user.tts(f"Talon now listening")   
+        actions.user.tts(f"Talon now listening")
 
     elif last_mode != "sleep" and SLEEP:
         # Always announce sleep
@@ -72,18 +77,26 @@ def on_update_contexts():
         if ANNOUNCE:
             actions.user.tts(f"Talon mixed mode")
 
-    elif last_mode != "sleep" and COMMAND \
-        and not DICTATION and not SLEEP and last_mode != "command":
+    elif (
+        last_mode != "sleep"
+        and COMMAND
+        and not DICTATION
+        and not SLEEP
+        and last_mode != "command"
+    ):
         if ANNOUNCE:
             actions.user.tts(f"Talon command mode")
 
-    elif last_mode != "sleep" and \
-        DICTATION and not COMMAND \
-        and not SLEEP and \
-        last_mode != "dictation" \
-        and last_mode != "mixed":
+    elif (
+        last_mode != "sleep"
+        and DICTATION
+        and not COMMAND
+        and not SLEEP
+        and last_mode != "dictation"
+        and last_mode != "mixed"
+    ):
         if ANNOUNCE:
-            actions.user.tts(f"Talon dictation mode") 
+            actions.user.tts(f"Talon dictation mode")
 
     if SLEEP:
         last_mode = "sleep"
@@ -93,6 +106,7 @@ def on_update_contexts():
         last_mode = "command"
     elif DICTATION:
         last_mode = "dictation"
+
 
 def on_ready():
     # Only register these callbacks once all user settings and Talon

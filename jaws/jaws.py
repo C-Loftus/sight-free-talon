@@ -1,8 +1,21 @@
 # from __future__ import absolute_import
 # import pywintypes
 
-from talon import actions, Module, settings, cron, Context, clip, registry, app , speech_system
-import os, ctypes, time  
+import ctypes
+import os
+import time
+
+from talon import (
+    Context,
+    Module,
+    actions,
+    app,
+    clip,
+    cron,
+    registry,
+    settings,
+    speech_system,
+)
 
 # class Jaws():
 #     """Supports the Jaws for Windows screen reader."""
@@ -43,35 +56,35 @@ ctx = Context()
 
 mod.tag("jaws_running", desc="If set, JAWS is running")
 
+
 @mod.scope
 def set_jaws_running_tag():
-    '''Update tags based on if JAWS is running'''
+    """Update tags based on if JAWS is running"""
     # TODO edge case on startup this might not be set yet
     try:
-        ctx.tags = ["user.jaws_running"] \
-            if actions.user.is_jaws_running() \
-            else []
+        ctx.tags = ["user.jaws_running"] if actions.user.is_jaws_running() else []
     except:
         ctx.tags = []
 
-if os.name == 'nt':
+
+if os.name == "nt":
     cron.interval("3s", set_jaws_running_tag.update)
 
 
 @mod.action_class
 class Actions:
-    
-    def toggle_jaws():
-        '''Toggles JAWS on and off'''
 
-    def restart_jaws(): 
+    def toggle_jaws():
+        """Toggles JAWS on and off"""
+
+    def restart_jaws():
         """Restarts JAWS"""
 
     def is_jaws_running() -> bool:
-        '''Returns true if JAWS is running'''
-    
-    def jaws_tts(text: str, use_clipboard: bool= False):
-        '''text to speech with JAWS'''
+        """Returns true if JAWS is running"""
+
+    def jaws_tts(text: str, use_clipboard: bool = False):
+        """text to speech with JAWS"""
 
 
 ctxWindowsJAWSRunning = Context()
@@ -79,5 +92,3 @@ ctxWindowsJAWSRunning.matches = r"""
 os: windows
 tag: user.jaws_running
 """
-
-

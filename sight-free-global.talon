@@ -41,7 +41,7 @@ echo tab level:
     key(ctrl-c)
     sleep(0.1)
     level = user.indentation_level(clip.text())
-    user.tts('{level}')
+    user.tts("{level}")
 
 toggle [screen] reader:
     user.toggle_reader()

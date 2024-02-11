@@ -1,18 +1,15 @@
 # import dataclasses
-from typing import Optional, Union, Literal
+from typing import Literal, Optional, Union
+
 # import json
 
 IPC_COMMAND = Literal[
     "disableSpeechInterruptForCharacters",
     "enableSpeechInterruptForCharacters",
-
     "disableSpeakTypedWords",
     "enableSpeakTypedWords",
-
     "disableSpeakTypedCharacters",
-    "enableSpeakTypedCharacters"
-
-    "debug"
+    "enableSpeakTypedCharacters" "debug",
 ]
 
 # @dataclasses.dataclass
@@ -31,7 +28,7 @@ IPC_COMMAND = Literal[
 #     action_name: str
 #     action_args: Optional[list[str]]
 
-#     def validate(self): 
+#     def validate(self):
 #         if not isinstance(self.action_name, str):
 #             raise TypeError(f"Invalid action name type: {type(self.action_name)}")
 #         if self.action_args is not None and not isinstance(self.action_args, list):
@@ -48,4 +45,3 @@ IPC_COMMAND = Literal[
 
 #     def serialize(self):
 #         return json.dumps([dataclasses.asdict(command) for command in self.commands])
-

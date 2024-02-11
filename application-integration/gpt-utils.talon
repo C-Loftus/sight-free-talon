@@ -1,5 +1,4 @@
 tag: user.openai_defined
-
 -
 
 # Uses Talon-AI-Tools community standard

@@ -4,31 +4,37 @@ and are agnostic to the tts voice being used or the operating system
 """
 
 from typing import Optional
-from talon import Module, actions, Context, settings, app
+
+from talon import Context, Module, actions, app, settings
 
 mod = Module()
 ctx = Context()
 
-# We want to get the settings from the talon file but then update 
+
+# We want to get the settings from the talon file but then update
 # them locally here so we can change them globally via expose talon actions
 def initialize_settings():
-    ctx.settings["user.echo_dictation"]: bool = settings.get("user.echo_dictation", True)
+    ctx.settings["user.echo_dictation"]: bool = settings.get(
+        "user.echo_dictation", True
+    )
     ctx.settings["user.echo_context"]: bool = settings.get("user.echo_context", False)
     ctx.settings["user.echo_braille"]: bool = settings.get("user.echo_braille", True)
 
+
 # initialize the settings only after the user settings have been loaded
-app.register('ready', initialize_settings)
+app.register("ready", initialize_settings)
 
 speaker_cancel_callback: Optional[callable] = None
+
 
 @mod.action_class
 class Actions:
     def set_cancel_callback(callback: callable):
         """
-        Sets the callback to call when the current speaker is cancelled. Only 
+        Sets the callback to call when the current speaker is cancelled. Only
         necessary to set if the tts is coming from a subprocess where we need to store a handle
         """
-        global speaker_cancel_callback 
+        global speaker_cancel_callback
         speaker_cancel_callback = callback
 
     def cancel_current_speaker():
@@ -36,14 +42,13 @@ class Actions:
         global speaker_cancel_callback
         if not speaker_cancel_callback:
             return
-        
+
         try:
             speaker_cancel_callback()
         except Exception as e:
             print(e)
         finally:
             speaker_cancel_callback = None
-            
 
     def braille(text: str):
         """Output braille with the screenreader"""
@@ -64,7 +69,7 @@ class Actions:
             return ctx.settings["user.echo_dictation"]
         except:
             return False
-        
+
     def braille_enabled() -> bool:
         """Returns true if braille is enabled"""
         # Catch potential race condition where settings haven't been loaded at startup
@@ -72,7 +77,7 @@ class Actions:
             return ctx.settings["user.echo_braille"]
         except:
             return False
-    
+
     def echo_context_enabled() -> bool:
         """Returns true if echo context is enabled"""
         # Catch potential race condition where settings haven't been loaded at startup
@@ -104,7 +109,10 @@ class Actions:
     def toggle_echo_all():
         """Toggles echo dictation and echo context on and off"""
 
-        dictation, context = actions.user.echo_dictation_enabled(), actions.user.echo_context_enabled()
+        dictation, context = (
+            actions.user.echo_dictation_enabled(),
+            actions.user.echo_context_enabled(),
+        )
 
         if any([dictation, context]):
             actions.user.tts("echo disabled")
@@ -115,22 +123,23 @@ class Actions:
             ctx.settings["user.echo_dictation"] = True
             ctx.settings["user.echo_context"] = True
 
-
-    def tts(text: str, interrupt:bool = True):
-        '''text to speech with robot voice'''
-        raise NotImplementedError("Sight-Free-Talon Error: TTS not implemented in this context")
+    def tts(text: str, interrupt: bool = True):
+        """text to speech with robot voice"""
+        raise NotImplementedError(
+            "Sight-Free-Talon Error: TTS not implemented in this context"
+        )
 
     def espeak(text: str):
-        '''text to speech with espeak'''
+        """text to speech with espeak"""
         actions.user.tts("Espeak Not Supported In This Context")
 
     def toggle_reader():
         """Toggles the screen reader on and off"""
         actions.user.tts("Toggle Reader Not Supported In This Context")
 
-    def base_win_tts(text: str,  interrupt: bool):
-        """Base function for windows tts. We expose this 
-        so we can share the speaker object across files since 
+    def base_win_tts(text: str, interrupt: bool):
+        """Base function for windows tts. We expose this
+        so we can share the speaker object across files since
         it won't get overridden by the other tts functions"""
 
     def switch_voice():

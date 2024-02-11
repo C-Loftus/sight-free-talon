@@ -1,8 +1,8 @@
 # generate sample random sample python
+import os
 import random
 import string
-import os
 
-test = ''.join(random.choice(string.ascii_lowercase) for i in range(10))
+test = "".join(random.choice(string.ascii_lowercase) for i in range(10))
 print(test)
-os.system('cat test.txt')
+os.system("cat test.txt")

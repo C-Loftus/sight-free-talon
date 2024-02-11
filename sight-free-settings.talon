@@ -17,7 +17,7 @@ settings():
     user.tts_via_screenreader = true
 
     # Key used for nvda modifier, change to 'insert' if that is your nvda modifier
-    user.nvda_key = 'capslock'
+    user.nvda_key = "capslock"
 
     # Starts NVDA automatically with Talon
     user.start_screenreader_on_startup = false

@@ -7,11 +7,11 @@ repos:
       - id: check-case-conflict
       - id: check-executables-have-shebangs
       - id: check-merge-conflict
-      # - id: check-shebang-scripts-are-executable
+      - id: check-shebang-scripts-are-executable
       - id: check-symlinks
       - id: destroyed-symlinks
       - id: detect-private-key
-      - id: fix-byte-order-marker
+      # - id: fix-byte-order-marker
       # NB. To avoid sometimes needing multiple runs, we need:
       # - trailing-whitespace BEFORE end-of-file-fixer,
       #   otherwise trailing newline followed by whitespace, "\n ",

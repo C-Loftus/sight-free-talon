@@ -136,7 +136,7 @@ class UserActions:
         """Output braille with NVDA"""
         nvda_client.nvdaController_brailleMessage(text)
 
-# By default the screen rader will allow you to press a key and interrupt the ph
+# By default the screen reader will allow you to press a key and interrupt the ph
 # rase however this does not work alongside typing given the fact that we are pres
 # sing keys.  so we need to temporally disable it then re enable it at the end of 
 # the phrase

@@ -60,6 +60,7 @@ def handle_command(command: str):
 class IPC_Server():
     port = None 
     server_socket = None
+    running = False
 
     def handle_client(self, client_socket: socket.socket):
         data = client_socket.recv(1024)
@@ -95,18 +96,33 @@ class IPC_Server():
         self.output_spec_file()
         
         self.server_socket.listen(1)
-        self.server_socket.settimeout(None)  # Set the timeout to None
+        self.server_socket.settimeout(0.2)  # Set the timeout to None
         print(f'Serving on {self.server_socket.getsockname()}')
 
-        while True:
+        while self.running:
             try:
                 client_socket, addr = self.server_socket.accept()
                 print(f"Connection from {addr}")
-                self.handle_client(client_socket)
+
+                self.client_socket = client_socket
+                self.client_socket.settimeout(0.2)
+                self.handle_client(self.client_socket)
+            except socket.timeout:
+                self.client_socket.close()
+                continue
             except Exception as e:
-                print(f"Error handling message from client: {e}")
-            finally:
-                client_socket.close()   
+                print(f"Talon Addon Crash: {e}")
+                self.stop()
+                break
+        
+    def stop(self):
+        self.running = False
+        if self.server_socket:
+            self.server_socket.close()
+        if self.client_socket:
+            self.client_socket.close()
+        if os.path.exists(SPEC_PATH):
+            os.remove(SPEC_PATH)
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
@@ -115,10 +131,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
     def terminate(self):
         # clean up when NVDA exits     
-        if os.path.exists(SPEC_PATH):
-            os.remove(SPEC_PATH)
-        if server.server_socket:
-            server.server_socket.close()
+        server.stop()
         
 
 server = IPC_Server()

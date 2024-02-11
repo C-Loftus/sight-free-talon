@@ -17,7 +17,7 @@ This repository integrates with:
 
 - Watch [my demo video](https://www.youtube.com/watch?v=i-XcpnVwvR0) for a quick overview
 - The `.talon` files in each subdirectory contain scoped commands corresponding to each application or specific context
-- The settings file at the root of the repository contains all user-configurable settings for this repo
+- Copy the `sight-free-settings.talon.example` file into your user directory to change settings
 
 # Installing
 

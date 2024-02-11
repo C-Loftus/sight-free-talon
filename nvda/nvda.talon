@@ -2,7 +2,7 @@ tag: user.nvda_running
 os: windows
 -
 
-reader press <user.keys>: user.with_nvda_mod_press(keys)
+reader press <user.keys>:   user.with_nvda_mod_press(keys)
 
 next heading:
     key(h)
@@ -61,7 +61,7 @@ previous heading  <number_small>: key("shift-{number_small}")
 
 next landmark:              key(d)
 previous landmark:          key(shift-d)
-toggle speech mode:
+# toggle speech mode:
 
 open element list:
     user.with_nvda_mod_press('f7')
@@ -145,4 +145,3 @@ pass through next:
 
 restart reader:
     user.restart_nvda()
-

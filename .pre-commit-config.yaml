@@ -7,7 +7,7 @@ repos:
       - id: check-case-conflict
       - id: check-executables-have-shebangs
       - id: check-merge-conflict
-      # - id: check-shebang-scripts-are-executable
+      - id: check-shebang-scripts-are-executable
       - id: check-symlinks
       - id: destroyed-symlinks
       - id: detect-private-key

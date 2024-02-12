@@ -13,6 +13,3 @@ echo ask <user.text>:
     result = user.gpt_answer_question(text)
     user.cancel_current_speaker()
     user.tts(result)
-
-describe image:
-    user.describe_image()

@@ -34,7 +34,7 @@ settings():
     # Speak Talon's mode (command, dictation, mixed) whenever it is changed
     user.announce_mode_updates = true
 
-    #
+    # Display debugging output for NVDA
     user.addon_debug = false
 
     # Every given number of minutes, send a notification, prompting you to rest your eyes

@@ -55,7 +55,7 @@ class NVDAActions:
                 raise ValueError(f"Invalid command: {command}")
             
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.settimeout(0.1)
+        sock.settimeout(.01)
         encoded = json.dumps(commands).encode()
 
         if settings.get("user.addon_debug"):
@@ -77,13 +77,13 @@ class NVDAActions:
                 if 'debug' in commands:
                     actions.user.tts("Sent Message to NVDA Successfully")
                     
-            except socket.timeout:
-                print("NVDA Addon Connection timed out")
+            except socket.timeout as e:
+                print(f"NVDA Addon Connection with {ip}:{port} timed out")
+                print(e)
             except: 
                 print("Error Communicating with NVDA extension")
             finally:
-                sock.close()
-            
+                sock.close()            
 
 ORCAContext = Context()
 ORCAContext.matches = r"""

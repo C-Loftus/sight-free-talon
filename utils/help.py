@@ -1,6 +1,6 @@
 from talon import registry, Module, actions
 from ..lib.HTMLbuilder import Builder
-import html, re
+import re
 
 mod = Module()
 
@@ -12,7 +12,7 @@ def remove_wrapper(text: str):
 	
 	regex = r"[^\"']+[\"']([^\"']+)[\"']"
 	match = re.search(regex, text)
-	return match.group(1) if match else None
+	return match.group(1) if match else text
 
 
 @mod.action_class

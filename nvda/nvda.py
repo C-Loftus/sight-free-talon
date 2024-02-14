@@ -91,6 +91,10 @@ class Actions:
         """Tests the NVDA controller client"""
         actions.user.tts(f"Controller client value is: {nvda_client.nvdaController_testIfRunning()}")
 
+    def test_reader_addon():
+        """Tests the reader addon"""
+        actions.user.send_ipc_commands(["debug"])
+
 ctxWindowsNVDARunning = Context()
 ctxWindowsNVDARunning.matches = r"""
 os: windows

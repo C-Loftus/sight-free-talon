@@ -96,24 +96,26 @@ class IPC_Server():
         self.output_spec_file()
         
         self.server_socket.listen(1)
-        self.server_socket.settimeout(0.2)  # Set the timeout to None
-        print(f'Serving on {self.server_socket.getsockname()}')
+        self.server_socket.settimeout(5)
+        print(f'\n\n\n\n\nSERVING TALON on {self.server_socket.getsockname()}')
 
         while self.running:
             try:
                 client_socket, addr = self.server_socket.accept()
-                print(f"Connection from {addr}")
+                print(f"\n\n\n\n\nConnection from {addr}")
 
                 self.client_socket = client_socket
-                self.client_socket.settimeout(0.2)
+                self.client_socket.settimeout(2)
                 self.handle_client(self.client_socket)
             except socket.timeout:
-                self.client_socket.close()
-                continue
+                pass
             except Exception as e:
-                print(f"Talon Addon Crash: {e}")
+                print(f"\n\n\n\nTALON NVDA CRASH: {e}")
                 self.stop()
                 break
+            finally:
+                if self.client_socket:
+                    self.client_socket.close()
         
     def stop(self):
         self.running = False
@@ -137,3 +139,4 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 server = IPC_Server()
 server_thread = threading.Thread(target=server.create_server)
 server_thread.start()
+    

@@ -12,9 +12,8 @@ class Actions:
     def addon_server_endpoint() -> Tuple[str, str, str]:
         """Returns the address, port, and valid commands for the addon server"""
 
-    def send_ipc_commands(commands: list[str] | str):
+    def send_ipc_commands(commands: list[IPC_COMMAND] | IPC_COMMAND):
         """Sends a command or commands to the screenreader"""
-
 
 NVDAContext = Context()
 NVDAContext.matches = r"""
@@ -25,7 +24,7 @@ tag: user.nvda_running
 class NVDAActions:
 
     def addon_server_endpoint() -> Tuple[str, str, str]:
-        """Returns the address and port of the addon server"""
+        """Returns the address, port, and valid commands for the addon server"""
         SPEC_FILE = os.path.expanduser("~\\AppData\\Roaming\\nvda\\talon_server_spec.json")
 
         with open(SPEC_FILE, "r") as f:
@@ -41,12 +40,12 @@ class NVDAActions:
                 ip = ipaddress.ip_address(address)
             assert ip.is_private, "Address is not a local IP address"
         except ValueError:
-            raise ValueError(f"Invalid IP address: {address}")
+            raise ValueError(f"Invalid NVDA IP address: {address}")
 
         return address, port, valid_commands
         
 
-    def send_ipc_commands(commands: list[str] | str):
+    def send_ipc_commands(commands: list[IPC_COMMAND] | IPC_COMMAND):
         """Sends a list of commands or a single command string to the NVDA screenreader"""
         ip, port, valid_commands = actions.user.addon_server_endpoint()
 
@@ -65,7 +64,7 @@ class NVDAActions:
             print(f"Sending {commands} to {ip}:{port}")
             
         # Although the screenreader server will block while processing commands,
-        # having a lock clientside reduces errors when sending multiple commands
+        # having a lock client-side prevents errors when sending multiple commands
         with lock:
             try:
                 sock.connect((ip, int(port)))

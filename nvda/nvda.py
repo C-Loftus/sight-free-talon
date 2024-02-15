@@ -74,13 +74,6 @@ class Actions:
         else:
             if settings.get("user.addon_debug"):
                 print(f"NVDA not running. Client response value: {client_response}") 
-            # if client_response == 1717:
-            #     # reload the dll if there is an error
-            #     print("Reloading NVDA dll")
-            #     ctypes.windll.kernel32.FreeLibrary(nvda_client._handle)
-            #     nvda_client: ctypes.WinDLL = ctypes.windll.LoadLibrary(dll_path)
-            #     return nvda_client.nvdaController_testIfRunning()
-            # else:
             return False
 
     
@@ -150,6 +143,7 @@ def disable_interrupt(_):
         SPEC_FILE = os.path.expanduser("~\\AppData\\Roaming\\nvda\\talon_server_spec.json")
         if not os.path.exists(SPEC_FILE):
             return
+        # bundle the commands into a single message
         commands = ["disableSpeechInterruptForCharacters",
                     "disableSpeakTypedWords",
                     "disableSpeakTypedCharacters"
@@ -162,7 +156,7 @@ def restore_interrupt_setting(_):
         SPEC_FILE = os.path.expanduser("~\\AppData\\Roaming\\nvda\\talon_server_spec.json")
         if not os.path.exists(SPEC_FILE):
             return
-        
+        # bundle the commands into a single message
         commands = ["enableSpeechInterruptForCharacters",
                     "enableSpeakTypedWords",
                     "enableSpeakTypedCharacters"

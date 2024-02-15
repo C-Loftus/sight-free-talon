@@ -7,3 +7,6 @@ test reader add on:
 
 test controller client:
     user.test_controller_client()
+
+key(ctrl-alt-shift-g):
+    user.test_reader_addon()

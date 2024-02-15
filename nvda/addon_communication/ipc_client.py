@@ -12,8 +12,17 @@ class Actions:
     def addon_server_endpoint() -> Tuple[str, str, str]:
         """Returns the address, port, and valid commands for the addon server"""
 
-    def send_ipc_commands(commands: list[IPC_COMMAND] | IPC_COMMAND):
+    def send_ipc_commands(commands: list[IPC_COMMAND]):
         """Sends a command or commands to the screenreader"""
+
+    def send_ipc_command(command: IPC_COMMAND):
+        """
+        Sends a single command to the screenreader.
+        This is its own function since old versions of talon
+        don't support union type hints and having a separate
+        function is a workaround a clearer API than passing in a list
+        for a single command
+        """
 
 NVDAContext = Context()
 NVDAContext.matches = r"""
@@ -44,13 +53,9 @@ class NVDAActions:
 
         return address, port, valid_commands
         
-
-    def send_ipc_commands(commands: list[IPC_COMMAND] | IPC_COMMAND):
+    def send_ipc_commands(commands: list[IPC_COMMAND]):
         """Sends a list of commands or a single command string to the NVDA screenreader"""
         ip, port, valid_commands = actions.user.addon_server_endpoint()
-
-        if isinstance(commands, str):
-            commands = [commands]
 
         for command in commands:
             if command not in valid_commands:
@@ -85,7 +90,11 @@ class NVDAActions:
             except: 
                 print("Error Communicating with NVDA extension")
             finally:
-                sock.close()            
+                sock.close()      
+
+    def send_ipc_command(command: IPC_COMMAND):
+        """Sends a single command to the screenreader"""
+        actions.user.send_ipc_commands([command])      
 
 ORCAContext = Context()
 ORCAContext.matches = r"""

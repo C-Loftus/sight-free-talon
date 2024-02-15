@@ -35,11 +35,14 @@ class NVDAActions:
             valid_commands = spec["valid_commands"]
             
         try:
-            ip = ipaddress.ip_address(address)
+            if address == "localhost":
+                ip = ipaddress.ip_address(socket.gethostbyname(address))
+            else:
+                ip = ipaddress.ip_address(address)
             assert ip.is_private, "Address is not a local IP address"
         except ValueError:
             raise ValueError(f"Invalid IP address: {address}")
-        
+
         return address, port, valid_commands
         
 

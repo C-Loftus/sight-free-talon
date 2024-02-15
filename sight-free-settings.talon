@@ -35,7 +35,7 @@ settings():
     user.announce_mode_updates = true
 
     # Display debugging output for NVDA
-    user.addon_debug = false
+    user.addon_debug = true
 
     # Every given number of minutes, send a notification, prompting you to rest your eyes
     # user.enable_break_timer = true

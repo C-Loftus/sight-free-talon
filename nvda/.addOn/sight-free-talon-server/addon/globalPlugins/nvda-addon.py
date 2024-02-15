@@ -23,7 +23,7 @@ SPEC_PATH = os.path.expanduser("~\\AppData\\Roaming\\nvda\\talon_server_spec.jso
 def bind_to_available_port(server_socket, start_port, end_port):
     for port in range(start_port, end_port):
         try:
-            server_socket.bind(('127.0.0.1', port))
+            server_socket.bind(('localhost', port))
             return port
         except OSError:
             continue
@@ -60,12 +60,20 @@ def handle_command(command: str):
 class IPC_Server():
     port = None 
     server_socket = None
-    running = False
+    running = False 
+    client_socket = None
 
     def handle_client(self, client_socket: socket.socket):
         data = client_socket.recv(1024)
 
-        messages = json.loads(data.decode().strip())
+        try:
+            messages = json.loads(data.decode().strip())
+        except json.JSONDecodeError:
+            print("Invalid JSON")
+            response = f"HTTP/1.1 400 Bad Request\r\nContent-Type: text/plain\r\n\r\nInvalid JSON".encode()
+            client_socket.sendall(response)
+            return
+        
         result = ""
         for message in messages:
             result += handle_command(message)
@@ -76,7 +84,7 @@ class IPC_Server():
     def output_spec_file(self):
         # write a json file to let clients know how to connect and what commands are available
         spec = {
-            "address": "127.0.0.1",
+            "address": "localhost",
             "port": str(self.get_port()),
             "valid_commands": schema    
         }
@@ -97,7 +105,9 @@ class IPC_Server():
         
         self.server_socket.listen(1)
         self.server_socket.settimeout(5)
-        print(f'\n\n\n\n\nSERVING TALON on {self.server_socket.getsockname()}')
+        print(f'\n\n\n\n\nSERVING TALON SERVER with {self.server_socket.getsockname()}')
+
+        self.running = True
 
         while self.running:
             try:
@@ -106,9 +116,9 @@ class IPC_Server():
 
                 self.client_socket = client_socket
                 self.client_socket.settimeout(2)
-                self.handle_client(self.client_socket)
+                self.handle_client(self.client_socket) 
             except socket.timeout:
-                pass
+                print("timeout")
             except Exception as e:
                 print(f"\n\n\n\nTALON NVDA CRASH: {e}")
                 self.stop()
@@ -116,6 +126,8 @@ class IPC_Server():
             finally:
                 if self.client_socket:
                     self.client_socket.close()
+
+        print("\n\n\n\n\nSERVER STOPPED")
         
     def stop(self):
         self.running = False

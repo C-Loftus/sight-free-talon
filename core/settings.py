@@ -116,5 +116,10 @@ mod.setting("addon_debug",
     default=False
 )
 
+mod.tag(
+    "sightFreeTalonInstalled",
+    desc="Tag to indicate that you can use TTS"
+)
+
 # mod.mode("strict_dictation", desc="Dictation mode with only a subset of dictation commands")
 # mod.mode('strict_command', desc='Command mode with only a subset of command commands')

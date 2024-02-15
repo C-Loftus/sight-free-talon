@@ -1,6 +1,8 @@
 # Global TTS commands that are OS independent
 # See each folder for specific contextual commands
 
+tag(): user.sightFreeTalonInstalled
+
 toggle echo:
     user.toggle_echo()
 

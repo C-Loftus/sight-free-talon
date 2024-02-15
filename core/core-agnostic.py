@@ -3,7 +3,7 @@ This file contains actions that are core to the talon tts system
 and are agnostic to the tts voice being used or the operating system
 """
 
-from typing import Optional
+from typing import Optional, Callable
 from talon import Module, actions, Context, settings, app
 
 mod = Module()
@@ -19,11 +19,11 @@ def initialize_settings():
 # initialize the settings only after the user settings have been loaded
 app.register('ready', initialize_settings)
 
-speaker_cancel_callback: Optional[callable] = None
+speaker_cancel_callback: Optional[Callable] = None
 
 @mod.action_class
 class Actions:
-    def set_cancel_callback(callback: callable):
+    def set_cancel_callback(callback: Callable):
         """
         Sets the callback to call when the current speaker is cancelled. Only 
         necessary to set if the tts is coming from a subprocess where we need to store a handle

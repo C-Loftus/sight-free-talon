@@ -27,9 +27,9 @@ addon_info = {
 	# version
 	"addon_version": "1.0",
 	# Author(s)
-	"addon_author": "Colton Loftus <name@domain.com>",
+	"addon_author": "Colton Loftus https://colton.bio/contact/",
 	# URL for the add-on documentation support
-	"addon_url": None,
+	"addon_url": "https://colton.bio/sight-free-talon/",
 	# URL for the add-on repository where the source code can be found
 	"addon_sourceURL": None,
 	# Documentation file name

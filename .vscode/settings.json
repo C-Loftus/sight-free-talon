@@ -1,20 +1,14 @@
 {
+    // Extra paths for NVDA addon development with the python environment outside Talon
     "editor.accessibilitySupport": "on",
-    "flake8.args": [
-        "--config=flake8.ini"
-    ],
-    "flake8.importStrategy": "fromEnvironment",
     "python.autoComplete.extraPaths": [
-        "../nvda/source",
-        "../nvda/miscDeps/python"
+        "~\\github\\nvda\\source",
+        "~\\github\\nvda\\miscDeps\\python"
     ],
-    "files.insertFinalNewline": true,
-    "files.trimFinalNewlines": true,
-    "editor.insertSpaces": false,
     "python.analysis.stubPath": "${workspaceFolder}/.vscode/typings",
+    // Clone the NVDA repository to the github folder in your home directory to get typing support
     "python.analysis.extraPaths": [
-        "../nvda/source",
-        "../nvda/miscDeps/python"
+        "~\\github\\nvda\\source",
+        "~\\github\\nvda\\miscDeps\\python"
     ],
-    // "python.defaultInterpreterPath": "${workspaceFolder}/../nvda/.venv/scripts/python.exe"
 }

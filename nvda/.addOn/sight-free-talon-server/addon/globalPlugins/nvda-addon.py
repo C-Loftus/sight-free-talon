@@ -118,7 +118,7 @@ class IPC_Server():
                 self.client_socket.settimeout(2)
                 self.handle_client(self.client_socket) 
             except socket.timeout:
-                print("timeout")
+                pass
             except Exception as e:
                 print(f"\n\n\n\nTALON NVDA CRASH: {e}")
                 self.stop()

@@ -10,8 +10,7 @@ os: mac
 class UserActions:
     def tts(text: str, interrupt:bool =True):
         """Text to speech with a robotic/narrator voice"""
-        # We can't really schedule this since it is a system command, so we
-        # have to spawn a new process each time unfortunately
+
         if interrupt:
             actions.user.cancel_current_speaker()
 

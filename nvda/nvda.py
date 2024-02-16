@@ -23,6 +23,7 @@ if os.name == 'nt':
     nvda_client: ctypes.WinDLL = ctypes.windll.LoadLibrary(dll_path) 
 
     cron.interval("3s", set_nvda_running_tag.update)
+    
 else:
     nvda_client = None
 
@@ -133,40 +134,45 @@ class UserActions:
         """Output braille with NVDA"""
         nvda_client.nvdaController_brailleMessage(text)
 
+
+def _ready_to_send_ipc():
+    SLEEP_MODE = 'sleep' in scope.get("mode")
+    SPEC_FILE = os.path.expanduser("~\\AppData\\Roaming\\nvda\\talon_server_spec.json")
+    return actions.user.is_nvda_running() and not SLEEP_MODE and os.path.exists(SPEC_FILE)
+    
+
 # By default the screen reader will allow you to press a key and interrupt the ph
 # rase however this does not work alongside typing given the fact that we are pres
 # sing keys.  so we need to temporally disable it then re enable it at the end of 
 # the phrase
 def disable_interrupt(_):
-    SLEEP_MODE = 'sleep' in scope.get("mode")
-    if actions.user.is_nvda_running() and not SLEEP_MODE:
-        SPEC_FILE = os.path.expanduser("~\\AppData\\Roaming\\nvda\\talon_server_spec.json")
-        if not os.path.exists(SPEC_FILE):
-            return
-        # bundle the commands into a single message
-        commands = ["disableSpeechInterruptForCharacters",
-                    "disableSpeakTypedWords",
-                    "disableSpeakTypedCharacters"
-                    ]
-        actions.user.send_ipc_commands(commands)
+    if not _ready_to_send_ipc():
+        return
+    
+    # bundle the commands into a single messge
+    commands = ["disableSpeechInterruptForCharacters",
+                "disableSpeakTypedWords",
+                "disableSpeakTypedCharacters"
+                ]
+    actions.user.send_ipc_commands(commands)
 
 def restore_interrupt_setting(_):
-    SLEEP_MODE = 'sleep' in scope.get('mode')
-    if actions.user.is_nvda_running() and not SLEEP_MODE:
-        SPEC_FILE = os.path.expanduser("~\\AppData\\Roaming\\nvda\\talon_server_spec.json")
-        if not os.path.exists(SPEC_FILE):
-            return
-        # bundle the commands into a single message
-        commands = ["enableSpeechInterruptForCharacters",
-                    "enableSpeakTypedWords",
-                    "enableSpeakTypedCharacters"
-                    ]
-        
-        #  this is kind of a hack since we don't know exactly when to re enable it
-        #  because we don't have a callback at the end of the last keypress
-        update = lambda: actions.user.send_ipc_commands(commands)
-        cron.after("1s", update)
-        
-if os.name == 'nt': 
+    if not _ready_to_send_ipc():
+        return
+    
+    # bundle the commands into a single message
+    commands = ["enableSpeechInterruptForCharacters",
+                "enableSpeakTypedWords",
+                "enableSpeakTypedCharacters"
+                ]
+    
+    #  this is kind of a hack since we don't know exactly when to re enable it
+    #  because we don't have a callback at the end of the last keypress
+    update = lambda: actions.user.send_ipc_commands(commands)
+    cron.after("1s", update)
+
+if os.name == 'nt':
     speech_system.register("pre:phrase", disable_interrupt)
     speech_system.register("post:phrase", restore_interrupt_setting)
+    
+

@@ -2,6 +2,7 @@ import config
 import tones
 import globalPluginHandler
 import os, json, socket, threading
+import globalVars
 
 # Exhaustive list of valid commands
 schema = [
@@ -17,7 +18,8 @@ schema = [
     "debug"
 ]
 
-SPEC_PATH = os.path.expanduser("~\\AppData\\Roaming\\nvda\\talon_server_spec.json")
+# Handles both portable and installed versions of NVDA
+SPEC_PATH = os.path.join(globalVars.appArgs.configPath, "talon_server_spec.json") 
 
 # Bind to an open port in case the specified port is not available
 def bind_to_available_port(server_socket, start_port, end_port):
@@ -68,9 +70,9 @@ class IPC_Server():
 
         try:
             messages = json.loads(data.decode().strip())
-        except json.JSONDecodeError:
-            print("Invalid JSON")
-            response = f"HTTP/1.1 400 Bad Request\r\nContent-Type: text/plain\r\n\r\nInvalid JSON".encode()
+        except json.JSONDecodeError as e:
+            print(f"RECEIVED INVALID JSON FROM TALON: {e}")
+            response = f"TALON SERVER ERROR: {e}".encode()
             client_socket.sendall(response)
             return
         
@@ -78,7 +80,7 @@ class IPC_Server():
         for message in messages:
             result += handle_command(message)
 
-        response = f"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nMessage received: Result: {result}".encode()  # Create a HTTP response
+        response = f"TALON COMMAND PROCESSED: {result}".encode()
         client_socket.sendall(response)
 
     def output_spec_file(self):
@@ -104,31 +106,28 @@ class IPC_Server():
         self.output_spec_file()
         
         self.server_socket.listen(1)
-        self.server_socket.settimeout(5)
-        print(f'\n\n\n\n\nSERVING TALON SERVER with {self.server_socket.getsockname()}')
+        # Need a time short enough that we can reboot NVDA and the old socket will be closed and won't interfere
+        self.server_socket.settimeout(0.5)
+        print(f'\n\n\n\n\nTALON SERVER SERVING ON {self.server_socket.getsockname()}')
 
         self.running = True
 
         while self.running:
             try:
-                client_socket, addr = self.server_socket.accept()
-                print(f"\n\n\n\n\nConnection from {addr}")
-
+                client_socket, _ = self.server_socket.accept()
                 self.client_socket = client_socket
-                self.client_socket.settimeout(2)
+                self.client_socket.settimeout(0.3)
                 self.handle_client(self.client_socket) 
             except socket.timeout:
                 pass
             except Exception as e:
-                print(f"\n\n\n\nTALON NVDA CRASH: {e}")
+                print(f"\n\n\n\nTALON SERVER CRASH: {e}")
                 self.stop()
                 break
             finally:
                 if self.client_socket:
                     self.client_socket.close()
 
-        print("\n\n\n\n\nSERVER STOPPED")
-        
     def stop(self):
         self.running = False
         if self.server_socket:
@@ -137,6 +136,7 @@ class IPC_Server():
             self.client_socket.close()
         if os.path.exists(SPEC_PATH):
             os.remove(SPEC_PATH)
+        print("\n\n\n\n\nTALON SERVER STOPPED")
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 

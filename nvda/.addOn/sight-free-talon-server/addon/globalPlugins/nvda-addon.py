@@ -1,8 +1,8 @@
 import config
 import tones
 import globalPluginHandler
-import os, json, socket, threading
-import globalVars
+import os, json, socket, threading, time
+import globalVars, speech
 
 # Exhaustive list of valid commands
 schema = [
@@ -57,7 +57,7 @@ def handle_command(command: str):
     elif command == "debug":
         tones.beep(640, 100) 
 
-    return f"Success: {command}"
+    return f"Success running: {command}"
         
 class IPC_Server():
     port = None 
@@ -120,9 +120,12 @@ class IPC_Server():
                 self.handle_client(self.client_socket) 
             except socket.timeout:
                 pass
+            # catch client disconnect error
             except Exception as e:
                 print(f"\n\n\n\nTALON SERVER CRASH: {e}")
                 self.stop()
+                with open(os.path.join(globalVars.appArgs.configPath, "talon_server_error.log"), "w") as f:
+                    f.write(str(e))
                 break
             finally:
                 if self.client_socket:

@@ -14,6 +14,8 @@ class Actions:
 
     def send_ipc_commands(commands: list[IPC_COMMAND]):
         """Sends a command or commands to the screenreader"""
+        actions.user.tts("No screenreader running to send commands to")
+        raise NotImplementedError
 
     def send_ipc_command(command: IPC_COMMAND):
         """
@@ -23,6 +25,9 @@ class Actions:
         function is a workaround a clearer API than passing in a list
         for a single command
         """
+        actions.user.tts("No screenreader running to send commands to")
+        raise NotImplementedError
+
 
 NVDAContext = Context()
 NVDAContext.matches = r"""
@@ -62,7 +67,7 @@ class NVDAActions:
                 raise ValueError(f"Invalid command: {command}")
             
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.settimeout(.01)
+        sock.settimeout(.2)
         encoded = json.dumps(commands).encode()
 
         if settings.get("user.addon_debug"):
@@ -82,13 +87,17 @@ class NVDAActions:
                     print('Received', repr(response))
 
                 if 'debug' in commands:
-                    actions.user.tts("Sent Message to NVDA Successfully")
+                    actions.user.tts(f"Sent Message to NVDA Successfully with server response: {response.decode('utf-8')}")
                     
             except socket.timeout as e:
-                print(f"NVDA Addon Connection with {ip}:{port} timed out")
+                print(f"Clientside connection with {ip}:{port} timed out")
                 print(e)
+                if "debug" in commands:
+                    actions.user.tts("Clientside connection timed out")
             except: 
                 print("Error Communicating with NVDA extension")
+                if "debug" in commands:
+                    actions.user.tts("Error Communicating with NVDA extension")
             finally:
                 sock.close()      
 

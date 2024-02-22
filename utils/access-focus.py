@@ -4,9 +4,10 @@ from talon.windows import ax as ax
 mod = Module()
 
 def get_every_child(element: ax.Element):
-    if element.children:
+    if element:
         for child in element.children:
-            yield child
+            if child.is_keyboard_focusable:
+                yield child
             yield from get_every_child(child)
 
 ctx = Context()
@@ -14,7 +15,7 @@ ctx = Context()
 mod.list("dynamic_children", desc="List of children of the active window")
 
 @ctx.dynamic_list("user.dynamic_children")
-def dynamic_children() -> dict[str,str]:
+def dynamic_children(_) -> dict[str,str]:
     root = ui.active_window().element
     elements = list(get_every_child(root))
 

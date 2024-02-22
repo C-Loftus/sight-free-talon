@@ -29,8 +29,7 @@ This repository integrates with:
 ## OS Specific Setup
 
 - Linux
-  - Install `spd-say` to play espeak robotic tts.
-  - Install `orca` to use the screen reader.
+  - Install `spd-say` to play standard tts.
   - Install `piper` to use the `omnx` model for more natural speech
     - run `pipx install piper` to install it (thus `pipx` is a dependency)
 - Windows

@@ -106,7 +106,7 @@ class UserActions:
         if res != 0:
             errorMessage = str(ctypes.WinError(res))
             # ctypes.windll.user32.MessageBoxW(0, "Error: %s" % errorMessage, "Error communicating between Talon and NVDA", 0)
-            raise Exception("Error communicating between Talon and NVDA: %s" % errorMessage)
+            raise Exception(f"Error communicating between Talon and NVDA: {errorMessage}")
 
         # Text can be sent via the clipboard or directly to NVDA using the dll
         if use_clipboard:

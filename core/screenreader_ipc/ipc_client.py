@@ -1,6 +1,5 @@
 from talon import Module, Context, actions, settings
-import os, ipaddress, json, socket
-import threading
+import os, ipaddress, json, socket, threading
 from typing import Tuple
 from .ipc_schema import IPC_COMMAND
 
@@ -92,13 +91,13 @@ class NVDAActions:
             except socket.timeout as e:
                 print(f"Clientside connection with {ip}:{port} timed out")
                 print(e)
-                if "debug" in commands:
+                if "debug" in commands:     
                     actions.user.tts("Clientside connection timed out")
             except: 
                 print("Error Communicating with NVDA extension")
                 if "debug" in commands:
                     actions.user.tts("Error Communicating with NVDA extension")
-            finally:
+            finally:        
                 sock.close()      
 
     def send_ipc_command(command: IPC_COMMAND):

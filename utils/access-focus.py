@@ -12,6 +12,7 @@ def get_every_child(element: ax.Element):
 
 ctx = Context()
 
+
 mod.list("dynamic_children", desc="List of children accessibility elements of the active window")
 
 @ctx.dynamic_list("user.dynamic_children")
@@ -20,24 +21,37 @@ def dynamic_children(phrase) -> dict[str,str]:
     root = ui.active_window().element
     elements = list(get_every_child(root))
 
-    spoken_forms = {}
-    for e in elements:
-        spoken_form = actions.user.create_spoken_forms(e.name, generate_subsequences=False)
-        if CAN_BE_SPOKEN := (len(spoken_form) > 0):
-            for form in spoken_form:
-                spoken_forms[form] = e.name
-
-    return spoken_forms
+    """
+    If you don't want to use a ctx.selection you can
+    alternatively use spoken forms with a context list.
+    Not super clear which option is preferred
+    """
+    # spoken_forms = {}
+    # for e in elements:
+    #     spoken_form = actions.user.create_spoken_forms(e.name, generate_subsequences=False)
+    #     if CAN_BE_SPOKEN := (len(spoken_form) > 0):
+    #         for form in spoken_form:
+    #             spoken_forms[form] = e.name
+    # return spoken_forms
+    """ctx.selection lists are returned as a new string separated by 2 newlines"""
+    selection_string = ""
+    for e in elements: 
+        if e.name:
+            selection_string += e.name + "\n\n"
+    return selection_string
 
 @mod.action_class
 class Actions:
 
-    def focus_element_by_name(name: str):
-        """Focuses on an element by name"""
+    def focus_element_by_name(name: str, permissive: bool = True):
+        """Focuses on an element by name. Change permissive to False to require an exact match."""
         root = ui.active_window().element
         elements = list(get_every_child(root))
         for element in elements:
-            if str(element.name).lower() == str(name).lower():
+
+            if element.name.lower() == name.lower() or (
+                permissive and name.lower() in element.name.lower()
+            ):
                 try:
                     element.invoke_pattern.invoke()
                 except Exception as e:
@@ -45,4 +59,4 @@ class Actions:
                     print(e)
                 break
         else:
-            print("Element not found")
+            raise ValueError(f"Element '{name}' not found")

@@ -133,6 +133,10 @@ class UserActions:
     def braille(text: str):
         """Output braille with NVDA"""
         nvda_client.nvdaController_brailleMessage(text)
+    
+    def switch_voice():
+        """Switches the voice for the screen reader"""
+        actions.user.tts("You must switch voice in NVDA manually")
 
 
 def _ready_to_send_ipc():

@@ -59,15 +59,16 @@ class Actions:
                 try:
                     element.invoke_pattern.invoke()
                 except Exception as e:
-                    # try:
-                    #     pat = element.legacyiaccessible_pattern
-                    #     # https://learn.microsoft.com/en-us/windows/win32/winauto/selflag
-                    #     SELFLAG_TAKESELECTION = 2
-                    #     pat.select(2)
-                    # except Exception as f:
+                    try:
+                        # https://learn.microsoft.com/en-us/windows/win32/winauto/selflag
+                        # SELFLAG_TAKESELECTION = 2 
+                        # Ideally we would use .select() but the API doesn't work
+                        element.legacyiaccessible_pattern.do_default_action()
+                    except Exception as f:
                         actions.user.tts(f"Failed to focus {name}")
-                        print(e)
-
+                        print(e, f)
                 break
         else:
             raise ValueError(f"Element '{name}' not found")
+        
+

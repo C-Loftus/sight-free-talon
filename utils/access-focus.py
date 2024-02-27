@@ -17,32 +17,28 @@ mod.list("dynamic_children", desc="List of children accessibility elements of th
 
 @ctx.dynamic_list("user.dynamic_children")
 def dynamic_children(phrase) -> dict[str,str]:
-    try:
+    root = ui.active_window().element
+    elements = list(get_every_child(root))
 
-        root = ui.active_window().element
-        elements = list(get_every_child(root))
+    """
+    If you don't want to use a ctx.selection you can
+    alternatively use spoken forms with a context list.
+    Not super clear which option is preferred
+    """
+    # spoken_forms = {}
+    # for e in elements:
+    #     spoken_form = actions.user.create_spoken_forms(e.name, generate_subsequences=False)
+    #     if CAN_BE_SPOKEN := (len(spoken_form) > 0):
+    #         for form in spoken_form:
+    #             spoken_forms[form] = e.name
+    # return spoken_forms
+    """ctx.selection lists are returned as a new string separated by 2 newlines"""
+    selection_string = ""
+    for e in elements: 
+        assert type(e.name) == str, f"Element name is not a string: {e.name} {e} {type(e)}"
+        selection_string += str(e.name).lower() + "\n\n"
 
-        """
-        If you don't want to use a ctx.selection you can
-        alternatively use spoken forms with a context list.
-        Not super clear which option is preferred
-        """
-        # spoken_forms = {}
-        # for e in elements:
-        #     spoken_form = actions.user.create_spoken_forms(e.name, generate_subsequences=False)
-        #     if CAN_BE_SPOKEN := (len(spoken_form) > 0):
-        #         for form in spoken_form:
-        #             spoken_forms[form] = e.name
-        # return spoken_forms
-        """ctx.selection lists are returned as a new string separated by 2 newlines"""
-        selection_string = ""
-        for e in elements: 
-            assert type(e.name) == str, f"Element name is not a string: {e.name} {e} {type(e)}"
-            selection_string += str(e.name).lower() + "\n\n"
-
-        return selection_string
-    except:
-        actions.user.tts("Failed to get dynamic children")
+    return selection_string
 
 @mod.action_class
 class Actions:
@@ -71,4 +67,3 @@ class Actions:
         else:
             raise ValueError(f"Element '{name}' not found")
         
-

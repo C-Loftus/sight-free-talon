@@ -30,6 +30,7 @@ class Actions:
     
     def orca_tts(text: str, use_clipboard: bool= False):
         '''text to speech with orca'''
+        
 
     def with_orca_mod_press(key: str):
         ''' Presses the given key with the orca modifier key'''

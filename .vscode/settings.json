@@ -16,6 +16,6 @@
         "editor.codeActionsOnSave": {
             "source.fixAll": "always"
         },
-        "editor.defaultFormatter": "ms-python.black-formatter"
+        "editor.defaultFormatter": "charliermarsh.ruff"
     },
 }

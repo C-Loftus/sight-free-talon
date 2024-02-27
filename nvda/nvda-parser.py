@@ -29,7 +29,6 @@ os: windows
 @ctx.action_class("user")
 class UserActions:
     def nvda_set_setting(setting: str, value: bool):
-
         # Load the nvda.ini file, skipping the first line
         with open(PATH, "r") as f:
             next(f)  # Skip the first line

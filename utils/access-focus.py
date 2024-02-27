@@ -45,8 +45,8 @@ def dynamic_children(phrase) -> dict[str, str]:
     """ctx.selection lists are returned as a new string separated by 2 newlines"""
     selection_string = ""
     for e in elements:
-        assert (
-            type(e.name) == str
+        assert isinstance(
+            e.name, str
         ), f"Element name is not a string: {e.name} {e} {type(e)}"
         selection_string += str(e.name).lower() + "\n\n"
 
@@ -55,13 +55,11 @@ def dynamic_children(phrase) -> dict[str, str]:
 
 @mod.action_class
 class Actions:
-
     def focus_element_by_name(name: str, permissive: bool = True):
         """Focuses on an element by name. Change permissive to False to require an exact match."""
         root = ui.active_window().element
         elements = list(get_every_child(root))
         for element in elements:
-
             if element.name.lower() == name.lower() or (
                 permissive and name.lower() in element.name.lower()
             ):

@@ -11,4 +11,11 @@
         "~\\github\\nvda\\source",
         "~\\github\\nvda\\miscDeps\\python"
     ],
+    "[python]": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.fixAll": "always"
+        },
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
 }

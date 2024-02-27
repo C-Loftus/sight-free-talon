@@ -1,5 +1,5 @@
-from talon import Module, actions, ui, Context, ctrl, clip, registry, scope
-import os, requests
+from talon import Module, actions, ui, Context, registry, scope
+import os
 from html.parser import HTMLParser
 import urllib
 
@@ -123,7 +123,7 @@ class Actions:
 
         except Exception as e:
             print("Error Parsing:", e)
-            return f"Error Parsing"
+            return "Error Parsing"
 
 
 

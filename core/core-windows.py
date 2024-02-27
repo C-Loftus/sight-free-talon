@@ -16,7 +16,7 @@ SVSFIsNotXML = 16
 SVSFPersistXML = 32
 
 
-class SAPI5():
+class SAPI5:
     """Supports the microsoft speech API version 5."""
 
     has_volume = True
@@ -98,6 +98,7 @@ class SAPI5():
             return True
         return False
 
+
 if os.name == "nt":
     speaker = SAPI5()
 
@@ -106,17 +107,18 @@ ctxWindows.matches = r"""
 os: windows
 """
 
-@ctxWindows.action_class('user')
+
+@ctxWindows.action_class("user")
 class UserActions:
     def base_win_tts(text: str, interrupt: bool):
-        """Base function for windows tts. We expose this 
-        so we can share the speaker object across files. We don't want 
+        """Base function for windows tts. We expose this
+        so we can share the speaker object across files. We don't want
         it to get overridden by the other tts functions"""
         speaker.set_rate(settings.get("user.tts_speed", 0))
         speaker.set_volume(settings.get("user.tts_volume", 50))
         speaker.speak(text, interrupt)
 
-    def tts(text: str, interrupt:bool =True):
+    def tts(text: str, interrupt: bool = True):
         """text to speech with windows voice"""
         # Base interrupt to the base
         actions.user.base_win_tts(text, interrupt)
@@ -129,8 +131,8 @@ class UserActions:
         """Switches the voice for the screen reader"""
         voices = speaker.list_voices()
         if len(voices) < 2:
-            return 
-        
+            return
+
         current = speaker.get_voice()
         index = voices.index(current)
         index = (index + 1) % len(voices)

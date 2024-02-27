@@ -6,7 +6,8 @@ ctx.matches = r"""
 os: mac
 """
 
-@ctx.action_class('user')
+
+@ctx.action_class("user")
 class UserActions:
     def toggle_reader():
-        actions.key('cmd-f5')
+        actions.key("cmd-f5")

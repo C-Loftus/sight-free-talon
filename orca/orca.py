@@ -1,5 +1,6 @@
-from talon import actions, Module, settings, cron, Context, clip, registry, app 
-import os, ctypes, time , sys
+from talon import actions, Module, settings, cron, Context 
+import os
+import sys
 
 mod = Module()
 ctx = Context()

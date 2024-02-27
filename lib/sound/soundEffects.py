@@ -1,10 +1,14 @@
-import os, subprocess, time, threading
-from talon import actions, Module, Context
+import os
+import subprocess
+import time
+import threading
+from talon import Module, Context
 
 if os.name == "nt":
     import winsound
 
 mod = Module()
+
 
 @mod.action_class
 class Actions:
@@ -21,7 +25,8 @@ class Actions:
 def stop_loading_sound():
     """Stop the loading sound"""
     global cancel_signal
-    cancel_signal = True 
+    cancel_signal = True
+
 
 linux_context = Context()
 linux_context.matches = r"""
@@ -45,12 +50,13 @@ loading_sound = os.path.join(sound_path, "loading.wav")
 error_sound = os.path.join(sound_path, "error.wav")
 success_sound = os.path.join(sound_path, "success.wav")
 
+
 @linux_context.action_class("user")
 class LinuxActions:
     def play_loading_sound():
         """Play a sound to indicate that the command is being processed"""
         # use aplay to continuously play a sound signifying loading
-        
+
         def play_sound():
             global cancel_signal
             while True and not cancel_signal:
@@ -64,7 +70,6 @@ class LinuxActions:
         t = threading.Thread(target=play_sound)
         t.start()
 
-
     def play_error_sound():
         """Play a sound to indicate that the command has failed"""
         # use aplay to play a sound signifying an error
@@ -77,12 +82,13 @@ class LinuxActions:
         stop_loading_sound()
         subprocess.Popen(["aplay", success_sound])
 
+
 @mac_context.action_class("user")
 class MacActions:
     def play_loading_sound():
         """Play a sound to indicate that the command is being processed"""
         # use aplay to continuously play a sound signifying loading
-        
+
         def play_sound():
             global cancel_signal
             while True and not cancel_signal:
@@ -96,7 +102,6 @@ class MacActions:
         t = threading.Thread(target=play_sound)
         t.start()
 
-
     def play_error_sound():
         """Play a sound to indicate that the command has failed"""
         # use aplay to play a sound signifying an error
@@ -109,16 +114,19 @@ class MacActions:
         stop_loading_sound()
         subprocess.Popen(["afplay", success_sound])
 
+
 @windows_context.action_class("user")
 class WindowsActions:
     def play_loading_sound():
         """Play a sound to indicate that the command is being processed"""
         # use aplay to continuously play a sound signifying loading
-        
+
         def play_sound():
             global cancel_signal
             while True and not cancel_signal:
-                winsound.PlaySound(loading_sound, winsound.SND_FILENAME | winsound.SND_ASYNC)
+                winsound.PlaySound(
+                    loading_sound, winsound.SND_FILENAME | winsound.SND_ASYNC
+                )
                 time.sleep(1)
 
             # reset the cancel signal if it was used to stop the sound
@@ -127,7 +135,6 @@ class WindowsActions:
         # start a new thread to play the sound
         t = threading.Thread(target=play_sound)
         t.start()
-
 
     def play_error_sound():
         """Play a sound to indicate that the command has failed"""

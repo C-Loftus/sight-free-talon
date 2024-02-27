@@ -1,4 +1,4 @@
-from typing import Literal, Union
+from typing import Literal
 
 # Exhaustive list of commands that can be sent to the NVDA addon server
 IPC_COMMAND = Literal[
@@ -8,5 +8,5 @@ IPC_COMMAND = Literal[
     "enableSpeakTypedWords",
     "disableSpeakTypedCharacters",
     "enableSpeakTypedCharacters",
-    "debug"
+    "debug",
 ]

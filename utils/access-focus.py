@@ -13,9 +13,9 @@ def get_every_child(element: ax.Element):
 ctx = Context()
 
 
-mod.list("dynamic_children", desc="List of children accessibility elements of the active window")
+mod.list("accessibility_element_name", desc="List of children accessibility elements of the active window")
 
-@ctx.dynamic_list("user.dynamic_children")
+@ctx.dynamic_list("user.accessibility_element_name")
 def dynamic_children(phrase) -> dict[str,str]:
     root = ui.active_window().element
     elements = list(get_every_child(root))

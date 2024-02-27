@@ -49,6 +49,7 @@ class Actions:
 
     def braille(text: str):
         """Output braille with the screenreader"""
+        raise NotImplementedError
 
     def toggle_braille():
         """Toggles braille on and off"""
@@ -64,7 +65,7 @@ class Actions:
         # Catch potential race condition where settings haven't been loaded at startup
         try:
             return ctx.settings["user.echo_dictation"]
-        except:
+        except Exception:
             return False
 
     def braille_enabled() -> bool:
@@ -72,7 +73,7 @@ class Actions:
         # Catch potential race condition where settings haven't been loaded at startup
         try:
             return ctx.settings["user.echo_braille"]
-        except:
+        except Exception:
             return False
 
     def echo_context_enabled() -> bool:
@@ -80,10 +81,10 @@ class Actions:
         # Catch potential race condition where settings haven't been loaded at startup
         try:
             return ctx.settings["user.echo_context"]
-        except:
+        except Exception:
             return False
 
-    def toggle_echo():
+    def toggle_echo() -> None:
         """Toggles echo dictation on and off"""
 
         if actions.user.echo_dictation_enabled():
@@ -93,7 +94,7 @@ class Actions:
             actions.user.tts("echo enabled")
             ctx.settings["user.echo_dictation"] = True
 
-    def toggle_echo_context():
+    def toggle_echo_context() -> None:
         """Toggles echo context on and off"""
 
         if actions.user.echo_context_enabled():
@@ -103,7 +104,7 @@ class Actions:
             actions.user.tts("echo context enabled")
             ctx.settings["user.echo_context"] = True
 
-    def toggle_echo_all():
+    def toggle_echo_all() -> None:
         """Toggles echo dictation and echo context on and off"""
 
         dictation, context = (
@@ -129,19 +130,24 @@ class Actions:
     def espeak(text: str):
         """text to speech with espeak"""
         actions.user.tts("Espeak Not Supported In This Context")
+        raise NotImplementedError
 
     def toggle_reader():
         """Toggles the screen reader on and off"""
         actions.user.tts("Toggle Reader Not Supported In This Context")
+        raise NotImplementedError
 
     def base_win_tts(text: str, interrupt: bool):
         """Base function for windows tts. We expose this
         so we can share the speaker object across files since
         it won't get overridden by the other tts functions"""
+        raise NotImplementedError
 
     def switch_voice():
         """Switches the tts voice"""
         actions.user.tts("Switching Not Supported In This Context")
+        raise NotImplementedError
 
     def piper(text: str):
         """Text to speech with a piper model"""
+        raise NotImplementedError

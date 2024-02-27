@@ -14,7 +14,7 @@ def set_nvda_running_tag():
     """Update tags based on if NVDA is running"""
     try:
         ctx.tags = ["user.nvda_running"] if actions.user.is_nvda_running() else []
-    except:
+    except Exception:
         ctx.tags = []
 
 
@@ -23,7 +23,6 @@ if os.name == "nt":
     dir_path = os.path.dirname(os.path.realpath(__file__))
     dll_path = os.path.join(dir_path, "nvdaControllerClient64.dll")
     nvda_client: ctypes.WinDLL = ctypes.windll.LoadLibrary(dll_path)
-
     cron.interval("3s", set_nvda_running_tag.update)
 
 else:
@@ -32,7 +31,6 @@ else:
 
 @mod.action_class
 class Actions:
-
     def toggle_nvda():
         """Toggles NVDA on and off"""
         if not actions.user.is_nvda_running():
@@ -101,7 +99,6 @@ tag: user.nvda_running
 
 @ctxWindowsNVDARunning.action_class("user")
 class UserActions:
-
     def nvda_tts(text: str, use_clipboard: bool = False):
         """text to speech with NVDA"""
 
@@ -154,7 +151,7 @@ def _ready_to_send_ipc():
 
 # By default the screen reader will allow you to press a key and interrupt the ph
 # rase however this does not work alongside typing given the fact that we are pres
-# sing keys.  so we need to temporally disable it then re enable it at the end of
+# sing keys. So we need to temporally disable it then re enable it at the end of
 # the phrase
 def disable_interrupt(_):
     if not _ready_to_send_ipc():

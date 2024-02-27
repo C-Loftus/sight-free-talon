@@ -41,7 +41,6 @@ tag: user.nvda_running
 
 @NVDAContext.action_class("user")
 class NVDAActions:
-
     def addon_server_endpoint() -> Tuple[str, str, str]:
         """Returns the address, port, and valid commands for the addon server"""
         SPEC_FILE = os.path.expanduser(
@@ -103,8 +102,8 @@ class NVDAActions:
                 print(e)
                 if "debug" in commands:
                     actions.user.tts("Clientside connection timed out")
-            except:
-                print("Error Communicating with NVDA extension")
+            except Exception as e:
+                print(f"Error Communicating with NVDA extension: {e}")
                 if "debug" in commands:
                     actions.user.tts("Error Communicating with NVDA extension")
             finally:

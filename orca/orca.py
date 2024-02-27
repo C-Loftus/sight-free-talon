@@ -11,7 +11,7 @@ mod.tag("orca_running", desc="If set, orca is running")
 @mod.scope
 def set_orca_running_tag():
     """Update tags based on if Orca is running"""
-    # TODO edge case on startup this might not be set yet
+    # Edge case on startup this might not be set yet we we catch all exceptions
     try:
         ctx.tags = ["user.orca_running"] if actions.user.is_orca_running() else []
     except Exception:

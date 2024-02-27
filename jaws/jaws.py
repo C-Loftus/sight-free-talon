@@ -50,7 +50,7 @@ def set_jaws_running_tag():
     # TODO edge case on startup this might not be set yet
     try:
         ctx.tags = ["user.jaws_running"] if actions.user.is_jaws_running() else []
-    except:
+    except Exception:
         ctx.tags = []
 
 
@@ -60,7 +60,6 @@ if os.name == "nt":
 
 @mod.action_class
 class Actions:
-
     def toggle_jaws():
         """Toggles JAWS on and off"""
 

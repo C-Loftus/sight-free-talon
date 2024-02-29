@@ -20,12 +20,12 @@ ctx = Context()
 
 
 mod.list(
-    "accessibility_element_name",
+    "accessibility_element_names",
     desc="List of children accessibility elements of the active window",
 )
 
 
-@ctx.dynamic_list("user.accessibility_element_name")
+@ctx.dynamic_list("user.accessibility_element_names")
 def dynamic_children(phrase) -> dict[str, str]:
     root = ui.active_window().element
     elements = list(get_every_child(root))

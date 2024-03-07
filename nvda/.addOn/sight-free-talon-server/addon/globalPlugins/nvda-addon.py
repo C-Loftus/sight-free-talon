@@ -151,7 +151,6 @@ class IPC_Server:
 
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
-
     def __init__(self):
         super(GlobalPlugin, self).__init__()
 

@@ -4,29 +4,24 @@
 
 # Installing
 
-First, clone the [Talon community script repository](https://github.com/talonhub/community). That is the sole OS-agnostic dependency of this project.
+- Clone the repo into your Talon user directory.
+- Clone the [Talon community repository](https://github.com/talonhub/community) for general Talon commands
 
-Next, clone this repository into your user directory by running the following,
+  - This is the sole OS-agnostic dependency of this project.
 
-```
-git clone https://github.com/C-Loftus/sight-free-talon
-```
+You should frequently run git pull to update the scripts.
 
-and then updating it frequently with `git pull`. On Windows your user directory is located at `%APPDATA%\Talon\user`. On MacOS and Linux your user directory is located at `~/.talon/user`.
-
-For AI/GPT functionality, install the `talon-ai-tools` repo dependency in your Talon user directory by running
-
-```
-git clone https://github.com/C-Loftus/talon-ai-tools
-```
-
-## OS Specific Setup
+## OS-Specific Dependencies
 
 - Linux
-  - Install `spd-say` to play espeak robotic tts.
-  - Install `orca` to use the screen reader.
+  - Install `spd-say` to play standard tts.
   - Install `piper` to use the `omnx` model for more natural speech
     - run `pipx install piper` to install it (thus `pipx` is a dependency)
 - Windows
-  - Install NVDA to play tts through the screen reader.
-    - Disable `Speech interrupt for typed characters` in NVDA settings to make sure typing text from Talon is not interrupted with every typed character.
+
+  - Using NVDA:
+    - Install the NVDA addon file from the repo [releases page](https://github.com/C-Loftus/sight-free-talon/releases/)
+    - If you do not want to install the addon, disable `Speech interrupt for typed characters` in NVDA settings to make sure typing text from Talon is not interrupted with every typed character.
+
+- Mac
+  - No extra dependencies

@@ -14,18 +14,18 @@ If you are not getting the proper behavior within Talon, most of the time it is 
 
 ## Helpful Standard Talon Commands
 
-| Command | Description |
-|---------|-------------|
-| `command mode` | Switches Talon into command mode, where your words are interpreted as commands |
-| `dictation mode` | Switches Talon into dictation mode, where your words are interpreted as raw text |
-| `launch` | Launches the specified application |
-| `focus` | Focuses the specified application |
-| `talon wake` | Wakes Talon up if it is asleep |
-| `talon sleep` | Puts Talon to sleep |
-| `press` | Presses the specified key |
-| `air bat cap drum each fine gust harp sit jury crunch look made near odd pit quench red sun trap urge vest whale plex yank zip` | The Talon phonetic alphabet |
-| `sentence` | Dictate a sentence with the first word capitalized |
-| `title` | Dictate a sentence with all words capitalized |
-| `word` | Dictate a single word |
-| `scratch that` | Undoes the last thing you said |
-| `wipe` | Presses backspace |
+| Command                                                                                                                         | Description                                                                      |
+| ------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `command mode`                                                                                                                  | Switches Talon into command mode, where your words are interpreted as commands   |
+| `dictation mode`                                                                                                                | Switches Talon into dictation mode, where your words are interpreted as raw text |
+| `launch`                                                                                                                        | Launches the specified application                                               |
+| `focus`                                                                                                                         | Focuses the specified application                                                |
+| `talon wake`                                                                                                                    | Wakes Talon up if it is asleep                                                   |
+| `talon sleep`                                                                                                                   | Puts Talon to sleep                                                              |
+| `press`                                                                                                                         | Presses the specified key                                                        |
+| `air bat cap drum each fine gust harp sit jury crunch look made near odd pit quench red sun trap urge vest whale plex yank zip` | The Talon phonetic alphabet                                                      |
+| `sentence`                                                                                                                      | Dictate a sentence with the first word capitalized                               |
+| `title`                                                                                                                         | Dictate a sentence with all words capitalized                                    |
+| `word`                                                                                                                          | Dictate a single word                                                            |
+| `scratch that`                                                                                                                  | Undoes the last thing you said                                                   |
+| `wipe`                                                                                                                          | Presses backspace                                                                |

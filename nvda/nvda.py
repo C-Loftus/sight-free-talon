@@ -24,6 +24,7 @@ if os.name == "nt":
     dll_path = os.path.join(dir_path, "nvdaControllerClient64.dll")
     nvda_client: ctypes.WinDLL = ctypes.windll.LoadLibrary(dll_path)
     cron.interval("3s", set_nvda_running_tag.update)
+    SPEC_FILE = os.path.expanduser("~\\AppData\\Roaming\\nvda\\talon_server_spec.json")
 
 else:
     nvda_client = None
@@ -87,7 +88,8 @@ class Actions:
 
     def test_reader_addon():
         """Tests the reader addon"""
-        actions.user.send_ipc_command("debug")
+        result = actions.user.send_ipc_command("debug")
+        actions.user.tts(f"Reader addon result: {result}")
 
 
 ctxWindowsNVDARunning = Context()
@@ -141,12 +143,8 @@ class UserActions:
         actions.user.tts("You must switch voice in NVDA manually")
 
 
-def _ready_to_send_ipc():
-    SLEEP_MODE = "sleep" in scope.get("mode")
-    SPEC_FILE = os.path.expanduser("~\\AppData\\Roaming\\nvda\\talon_server_spec.json")
-    return (
-        actions.user.is_nvda_running() and not SLEEP_MODE and os.path.exists(SPEC_FILE)
-    )
+# Only send post:phrase callback if we sent a pre:phrase callback successfully
+pre_phrase_sent = False
 
 
 # By default the screen reader will allow you to press a key and interrupt the ph
@@ -154,7 +152,13 @@ def _ready_to_send_ipc():
 # sing keys. So we need to temporally disable it then re enable it at the end of
 # the phrase
 def disable_interrupt(_):
-    if not _ready_to_send_ipc():
+    global pre_phrase_sent
+    SLEEP_MODE = "sleep" in scope.get("mode")
+    if (
+        not actions.user.is_nvda_running()
+        or SLEEP_MODE
+        or not os.path.exists(SPEC_FILE)
+    ):
         return
 
     # bundle the commands into a single messge
@@ -164,10 +168,20 @@ def disable_interrupt(_):
         "disableSpeakTypedCharacters",
     ]
     actions.user.send_ipc_commands(commands)
+    pre_phrase_sent = True
 
 
-def restore_interrupt_setting(_):
-    if not _ready_to_send_ipc():
+def enable_interrupt(_):
+    global pre_phrase_sent
+    SLEEP_MODE = "sleep" in scope.get("mode")
+    if (
+        not actions.user.is_nvda_running()
+        # If we are in sleep mode, we still send the interrupt
+        # assuming the pre_phrase was sent, given the fact
+        # we still want `talon sleep` to restore the setting at the end
+        or (SLEEP_MODE and not pre_phrase_sent)
+        or not os.path.exists(SPEC_FILE)
+    ):
         return
 
     # bundle the commands into a single message
@@ -179,9 +193,11 @@ def restore_interrupt_setting(_):
 
     #  this is kind of a hack since we don't know exactly when to re enable it
     #  because we don't have a callback at the end of the last keypress
-    cron.after("1s", lambda: actions.user.send_ipc_commands(commands))
+    cron.after("400ms", lambda: actions.user.send_ipc_commands(commands))
+    # Reset the pre_phrase_sent flag to prevent another post:phrase callback during sleep mode
+    pre_phrase_sent = False
 
 
 if os.name == "nt":
     speech_system.register("pre:phrase", disable_interrupt)
-    speech_system.register("post:phrase", restore_interrupt_setting)
+    speech_system.register("post:phrase", enable_interrupt)

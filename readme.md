@@ -33,6 +33,7 @@ This repository integrates with:
   - Install `piper` to use the `omnx` model for more natural speech
     - run `pipx install piper` to install it (thus `pipx` is a dependency)
 - Windows
+
   - Using NVDA:
     - Install the NVDA addon file from the repo [releases page](https://github.com/C-Loftus/sight-free-talon/releases/)
     - If you do not want to install the addon, disable `Speech interrupt for typed characters` in NVDA settings to make sure typing text from Talon is not interrupted with every typed character.

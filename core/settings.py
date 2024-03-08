@@ -6,7 +6,7 @@ mod = Module()
 mod.setting(
     "tts_speed",
     type=float,
-    default=1.0,
+    default=8,
     desc="Speed of text to speech",
 )
 
@@ -20,7 +20,7 @@ mod.setting(
 mod.setting(
     "tts_via_screenreader",
     type=bool,
-    default=False,
+    default=True,
     desc="If true, plays back dictation with text to speech through the screenreader, not within Talon",
 )
 
@@ -71,15 +71,8 @@ mod.setting(
 mod.setting(
     "tts_volume",
     type=int,
-    default=100,
+    default=80,
     desc="The volume of the text to speech",
-)
-
-mod.setting(
-    "enable_break_timer",
-    type=bool,
-    default=False,
-    desc="If True, enables the eyestrain break timer to display a notification every 20 minutes",
 )
 
 
@@ -97,7 +90,6 @@ mod.setting(
     desc="If True, plays a sound on every keypress to help prevent accidental keypresses",
 )
 
-mod.setting("min_until_break", type=int, default=10)
 
 mod.setting(
     "orca_key",

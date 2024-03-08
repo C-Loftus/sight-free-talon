@@ -79,6 +79,9 @@ class NVDAActions:
         if settings.get("user.addon_debug"):
             print(f"Sending {commands} to {ip}:{port}")
 
+        # Default response if nothing is set
+        response = b"No response from NVDA addon server"
+
         # Although the screenreader server will block while processing commands,
         # having a lock client-side prevents errors when sending multiple commands
         with lock:
@@ -92,26 +95,20 @@ class NVDAActions:
                 if settings.get("user.addon_debug"):
                     print("Received", repr(response))
 
-                if "debug" in commands:
-                    actions.user.tts(
-                        f"Sent Message to NVDA Successfully with server response: {response.decode('utf-8')}"
-                    )
-
             except socket.timeout as e:
                 print(f"Clientside connection with {ip}:{port} timed out")
                 print(e)
-                if "debug" in commands:
-                    actions.user.tts("Clientside connection timed out")
+                response = b"Clientside connection with NVDA timed out"
             except Exception as e:
                 print(f"Error Communicating with NVDA extension: {e}")
-                if "debug" in commands:
-                    actions.user.tts("Error Communicating with NVDA extension")
+                response = b"Error communicating with NVDA extension"
             finally:
                 sock.close()
+        return response.decode()
 
     def send_ipc_command(command: IPC_COMMAND):
         """Sends a single command to the screenreader"""
-        actions.user.send_ipc_commands([command])
+        return actions.user.send_ipc_commands([command])
 
 
 ORCAContext = Context()

@@ -1,6 +1,9 @@
+# COPY THIS FILE INTO YOUR USER FOLDER AND CHANGE THE SETTINGS AS DESIRED
+# THIS FILE IS IGNORED BY DEFAULT AND JUST AN EXAMPLE
+
 settings():
     # Echo the subtitles from talon back via tts
-    user.echo_dictation = true
+    user.echo_dictation = false
 
     # How fast to play back text-to-speech -10 to 10
     # Ignored if using screenreader tts
@@ -36,18 +39,3 @@ settings():
 
     # Display debugging output for NVDA
     user.addon_debug = false
-
-    # Every given number of minutes, send a notification, prompting you to rest your eyes
-    # user.enable_break_timer = true
-    # user.user.min_until_break = 10
-
-    ### Relevant Community Settings Below ###
-    # Change key_wait if you want the screen reader to speak words
-    # at the same pace as if you were typing them manually.
-    # key_wait = 0
-
-    # Setting from community repository
-    # Manually typing keys through Talon can jumble the audio output since nvda can also say out
-    # keys and/or words. By having this setting enabled, we can echo out the text but
-    # not need to disable the screenreader's speech for characters and words for normal typing
-    # user.paste_to_insert_threshold = -1

@@ -25,7 +25,7 @@ def handle_ipc_result(
 ) -> list[Tuple[IPC_COMMAND, Optional[any]]]:
     """
     Sanitize the response from the screenreader server
-    and return just the commands and a return value
+    and return just the commands and their return values
     if present
     """
     if settings.get("user.addon_debug"):

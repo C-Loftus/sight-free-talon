@@ -1,5 +1,5 @@
 import enum
-from typing import List, Literal, Dict, Any, TypedDict
+from typing import List, Literal, Any, TypedDict, Optional
 
 # Exhaustive list of commands that can be sent to the NVDA addon server
 
@@ -30,6 +30,13 @@ class ServerStatusResult(enum.Enum):
     RUNTIME_ERROR = "runtimeError"
     JSON_ENCODE_ERROR = "jsonEncodeError"
 
+    @staticmethod
+    def generate_from(value: str):
+        for member in ServerStatusResult:
+            if member.value == value:
+                return member
+        raise KeyError(f"Invalid status result: {value}")
+
 
 class IPCServerResponse(TypedDict):
     processedCommands: List[str]
@@ -44,4 +51,6 @@ class IPCClientResponse(enum.Enum):
     SUCCESS = "success"
 
 
-RETURNED_VAL = any | None
+class ResponseBundle(TypedDict):
+    client: IPCClientResponse
+    server: Optional[None | IPCServerResponse]

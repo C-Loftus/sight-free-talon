@@ -88,8 +88,7 @@ class Actions:
 
     def test_reader_addon():
         """Tests the reader addon"""
-        result = actions.user.send_ipc_command("debug")
-        actions.user.tts(f"Reader addon result: {result}")
+        actions.user.send_ipc_command("debug")
 
 
 ctxWindowsNVDARunning = Context()
@@ -146,11 +145,7 @@ class UserActions:
 # Only send post:phrase callback if we sent a pre:phrase callback successfully
 pre_phrase_sent = False
 
-reenable_dict = {
-    "speechInterruptForCharacters": True,
-    "speakTypedWords": True,
-    "speakTypedCharacters": True,
-}
+reenable_commands = []
 
 
 # By default the screen reader will allow you to press a key and interrupt the ph
@@ -180,6 +175,18 @@ def disable_interrupt(_):
         "disableSpeakTypedCharacters",
     ]
     results = actions.user.send_ipc_commands(commands)
+    global reenable_commands
+    reenable_commands = []
+    for command, value in results:
+        match command:
+            case (
+                (
+                    "getSpeechInterruptForCharacters"
+                    | "getSpeakTypedWords"
+                    | "getSpeakTypedCharacters"
+                ) as cmd
+            ) if value:
+                reenable_commands.append(cmd.replace("get", "enable"))
 
     pre_phrase_sent = True
 
@@ -197,8 +204,11 @@ def enable_interrupt(_):
     ):
         return
 
-    global reenable_dict
-    commands = [key for key, value in reenable_dict.items() if value]
+    global reenable_commands
+    # Can add more commands here if needed
+    # We don't need to send disable commands since they are already disabled
+    # at pre-phrase time
+    commands = reenable_commands
 
     if len(commands) == 0:
         return

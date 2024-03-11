@@ -15,8 +15,10 @@ This repository integrates with:
 
 # Usage
 
-- Watch [my demo video](https://www.youtube.com/watch?v=i-XcpnVwvR0) for a quick overview
-- The `.talon` files in each subdirectory contain scoped commands corresponding to each application or specific context
+- Watch my demo video for a quick overview
+<img alt="Sight-free-talon overview video" src="https://github.com/C-Loftus/sight-free-talon/assets/70598503/1c33a46b-9595-4641-a6c1-0bc11b4ea90d" width="400">
+
+- All voice commands are found in the `.talon` files in each subdirectory and are scoped to each corresponding application or context
 
 # Installing
 

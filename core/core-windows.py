@@ -114,7 +114,7 @@ class UserActions:
         """Base function for windows tts. We expose this
         so we can share the speaker object across files. We don't want
         it to get overridden by the other tts functions"""
-        speaker.set_rate(settings.get("user.tts_speed", 0))
+        speaker.set_rate(settings.get("user.tts_speed"))
         speaker.set_volume(settings.get("user.tts_volume", 50))
         speaker.speak(text, interrupt)
 

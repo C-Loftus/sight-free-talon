@@ -146,6 +146,12 @@ class UserActions:
 # Only send post:phrase callback if we sent a pre:phrase callback successfully
 pre_phrase_sent = False
 
+reenable_dict = {
+    "speechInterruptForCharacters": True,
+    "speakTypedWords": True,
+    "speakTypedCharacters": True,
+}
+
 
 # By default the screen reader will allow you to press a key and interrupt the ph
 # rase however this does not work alongside typing given the fact that we are pres
@@ -161,13 +167,20 @@ def disable_interrupt(_):
     ):
         return
 
-    # bundle the commands into a single messge
+    # Commands are processed in order
+    # We first see the value for each setting, then we disable them
+    # We only need to enable them at the end of the phrase if
+    # there were enabled before
     commands = [
+        "getSpeechInterruptForCharacters",
+        "getSpeakTypedWords",
+        "getSpeakTypedCharacters",
         "disableSpeechInterruptForCharacters",
         "disableSpeakTypedWords",
         "disableSpeakTypedCharacters",
     ]
-    actions.user.send_ipc_commands(commands)
+    results = actions.user.send_ipc_commands(commands)
+
     pre_phrase_sent = True
 
 
@@ -184,12 +197,11 @@ def enable_interrupt(_):
     ):
         return
 
-    # bundle the commands into a single message
-    commands = [
-        "enableSpeechInterruptForCharacters",
-        "enableSpeakTypedWords",
-        "enableSpeakTypedCharacters",
-    ]
+    global reenable_dict
+    commands = [key for key, value in reenable_dict.items() if value]
+
+    if len(commands) == 0:
+        return
 
     #  this is kind of a hack since we don't know exactly when to re enable it
     #  because we don't have a callback at the end of the last keypress

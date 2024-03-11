@@ -26,7 +26,7 @@ This repository integrates with:
 - Clone the [Talon community repository](https://github.com/talonhub/community) for general Talon commands
   - This is the sole OS-agnostic dependency of this project.
 
-**NOTE FOR SIGHTED USERS**: Please clone the entire repository. The repo is explicitly designed to be helpful for all abilities and the `.talon` files are tightly scoped such that any functionality that isn't relevant to you (i.e. screen reader support) will not impact your general Talon usage or be easy to change in a settings file.
+_Note for sighted users_: Please clone the entire repository. Any functionality that isn't relevant to you (i.e. screen reader support) will not impact your general Talon usage and each all settings are easy to change or override in a settings file.
 
 ## OS Specific Setup
 

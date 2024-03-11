@@ -40,8 +40,9 @@ class Actions:
         elif actions.user.is_nvda_running():
             actions.user.with_nvda_mod_press("q")
             actions.user.tts("Turning NVDA off")
-            time.sleep(1)
-            actions.key("enter")
+            # We need this delay so the post-phrase callback
+            # can be set even if nvda is turned off
+            cron.after("2s", lambda: actions.key("enter"))
 
     def restart_nvda():
         """Restarts NVDA"""
@@ -49,8 +50,9 @@ class Actions:
             actions.user.with_nvda_mod_press("q")
             time.sleep(0.5)
             actions.key("down")
-            time.sleep(0.5)
-            actions.key("enter")
+            # We need this delay so the post-phrase callback
+            # can be set even if nvda is turned off
+            cron.after("2s", lambda: actions.key("enter"))
             actions.user.tts("Restarting NVDA")
 
     def with_nvda_mod_press(key: str):
@@ -88,8 +90,8 @@ class Actions:
 
     def test_reader_addon():
         """Tests the reader addon"""
-        result = actions.user.send_ipc_command("debug")
-        actions.user.tts(f"Reader addon result: {result}")
+        actions.user.send_ipc_command("debug")
+        actions.user.tts("Success testing reader addon")
 
 
 ctxWindowsNVDARunning = Context()
@@ -146,6 +148,8 @@ class UserActions:
 # Only send post:phrase callback if we sent a pre:phrase callback successfully
 pre_phrase_sent = False
 
+reenable_commands = []
+
 
 # By default the screen reader will allow you to press a key and interrupt the ph
 # rase however this does not work alongside typing given the fact that we are pres
@@ -161,13 +165,32 @@ def disable_interrupt(_):
     ):
         return
 
-    # bundle the commands into a single messge
+    # Commands are processed in order
+    # We first see the value for each setting, then we disable them
+    # We only need to enable them at the end of the phrase if
+    # there were enabled before
     commands = [
+        "getSpeechInterruptForCharacters",
+        "getSpeakTypedWords",
+        "getSpeakTypedCharacters",
         "disableSpeechInterruptForCharacters",
         "disableSpeakTypedWords",
         "disableSpeakTypedCharacters",
     ]
-    actions.user.send_ipc_commands(commands)
+    results = actions.user.send_ipc_commands(commands)
+    global reenable_commands
+    reenable_commands = []
+    for command, value in results:
+        match command:
+            case (
+                (
+                    "getSpeechInterruptForCharacters"
+                    | "getSpeakTypedWords"
+                    | "getSpeakTypedCharacters"
+                ) as cmd
+            ) if value:
+                reenable_commands.append(cmd.replace("get", "enable"))
+
     pre_phrase_sent = True
 
 
@@ -184,12 +207,14 @@ def enable_interrupt(_):
     ):
         return
 
-    # bundle the commands into a single message
-    commands = [
-        "enableSpeechInterruptForCharacters",
-        "enableSpeakTypedWords",
-        "enableSpeakTypedCharacters",
-    ]
+    global reenable_commands
+    # Can add more commands here if needed
+    # We don't need to send disable commands since they are already disabled
+    # at pre-phrase time
+    commands = reenable_commands
+
+    if len(commands) == 0:
+        return
 
     #  this is kind of a hack since we don't know exactly when to re enable it
     #  because we don't have a callback at the end of the last keypress

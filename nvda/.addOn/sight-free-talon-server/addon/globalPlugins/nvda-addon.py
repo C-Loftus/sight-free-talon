@@ -6,20 +6,44 @@ import json
 import socket
 import threading
 import globalVars
+import enum
+import time
 
 # Exhaustive list of valid commands
-schema = [
+valid_commands = [
     "disableSpeechInterruptForCharacters",
     "enableSpeechInterruptForCharacters",
+    "getSpeechInterruptForCharacters",
     "disableSpeakTypedWords",
     "enableSpeakTypedWords",
+    "getSpeakTypedWords",
     "disableSpeakTypedCharacters",
     "enableSpeakTypedCharacters",
+    "getSpeakTypedCharacters",
     "debug",
 ]
 
+
+class ResponseSchema:
+    def __init__(self):
+        self.processedCommands = []
+        self.returnedValues = []
+        self.statusResults = []
+
+    def generate():
+        return {"processedCommands": [], "returnedValues": [], "statusResults": []}
+
+
 # Handles both portable and installed versions of NVDA
 SPEC_PATH = os.path.join(globalVars.appArgs.configPath, "talon_server_spec.json")
+
+
+class StatusResult(enum.Enum):
+    SUCCESS = "success"
+    INTERNAL_SERVER_ERROR = "serverError"
+    INVALID_COMMAND_ERROR = "commandError"
+    RUNTIME_ERROR = "runtimeError"
+    JSON_ENCODE_ERROR = "jsonEncodeError"
 
 
 # Bind to an open port in case the specified port is not available
@@ -33,33 +57,58 @@ def bind_to_available_port(server_socket, start_port, end_port):
     raise OSError(f"No available ports in the range {start_port}-{end_port}")
 
 
-# Change a setting based on a message from the client
+# Process a command, return the command and result as well as the retrieved value, if applicable
+# Yes this is a big if/else block, but it's the most efficient way to handle the commands
 def handle_command(command: str):
-    if command not in schema:
-        return f"Invalid command: '{command}', type='{type(command)}'"
+    command, value, result = command, None, None
 
-    if command == "disableSpeechInterruptForCharacters":
+    if command == "getSpeechInterruptForCharacters":
+        value, result = (
+            config.conf["keyboard"]["speechInterruptForCharacters"],
+            StatusResult.SUCCESS,
+        )
+
+    elif command == "getSpeakTypedWords":
+        value, result = config.conf["keyboard"]["speakTypedWords"], StatusResult.SUCCESS
+
+    elif command == "getSpeakTypedCharacters":
+        value, result = (
+            config.conf["keyboard"]["speakTypedCharacters"],
+            StatusResult.SUCCESS,
+        )
+
+    elif command == "disableSpeechInterruptForCharacters":
         config.conf["keyboard"]["speechInterruptForCharacters"] = False
+        value, result = None, StatusResult.SUCCESS
 
     elif command == "enableSpeechInterruptForCharacters":
         config.conf["keyboard"]["speechInterruptForCharacters"] = True
+        value, result = None, StatusResult.SUCCESS
 
     elif command == "disableSpeakTypedWords":
         config.conf["keyboard"]["speakTypedWords"] = False
+        value, result = None, StatusResult.SUCCESS
 
     elif command == "enableSpeakTypedWords":
         config.conf["keyboard"]["speakTypedWords"] = True
+        value, result = None, StatusResult.SUCCESS
 
     elif command == "disableSpeakTypedCharacters":
         config.conf["keyboard"]["speakTypedCharacters"] = False
+        value, result = None, StatusResult.SUCCESS
 
     elif command == "enableSpeakTypedCharacters":
         config.conf["keyboard"]["speakTypedCharacters"] = True
+        value, result = None, StatusResult.SUCCESS
 
     elif command == "debug":
         tones.beep(640, 100)
+        value, result = None, StatusResult.SUCCESS
 
-    return f"Success running: {command}"
+    else:
+        value, result = None, StatusResult.INVALID_COMMAND_ERROR
+
+    return command, value, result
 
 
 class IPC_Server:
@@ -71,27 +120,31 @@ class IPC_Server:
     def handle_client(self, client_socket: socket.socket):
         data = client_socket.recv(1024)
 
+        response = ResponseSchema.generate()
+
         try:
             messages = json.loads(data.decode().strip())
+
+            for message in messages:
+                command, value, result = handle_command(message)
+                response["processedCommands"].append(command)
+                response["returnedValues"].append(value)
+                # We can't pickle the StatusResult enum, so we have to convert it to a string
+                response["statusResults"].append(result.value)
+
         except json.JSONDecodeError as e:
             print(f"RECEIVED INVALID JSON FROM TALON: {e}")
-            response = f"TALON SERVER ERROR: {e}".encode()
-            client_socket.sendall(response)
-            return
+            response["statusResults"] = [StatusResult.JSON_ENCODE_ERROR.value]
 
-        result = ""
-        for message in messages:
-            result += handle_command(message)
-
-        response = f"TALON COMMAND PROCESSED: {result}".encode()
-        client_socket.sendall(response)
+        finally:
+            client_socket.sendall(json.dumps(response).encode("utf-8"))
 
     def output_spec_file(self):
         # write a json file to let clients know how to connect and what commands are available
         spec = {
             "address": "localhost",
             "port": str(self.get_port()),
-            "valid_commands": schema,
+            "valid_commands": valid_commands,
         }
         with open(SPEC_PATH, "w") as f:
             json.dump(spec, f)
@@ -131,9 +184,10 @@ class IPC_Server:
                     os.path.join(
                         globalVars.appArgs.configPath, "talon_server_error.log"
                     ),
-                    "w",
+                    "a",
                 ) as f:
-                    f.write(str(e))
+                    # get the time and append it to the error log
+                    f.write(f"ERROR AT {time.time()}: {e}")
                 break
             finally:
                 if self.client_socket:

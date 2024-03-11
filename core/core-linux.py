@@ -14,7 +14,6 @@ speaker: Literal["espeak", "piper"] = "espeak"
 
 @ctxLinux.action_class("user")
 class UserActions:
-
     def toggle_reader():
         """Toggles the screen reader on and off"""
         actions.user.toggle_orca()
@@ -44,7 +43,7 @@ class UserActions:
 
     def espeak(text: str):
         """Text to speech with a robotic/narrator voice"""
-        rate = settings.get("user.tts_speed", 0)
+        rate = settings.get("user.tts_speed")
         # convert -10 to 10 to -100 to 100
         rate = rate * 10
         # text = remove_special(text)

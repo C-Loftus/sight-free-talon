@@ -10,42 +10,44 @@
 # To avoid initializing translations in this module we simply roll our own "fake" `_` function
 # which returns whatever is given to it as an argument.
 def _(arg):
-	return arg
+    return arg
 
 
 # Add-on information variables
 addon_info = {
-	# add-on Name/identifier, internal for NVDA
-	"addon_name": "Sight-Free-Talon",
-	# Add-on summary, usually the user visible name of the addon.
-	# Translators: Summary for this add-on
-	# to be shown on installation and add-on information found in Add-ons Manager.
-	"addon_summary": _("Sight-Free-Talon"),
-	# Add-on description
-	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
-	"addon_description": _("""Server to Communicate With Talon Through the Screen Reader"""),
-	# version
-	"addon_version": "0.15",
-	# Author(s)
-	"addon_author": "Colton Loftus https://colton.bio/contact/",
-	# URL for the add-on documentation support
-	"addon_url": "https://colton.bio/sight-free-talon/",
-	# URL for the add-on repository where the source code can be found
-	"addon_sourceURL": None,
-	# Documentation file name
-	"addon_docFileName": "readme.html",
-	# Minimum NVDA version supported (e.g. "2018.3.0", minor version is optional)
-	"addon_minimumNVDAVersion" : "2019.3",
-	# Last NVDA version supported/tested
-	"addon_lastTestedNVDAVersion" : "2023.3.",
-	# Add-on update channel (default is None, denoting stable releases,
-	# and for development releases, use "dev".)
-	# Do not change unless you know what you are doing!
-	"addon_updateChannel": None,
-	# Add-on license such as GPL 2
-	"addon_license": "GPL 3",
-	# URL for the license document the ad-on is licensed under
-	"addon_licenseURL": "https://www.gnu.org/licenses/gpl-3.0.en.html#license-text",
+    # add-on Name/identifier, internal for NVDA
+    "addon_name": "Sight-Free-Talon",
+    # Add-on summary, usually the user visible name of the addon.
+    # Translators: Summary for this add-on
+    # to be shown on installation and add-on information found in Add-ons Manager.
+    "addon_summary": _("Sight-Free-Talon"),
+    # Add-on description
+    # Translators: Long description to be shown for this add-on on add-on information from add-ons manager
+    "addon_description": _(
+        """Server to Communicate With Talon Through the Screen Reader"""
+    ),
+    # version
+    "addon_version": "0.16",
+    # Author(s)
+    "addon_author": "Colton Loftus https://colton.bio/contact/",
+    # URL for the add-on documentation support
+    "addon_url": "https://colton.bio/sight-free-talon/",
+    # URL for the add-on repository where the source code can be found
+    "addon_sourceURL": None,
+    # Documentation file name
+    "addon_docFileName": "readme.html",
+    # Minimum NVDA version supported (e.g. "2018.3.0", minor version is optional)
+    "addon_minimumNVDAVersion": "2019.3",
+    # Last NVDA version supported/tested
+    "addon_lastTestedNVDAVersion": "2023.3.4",
+    # Add-on update channel (default is None, denoting stable releases,
+    # and for development releases, use "dev".)
+    # Do not change unless you know what you are doing!
+    "addon_updateChannel": None,
+    # Add-on license such as GPL 2
+    "addon_license": "GPL 3",
+    # URL for the license document the ad-on is licensed under
+    "addon_licenseURL": "https://www.gnu.org/licenses/gpl-3.0.en.html#license-text",
 }
 
 # Define the python files that are the sources of your add-on.

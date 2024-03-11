@@ -69,7 +69,7 @@ class Actions:
                     try:
                         # https://learn.microsoft.com/en-us/windows/win32/winauto/selflag
                         # SELFLAG_TAKESELECTION = 2
-                        # Ideally we would use .select() but the API doesn't work
+                        # We can also use .select()
                         element.legacyiaccessible_pattern.do_default_action()
                     except Exception as f:
                         actions.user.tts(f"Failed to focus {name}")

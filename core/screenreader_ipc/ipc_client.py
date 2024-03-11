@@ -1,4 +1,4 @@
-from talon import Module, Context, actions, settings
+from talon import Module, Context, actions, settings, cron
 import os
 import ipaddress
 import json
@@ -147,7 +147,23 @@ class NVDAActions:
         if not actions.user.is_nvda_running():
             return
 
-        ip, port, valid_commands = actions.user.addon_server_endpoint()
+        try:
+            ip, port, valid_commands = actions.user.addon_server_endpoint()
+        except FileNotFoundError:
+            # If we just shut the server down via a talon command
+            # we need to check again after a delay once the controller
+            # client is updated
+            def check_if_shutdown():
+                if not actions.user.is_nvda_running():
+                    # Ignore, we expect the server to be shut down
+                    # and the file to be gone
+                    return
+                else:
+                    raise FileNotFoundError(
+                        "NVDA is running but the server spec file is missing"
+                    )
+
+            cron.after("2s", check_if_shutdown)
 
         for command in commands:
             if command not in valid_commands:

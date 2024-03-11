@@ -7,6 +7,7 @@ import socket
 import threading
 import globalVars
 import enum
+import time
 
 # Exhaustive list of valid commands
 valid_commands = [
@@ -119,25 +120,24 @@ class IPC_Server:
     def handle_client(self, client_socket: socket.socket):
         data = client_socket.recv(1024)
 
-        try:
-            messages = json.loads(data.decode().strip())
-        except json.JSONDecodeError as e:
-            print(f"RECEIVED INVALID JSON FROM TALON: {e}")
-
-            response = ResponseSchema.generate()
-            response["statusResults"] = [StatusResult.JSON_ENCODE_ERROR]
-            client_socket.sendall(json.dumps(response).encode())
-            return
-
         response = ResponseSchema.generate()
 
-        for message in messages:
-            command, value, result = handle_command(message)
-            response["processedCommands"].append(command)
-            response["returnedValues"].append(value)
-            response["statusResults"].append(result)
+        try:
+            messages = json.loads(data.decode().strip())
 
-        client_socket.sendall(json.dumps(response).encode())
+            for message in messages:
+                command, value, result = handle_command(message)
+                response["processedCommands"].append(command)
+                response["returnedValues"].append(value)
+                # We can't pickle the StatusResult enum, so we have to convert it to a string
+                response["statusResults"].append(result.value)
+
+        except json.JSONDecodeError as e:
+            print(f"RECEIVED INVALID JSON FROM TALON: {e}")
+            response["statusResults"] = [StatusResult.JSON_ENCODE_ERROR.value]
+
+        finally:
+            client_socket.sendall(json.dumps(response).encode("utf-8"))
 
     def output_spec_file(self):
         # write a json file to let clients know how to connect and what commands are available
@@ -184,9 +184,10 @@ class IPC_Server:
                     os.path.join(
                         globalVars.appArgs.configPath, "talon_server_error.log"
                     ),
-                    "w",
+                    "a",
                 ) as f:
-                    f.write(str(e))
+                    # get the time and append it to the error log
+                    f.write(f"ERROR AT {time.time()}: {e}")
                 break
             finally:
                 if self.client_socket:

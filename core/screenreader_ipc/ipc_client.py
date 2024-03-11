@@ -19,8 +19,9 @@ mod = Module()
 lock = threading.Lock()
 
 
-def check_ipc_result(
-    response: Tuple[IPCClientResponse, IPCServerResponse],
+def handle_ipc_result(
+    client_response: IPCClientResponse,
+    server_response: IPCServerResponse,
 ) -> list[Tuple[IPC_COMMAND, Optional[any]]]:
     """
     Sanitize the response from the screenreader server
@@ -28,9 +29,9 @@ def check_ipc_result(
     if present
     """
     if settings.get("user.addon_debug"):
-        print(f"Received response: {response}")
+        print(f"Received responses\n{client_response=}\n{server_response=}")
 
-    match response:
+    match client_response, server_response:
         case (
             (
                 IPCClientResponse.NO_RESPONSE
@@ -46,11 +47,10 @@ def check_ipc_result(
             # empty case is here for exhaustiveness
             pass
 
-    ServerResponse = response[1]
     for cmd, value, status in zip(
-        ServerResponse["processedCommands"],
-        ServerResponse["returnedValues"],
-        ServerResponse["statusResults"],
+        server_response["processedCommands"],
+        server_response["returnedValues"],
+        server_response["statusResults"],
     ):
         match status:
             case ServerStatusResult.SUCCESS:
@@ -73,7 +73,7 @@ def check_ipc_result(
                 assert_never((cmd, value, status))
 
     return list(
-        zip(ServerResponse["processedCommands"], ServerResponse["returnedValues"])
+        zip(server_response["processedCommands"], server_response["returnedValues"])
     )
 
 
@@ -195,7 +195,7 @@ class NVDAActions:
             finally:
                 sock.close()
 
-        checked_result = check_ipc_result((response["client"], response["server"]))
+        checked_result = handle_ipc_result(response["client"], response["server"])
         return checked_result
 
     def send_ipc_command(

@@ -89,6 +89,7 @@ class Actions:
     def test_reader_addon():
         """Tests the reader addon"""
         actions.user.send_ipc_command("debug")
+        actions.user.tts("Success testing reader addon")
 
 
 ctxWindowsNVDARunning = Context()

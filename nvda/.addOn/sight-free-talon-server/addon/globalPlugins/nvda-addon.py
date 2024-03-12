@@ -8,6 +8,9 @@ import threading
 import globalVars
 import enum
 import time
+from datetime import datetime
+import traceback
+
 
 # Exhaustive list of valid commands
 valid_commands = [
@@ -174,9 +177,9 @@ class IPC_Server:
                 self.client_socket = client_socket
                 self.client_socket.settimeout(0.3)
                 self.handle_client(self.client_socket)
+            # If the socket times out, we just want to keep looping
             except socket.timeout:
                 pass
-            # catch client disconnect error
             except Exception as e:
                 print(f"\n\n\n\nTALON SERVER CRASH: {e}")
                 self.stop()
@@ -186,8 +189,10 @@ class IPC_Server:
                     ),
                     "a",
                 ) as f:
-                    # get the time and append it to the error log
-                    f.write(f"ERROR AT {time.time()}: {e}")
+                    f.write(
+                        f"\nERROR AT {datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}: {e}"
+                    )
+                    f.write(f"\n{traceback.format_exc()}")
                 break
             finally:
                 if self.client_socket:

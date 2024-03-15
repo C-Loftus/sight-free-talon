@@ -51,6 +51,7 @@ def handle_ipc_result(
         server_response["processedCommands"],
         server_response["returnedValues"],
         server_response["statusResults"],
+        strict=True,
     ):
         match status:
             case ServerStatusResult.SUCCESS:

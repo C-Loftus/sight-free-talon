@@ -193,6 +193,7 @@ class IPC_Server:
                         f"\nERROR AT {datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')}: {e}"
                     )
                     f.write(f"\n{traceback.format_exc()}")
+                    f.write(f"\nINTERNAL STATE: {self.__dict__}\n")
                 break
             finally:
                 if self.client_socket:

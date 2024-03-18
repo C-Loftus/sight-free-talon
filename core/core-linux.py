@@ -46,9 +46,17 @@ class UserActions:
         rate = settings.get("user.tts_speed")
         # convert -10 to 10 to -100 to 100
         rate = rate * 10
+
         # text = remove_special(text)
 
-        proc = subprocess.Popen(["spd-say", text, "--rate", str(rate)])
+        volume = settings.get("user.tts_volume")
+
+        # volume is from 1 to 100, convert it to -100 to 100
+        volume = int(volume - 50) * 2
+
+        proc = subprocess.Popen(
+            ["spd-say", text, "--rate", str(rate), "--volume", str(volume)]
+        )
         actions.user.set_cancel_callback(proc.kill)
 
     def piper(text: str):

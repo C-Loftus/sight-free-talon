@@ -11,7 +11,6 @@ import time
 from datetime import datetime
 import traceback
 
-
 # Exhaustive list of valid commands
 valid_commands = [
     "disableSpeechInterruptForCharacters",
@@ -173,6 +172,10 @@ class IPC_Server:
 
         while self.running:
             try:
+                # If it was closed from another thread, we want to break out of the loop
+                if not self.server_socket:
+                    break
+
                 client_socket, _ = self.server_socket.accept()
                 self.client_socket = client_socket
                 self.client_socket.settimeout(0.3)
@@ -196,6 +199,7 @@ class IPC_Server:
                     f.write(f"\nINTERNAL STATE: {self.__dict__}\n")
                 break
             finally:
+                # Called no matter what even after a break
                 if self.client_socket:
                     self.client_socket.close()
 

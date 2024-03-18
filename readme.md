@@ -25,7 +25,7 @@ This repository integrates with:
 
 # Installing
 
-- Clone the repo into your Talon user directory.
+- Clone this repo into your Talon user directory.
 - Clone the [Talon community repository](https://github.com/talonhub/community) for general Talon commands
   - This is the sole OS-agnostic dependency of this project.
 
@@ -33,10 +33,7 @@ _Note for sighted users_: Please clone the entire repository. Any functionality 
 
 ## OS Specific Setup
 
-- Linux
-  - Install `spd-say` to play standard tts.
-  - Install `piper` to use the `omnx` model for more natural speech
-    - run `pipx install piper` to install it (thus `pipx` is a dependency)
+
 - Windows
 
   - Using NVDA:
@@ -45,6 +42,11 @@ _Note for sighted users_: Please clone the entire repository. Any functionality 
 
 - Mac
   - No extra dependencies
+ 
+- Linux
+  - Install `spd-say` to play standard tts.
+  - Install `piper` to use the `omnx` model for more natural speech
+    - run `pipx install piper` to install it (thus `pipx` is a dependency)
 
 # Contributing / Support
 

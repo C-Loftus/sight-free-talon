@@ -1,11 +1,15 @@
 # Sight-Free-Talon
 
-Use Talon non-visually. Intended to be universal for all abilities, but especially helpful for those with eye strain, vision impairment, or blindness. Provides functionality to:
+**Non-visually control your entire computer with voice commands. Uses the cross-platform [Talon Voice](https://talon.wiki) dictation engine.**  
 
-- echo back dictation
-- speak info on context switch (mode, app, window, etc.)
-- speak user-given text
-- provide TTS libraries and other utilities for your own scripts
+Intended to be universal for all abilities, but especially helpful for those with blindness, vision impairment, or eyestrain. 
+
+Provides functionality to:
+
+- echo back dictated text as you speak
+- use all [standard Talon commands](https://github.com/talonhub/community) non-visually
+- create your own non-visual voice commands using a cross-platform TTS library
+- hook into system accessibility APIs (i.e. speak info on context switch of the mode, app, window, etc.)
 
 This repository integrates with:
 

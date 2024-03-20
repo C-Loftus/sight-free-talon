@@ -13,3 +13,7 @@ manifest.ini
 *.nvda-addon
 .sconsign.dblite
 /[0-9]*.[0-9]*.[0-9]*.json
+
+.ruff_cache/
+.mypy_cache/
+__pycache__/

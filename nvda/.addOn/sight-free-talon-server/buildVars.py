@@ -20,20 +20,22 @@ addon_info = {
     # Add-on summary, usually the user visible name of the addon.
     # Translators: Summary for this add-on
     # to be shown on installation and add-on information found in Add-ons Manager.
-    "addon_summary": _("Sight-Free-Talon"),
+    "addon_summary": _(
+        "Recieve and process commands from the Talon Voice dictation engine"
+    ),
     # Add-on description
     # Translators: Long description to be shown for this add-on on add-on information from add-ons manager
     "addon_description": _(
-        """Server to Communicate With Talon Through the Screen Reader"""
+        "This addon provides a command server from recieving and processing commands sent from Talon Voice. It is tightly scoped and only permits changing settings for speech and interrupts."
     ),
     # version
-    "addon_version": "0.16",
+    "addon_version": "1.0",
     # Author(s)
     "addon_author": "Colton Loftus https://colton.bio/contact/",
     # URL for the add-on documentation support
     "addon_url": "https://colton.bio/sight-free-talon/",
     # URL for the add-on repository where the source code can be found
-    "addon_sourceURL": None,
+    "addon_sourceURL": "https://github.com/C-Loftus/sight-free-talon",
     # Documentation file name
     "addon_docFileName": "readme.html",
     # Minimum NVDA version supported (e.g. "2018.3.0", minor version is optional)

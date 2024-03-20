@@ -6,14 +6,8 @@ You do not need to install this addon to use NVDA alongside the general dictatio
 
 ## Installation
 
-For the time being, install the addon via the github release page. You can then simply install the addon by clicking on the file while NVDA is running. Note, please manually remove the old version of the addon before installing the new one, as I am not currently managing the version number in the addon until I reach a stable beta.
+First install the sight-free-talon NVDA addon with one click like any other NVDA addon.
 
-To install the client side of the addon, you will need to clone the sight-free-talon repo into your Talon user directory.
+Then you will need to install the client side of the addon, by cloning the sight-free-talon repo into your Talon user directory.
 
-# Attributions
 
-Copyright (C) 2012-2023 NVDA Add-on team contributors.
-This package is distributed under the terms of the GNU General Public License, version 2 or later. Please see the file COPYING.txt for further details.
-[alekssamos](https://github.com/alekssamos/) added automatic package of add-ons through Github Actions.
-For details about Github Actions please see the [Workflow syntax for GitHub Actions](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions).
-Copyright (C) 2022 alekssamos

@@ -20,13 +20,11 @@ addon_info = {
     # Add-on summary, usually the user visible name of the addon.
     # Translators: Summary for this add-on
     # to be shown on installation and add-on information found in Add-ons Manager.
-    "addon_summary": _(
-        "Recieve and process commands from the Talon Voice dictation engine"
-    ),
+    "addon_summary": _("Sight-Free-Talon"),
     # Add-on description
     # Translators: Long description to be shown for this add-on on add-on information from add-ons manager
     "addon_description": _(
-        "This addon provides a command server from recieving and processing commands sent from Talon Voice. It is tightly scoped and only permits changing settings for speech and interrupts."
+        "Recieves and processes commands sent from the Talon Voice dictation engine to NVDA. It is tightly scoped and only allows clients to change settings for speech verbosity and interrupts."
     ),
     # version
     "addon_version": "1.0",

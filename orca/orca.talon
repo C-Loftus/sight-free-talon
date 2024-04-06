@@ -1,5 +1,4 @@
 os: linux
 -
 
-toggle reader:
-    user.toggle_reader()
+toggle reader: user.toggle_reader()

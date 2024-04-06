@@ -11,8 +11,7 @@ read aloud:
     sleep(1)
     key(ctrl)
 
-toggle immersive reader:
-    key(f9)
+toggle immersive reader: key(f9)
 
 toggle immersive reader and read aloud:
     key(ctrl-shift-u)

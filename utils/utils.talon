@@ -1,11 +1,8 @@
-explore tags:
-    user.explore_tags()
+explore tags: user.explore_tags()
 
-explore settings:
-    user.explore_settings()
+explore settings: user.explore_settings()
 
-echo mode:
-    user.echo_mode()
+echo mode: user.echo_mode()
 
 echo website:
     key(ctrl-l)

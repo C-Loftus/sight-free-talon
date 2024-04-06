@@ -3,8 +3,7 @@
 
 tag(): user.sightFreeTalonInstalled
 
-toggle echo:
-    user.toggle_echo()
+toggle echo: user.toggle_echo()
 
 # Echo and interrupt the current speaker
 echo this:
@@ -18,8 +17,7 @@ echo no interrupt:
     interrupt = false
     user.tts(clip.text(), interrupt)
 
-echo clipboard:
-    user.tts(clip.text())
+echo clipboard: user.tts(clip.text())
 
 echo line:
     edit.select_line()
@@ -27,15 +25,12 @@ echo line:
     sleep(0.1)
     user.tts(clip.text())
 
-echo context:
-    user.echo_context(true)
+echo context: user.echo_context(true)
 
-toggle echo context:
-    user.toggle_echo_context()
+toggle echo context: user.toggle_echo_context()
 
 # Toogles both echo on dictation and echo on context
-toggle echo all:
-    user.toggle_echo_all()
+toggle echo all: user.toggle_echo_all()
 
 echo tab level:
     key(ctrl-l)
@@ -45,14 +40,10 @@ echo tab level:
     level = user.indentation_level(clip.text())
     user.tts("{level}")
 
-toggle [screen] reader:
-    user.toggle_reader()
+toggle [screen] reader: user.toggle_reader()
 
-toggle (key | keypress) sound:
-    user.toggle_keypress_sound()
+toggle (key | keypress) sound: user.toggle_keypress_sound()
 
-(switch | change) voice:
-    user.switch_voice()
+(switch | change) voice: user.switch_voice()
 
-toggle braille:
-    user.toggle_braille()
+toggle braille: user.toggle_braille()

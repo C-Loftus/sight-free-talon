@@ -1,21 +1,21 @@
 {
-  // Extra paths for NVDA addon development with the python environment outside Talon
-  "editor.accessibilitySupport": "on",
-  "python.autoComplete.extraPaths": [
-    "~\\github\\nvda\\source",
-    "~\\github\\nvda\\miscDeps\\python"
-  ],
-  "python.analysis.stubPath": "${workspaceFolder}/.vscode/typings",
-  // Clone the NVDA repository to the github folder in your home directory to get typing support
-  "python.analysis.extraPaths": [
-    "~\\github\\nvda\\source",
-    "~\\github\\nvda\\miscDeps\\python"
-  ],
-  "[python]": {
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.fixAll": "always"
-    },
-    "editor.defaultFormatter": "charliermarsh.ruff"
-  }
+    // Extra paths for NVDA addon development with the python environment outside Talon
+    "editor.accessibilitySupport": "on",
+    "python.autoComplete.extraPaths": [
+        "~\\github\\nvda\\source",
+        "~\\github\\nvda\\miscDeps\\python"
+    ],
+    "python.analysis.stubPath": "${workspaceFolder}/.vscode/typings",
+    // Clone the NVDA repository to the github folder in your home directory to get typing support
+    "python.analysis.extraPaths": [
+        "~\\github\\nvda\\source",
+        "~\\github\\nvda\\miscDeps\\python"
+    ],
+    "[python]": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.fixAll": "always"
+        },
+        "editor.defaultFormatter": "charliermarsh.ruff"
+    }
 }

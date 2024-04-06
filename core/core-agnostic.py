@@ -12,6 +12,7 @@ ctx = Context()
 
 
 class AgnosticState:
+    # Store the handle for the subprocess that will cancel the current speaker
     speaker_cancel_callback: ClassVar[Optional[Callable]] = None
 
 
@@ -26,7 +27,6 @@ def initialize_settings():
 # initialize the settings only after the user settings have been loaded
 app.register("ready", initialize_settings)
 
-speaker_cancel_callback: Optional[Callable] = None
 
 
 @mod.action_class

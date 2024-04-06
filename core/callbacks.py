@@ -5,6 +5,10 @@ from talon import actions, app, registry, scope, settings, speech_system, ui
 
 class CallbackState:
     last_mode: ClassVar[Optional[str]] = None
+    
+    # We have to keep track of the last title so we don't repeat it
+    # since sometimes Talon triggers a "title switch" when
+    # the title actually hasn't changed, i.e. when a text file is saved
     last_title: ClassVar[Optional[str]] = None
 
 
@@ -34,10 +38,7 @@ def on_app_switch(app):
     actions.user.echo_context()
 
 
-# We have to keep track of the last title so we don't repeat it
-# since sometimes Talon triggers a "title switch" when
-# the title actually hasn't changed, i.e. when a text file is saved
-last_title = None
+
 
 
 def on_title_switch(win):

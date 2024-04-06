@@ -18,7 +18,7 @@ def on_phrase(parsed_phrase):
             # Easier to just catch the exception
             try:
                 actions.user.cancel_current_speaker()
-            # Logging is handled individually by engine. Ignore here 
+            # Logging is handled individually by engine. Ignore here
             except Exception:
                 pass
 

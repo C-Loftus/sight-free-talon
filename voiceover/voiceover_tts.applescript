@@ -22,10 +22,10 @@ tell application "VoiceOver" to say (do shell script "date +\"%l:%M %p\"") using
 
 -- Set the text you want VoiceOver to speak----------------
 set textToSpeak to "Hello, this is a test."
-do shell script "say " & quoted form of textToSpeak 
+do shell script "say " & quoted form of textToSpeak
 
 ----------------
-tell application "VoiceOver" 
+tell application "VoiceOver"
     tell commander to perform command item chooser
 end tell
 

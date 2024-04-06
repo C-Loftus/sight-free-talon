@@ -1,6 +1,5 @@
 tag: user.nvda_running
 and tag: browser
-
 -
 
 # NVDA requires a pass through to copy

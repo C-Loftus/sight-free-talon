@@ -9,5 +9,3 @@ You do not need to install this addon to use NVDA alongside the general dictatio
 First install the sight-free-talon NVDA addon with one click like any other NVDA addon.
 
 Then you will need to install the client side of the addon, by cloning the sight-free-talon repo into your Talon user directory.
-
-

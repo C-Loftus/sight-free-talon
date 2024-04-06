@@ -24,7 +24,6 @@ exclude = [
     "buck-out",
     "build",
     "dist",
-    "node_modules",
     "site-packages",
     "venv",
 ]
@@ -75,3 +74,20 @@ docstring-code-format = false
 # This only has an effect when the `docstring-code-format` setting is
 # enabled.
 docstring-code-line-length = "dynamic"
+
+
+[tool.black]
+target-version = ['py311']
+
+[tool.isort]
+profile = 'black'
+
+[tool.pyright]
+# Talon classes don't use self so ignore the associated errors
+reportSelfClsParameterName = false
+reportGeneralTypeIssues = false
+# Imgui functions return an object that can't be statically resolved
+reportFunctionMemberAccess = false
+# Talon can't be installed in CI so ignore source errors
+reportMissingModuleSource = false
+reportMissingImports = false

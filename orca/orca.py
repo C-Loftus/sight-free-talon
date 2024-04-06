@@ -1,6 +1,7 @@
-from talon import actions, Module, settings, cron, Context
 import os
 import sys
+
+from talon import Context, Module, actions, cron, settings
 
 mod = Module()
 ctx = Context()

@@ -2,7 +2,6 @@
 
 TODO
 
-
 ## Setup
 
 - Open VoiceOver Utility and check "Allow VoiceOver to be controller with AppleScript".

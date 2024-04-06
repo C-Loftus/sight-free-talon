@@ -1,2 +1,1 @@
-read active commands:
-	user.open_command_list()
+read active commands: user.open_command_list()

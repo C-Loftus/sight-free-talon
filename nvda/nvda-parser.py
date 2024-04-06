@@ -1,6 +1,7 @@
-import os
 import configparser
-from talon import actions, Module, Context
+import os
+
+from talon import Context, Module, actions
 
 PATH = os.path.expanduser("~\\AppData\\Roaming\\nvda\\nvda.ini")
 

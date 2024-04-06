@@ -1,5 +1,5 @@
 import enum
-from typing import List, Literal, Any, TypedDict, Optional
+from typing import Any, List, Literal, Optional, TypedDict
 
 # Exhaustive list of commands that can be sent to the NVDA addon server
 

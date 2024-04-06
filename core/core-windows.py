@@ -1,6 +1,7 @@
-from talon import Context, settings, actions
-from collections import OrderedDict
 import os
+from collections import OrderedDict
+
+from talon import Context, actions, settings
 
 if os.name == "nt":
     import pywintypes

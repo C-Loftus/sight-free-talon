@@ -1,12 +1,21 @@
-from talon import actions, Module, settings, cron, Context, clip, speech_system, scope
-import os
 import ctypes
+import os
 import time
+from typing import ClassVar
+
+from talon import Context, Module, actions, clip, cron, scope, settings, speech_system
 
 mod = Module()
 ctx = Context()
 
 mod.tag("nvda_running", desc="If set, NVDA is running")
+
+
+class NVDAState:
+    # Check if we send the IPC command to NVDA at the start of the phrase
+    pre_phrase_sent: ClassVar[bool] = False
+    # Commands to re enable at the end of the phrase
+    reenable_commands: ClassVar[list[str]] = []
 
 
 @mod.scope
@@ -145,18 +154,11 @@ class UserActions:
         actions.user.tts("You must switch voice in NVDA manually")
 
 
-# Only send post:phrase callback if we sent a pre:phrase callback successfully
-pre_phrase_sent = False
-
-reenable_commands = []
-
-
 # By default the screen reader will allow you to press a key and interrupt the ph
 # rase however this does not work alongside typing given the fact that we are pres
 # sing keys. So we need to temporally disable it then re enable it at the end of
 # the phrase
 def disable_interrupt(_):
-    global pre_phrase_sent
     SLEEP_MODE = "sleep" in scope.get("mode")
     if (
         not actions.user.is_nvda_running()
@@ -178,49 +180,45 @@ def disable_interrupt(_):
         "disableSpeakTypedCharacters",
     ]
     results = actions.user.send_ipc_commands(commands)
-    global reenable_commands
-    reenable_commands = []
+
+    NVDAState.reenable_commands = []
     for command, value in results:
         match command:
             case (
-                (
-                    "getSpeechInterruptForCharacters"
-                    | "getSpeakTypedWords"
-                    | "getSpeakTypedCharacters"
-                ) as cmd
-            ) if value:
-                reenable_commands.append(cmd.replace("get", "enable"))
+                "getSpeechInterruptForCharacters"
+                | "getSpeakTypedWords"
+                | "getSpeakTypedCharacters"
+            ) as cmd if value:
+                NVDAState.reenable_commands.append(cmd.replace("get", "enable"))
 
-    pre_phrase_sent = True
+    NVDAState.pre_phrase_sent = True
 
 
 def enable_interrupt(_):
-    global pre_phrase_sent
     SLEEP_MODE = "sleep" in scope.get("mode")
     if (
         not actions.user.is_nvda_running()
         # If we are in sleep mode, we still send the interrupt
         # assuming the pre_phrase was sent, given the fact
         # we still want `talon sleep` to restore the setting at the end
-        or (SLEEP_MODE and not pre_phrase_sent)
+        or (SLEEP_MODE and not NVDAState.pre_phrase_sent)
         or not os.path.exists(SPEC_FILE)
     ):
         return
 
-    global reenable_commands
     # Can add more commands here if needed
     # We don't need to send disable commands since they are already disabled
     # at pre-phrase time
-    commands = reenable_commands
-
-    if len(commands) == 0:
+    if len(NVDAState.reenable_commands) == 0:
         return
 
-    #  this is kind of a hack since we don't know exactly when to re enable it
-    #  because we don't have a callback at the end of the last keypress
-    cron.after("400ms", lambda: actions.user.send_ipc_commands(commands))
+    # best way to do this because we don't have a callback at the end of the last keypress
+    cron.after(
+        "400ms", lambda: actions.user.send_ipc_commands(NVDAState.reenable_commands)
+    )
     # Reset the pre_phrase_sent flag to prevent another post:phrase callback during sleep mode
-    pre_phrase_sent = False
+
+    NVDAState.pre_phrase_sent = False
 
 
 if os.name == "nt":

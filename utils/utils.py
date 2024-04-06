@@ -1,10 +1,11 @@
-from talon import Module, actions, ui, Context, registry, scope
 import os
-from html.parser import HTMLParser
+import threading
 import urllib
+from html.parser import HTMLParser
+
+from talon import Context, Module, actions, registry, scope, ui
 
 from ..lib.HTMLbuilder import Builder
-import threading
 
 
 class VisibleTextParser(HTMLParser):

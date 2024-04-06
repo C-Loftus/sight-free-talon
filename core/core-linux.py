@@ -1,14 +1,16 @@
-from talon import Context, actions, settings
 import os
 import subprocess
-from typing import Literal, ClassVar
+from typing import ClassVar, Literal
+
+from talon import Context, actions, settings
 
 ctxLinux = Context()
 ctxLinux.matches = r"""
 os: linux
 """
 
-class LinuxState():
+
+class LinuxState:
     speaker: ClassVar[Literal["espeak", "piper"]] = "espeak"
 
 

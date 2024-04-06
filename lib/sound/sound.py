@@ -1,5 +1,6 @@
-from talon import Module, Context
 import os
+
+from talon import Context, Module
 
 if os.name == "nt":
     import winsound

@@ -1,8 +1,9 @@
 import os
 import subprocess
-import time
 import threading
-from talon import Module, Context
+import time
+
+from talon import Context, Module
 
 if os.name == "nt":
     import winsound

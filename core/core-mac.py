@@ -1,5 +1,6 @@
-from talon import Context, actions, settings
 import subprocess
+
+from talon import Context, actions, settings
 
 ctxMac = Context()
 ctxMac.matches = r"""

@@ -1,15 +1,15 @@
 # Talon's imgui gui library is not accessible to screen readers.
 # By using HTML we can create temporary web pages that are accessible to screen readers.
 
-import tempfile
-import webbrowser
 import enum
 import os
 import platform
+import tempfile
+import webbrowser
 
 STYLE = """
 <style>
-    body { 
+    body {
         background-color: #2E3440;
         margin: 0;
         padding: 0;

@@ -1,4 +1,4 @@
-from talon import Module, ui, Context, actions
+from talon import Context, Module, actions, ui
 from talon.windows import ax as ax
 
 mod = Module()

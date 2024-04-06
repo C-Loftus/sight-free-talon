@@ -1,15 +1,16 @@
-import config
-import tones
-import globalPluginHandler
-import os
+import enum
 import json
+import os
 import socket
 import threading
-import globalVars
-import enum
 import time
-from datetime import datetime
 import traceback
+from datetime import datetime
+
+import config
+import globalPluginHandler
+import globalVars
+import tones
 
 # Exhaustive list of valid commands
 valid_commands = [

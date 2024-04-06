@@ -1,5 +1,5 @@
 import enum
-from typing import List, Literal, Any, TypedDict, Optional
+from typing import Any, List, Literal, Optional, TypedDict
 
 # Exhaustive list of commands that can be sent to the NVDA addon server
 
@@ -15,6 +15,7 @@ IPC_COMMAND = Literal[
     "getSpeakTypedCharacters",
     "debug",
 ]
+
 
 class ServerSpec(TypedDict):
     address: str
@@ -35,6 +36,7 @@ class ServerStatusResult(enum.Enum):
             if member.value == value:
                 return member
         raise KeyError(f"Invalid status result: {value}")
+
 
 class IPCServerResponse(TypedDict):
     processedCommands: List[str]

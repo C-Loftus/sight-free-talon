@@ -1,6 +1,10 @@
-import platform, os, subprocess, json
+import json
+import os
+import platform
+import subprocess
+
 try:
-    from talon import cron, actions, Module
+    from talon import Module, actions, cron
 except:
     pass
 
@@ -9,27 +13,40 @@ os_type = platform.system()
 arch, _ = platform.architecture()
 
 current_directory = os.path.dirname(os.path.abspath(__file__))
-bin_directory = os.path.join(current_directory, 'bin')
+bin_directory = os.path.join(current_directory, "bin")
 match os_type, arch:
-    case 'Linux', '64bit':
-        log_path = os.path.join(bin_directory, 'log_parser_linux_amd64')
-    case 'Linux', '32bit':
-        log_path = os.path.join(bin_directory, 'log_parser_linux_386')
-    case 'Windows', '64bit':
-        log_path = os.path.join(bin_directory, 'log_parser_windows_amd64.exe')
-    case 'Windows', '32bit':
-        log_path = os.path.join(bin_directory, 'log_parser_windows_386.exe')
-    case 'Darwin', '64bit':
-        log_path = os.path.join(bin_directory, 'log_parser_macos_amd64')
-    
-log_cache = dict.fromkeys(["last_io_line", "last_debug_line", "last_warning_line", 
-                       "first_error_line", "last_error_line"], 
-                    "")
+    case "Linux", "64bit":
+        log_path = os.path.join(bin_directory, "log_parser_linux_amd64")
+    case "Linux", "32bit":
+        log_path = os.path.join(bin_directory, "log_parser_linux_386")
+    case "Windows", "64bit":
+        log_path = os.path.join(bin_directory, "log_parser_windows_amd64.exe")
+    case "Windows", "32bit":
+        log_path = os.path.join(bin_directory, "log_parser_windows_386.exe")
+    case "Darwin", "64bit":
+        log_path = os.path.join(bin_directory, "log_parser_macos_amd64")
+
+log_cache = dict.fromkeys(
+    [
+        "last_io_line",
+        "last_debug_line",
+        "last_warning_line",
+        "first_error_line",
+        "last_error_line",
+    ],
+    "",
+)
 
 updated = False
 
+
 def get_log_updates() -> dict[str, str]:
-    output = subprocess.Popen(log_path, stdout=subprocess.PIPE, stderr=subprocess.PIPE, creationflags=subprocess.CREATE_NO_WINDOW)
+    output = subprocess.Popen(
+        log_path,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        creationflags=subprocess.CREATE_NO_WINDOW,
+    )
     stdout, _ = output.communicate()
     jsonOutput = json.loads(stdout)
     updated_values = {}
@@ -42,14 +59,15 @@ def get_log_updates() -> dict[str, str]:
             updated_values[key] = jsonOutput[key]
         log_cache[key] = jsonOutput[key]
     return updated_values
-    
+
+
 def updates_as_dict(updated_vals: dict[str, str]):
     key_to_label = {
         "last_io_line": "IO",
         "last_debug_line": "Debug",
         "last_warning_line": "Warning",
         "first_error_line": "Start Error",
-        "last_error_line": "Last Error"
+        "last_error_line": "Last Error",
     }
 
     output = {}
@@ -61,8 +79,9 @@ def updates_as_dict(updated_vals: dict[str, str]):
     return output
 
 
-
 mod = Module()
+
+
 @mod.action_class
 class Actions:
     def echo_last_error():

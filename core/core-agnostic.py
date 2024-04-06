@@ -3,13 +3,15 @@ This file contains actions that are core to the talon tts system
 and are agnostic to the tts voice being used or the operating system
 """
 
-from typing import Optional, Callable, ClassVar
-from talon import Module, actions, Context, settings, app
+from typing import Callable, ClassVar, Optional
+
+from talon import Context, Module, actions, app, settings
 
 mod = Module()
 ctx = Context()
 
-class AgnosticState():
+
+class AgnosticState:
     speaker_cancel_callback: ClassVar[Optional[Callable]] = None
 
 

@@ -1,19 +1,22 @@
-from talon import actions, Module, settings, cron, Context, clip, speech_system, scope
-import os
 import ctypes
+import os
 import time
 from typing import ClassVar
+
+from talon import Context, Module, actions, clip, cron, scope, settings, speech_system
 
 mod = Module()
 ctx = Context()
 
 mod.tag("nvda_running", desc="If set, NVDA is running")
 
-class NVDAState():
+
+class NVDAState:
     # Check if we send the IPC command to NVDA at the start of the phrase
     pre_phrase_sent: ClassVar[bool] = False
     # Commands to re enable at the end of the phrase
     reenable_commands: ClassVar[list[str]] = []
+
 
 @mod.scope
 def set_nvda_running_tag():
@@ -150,6 +153,7 @@ class UserActions:
         """Switches the voice for the screen reader"""
         actions.user.tts("You must switch voice in NVDA manually")
 
+
 # By default the screen reader will allow you to press a key and interrupt the ph
 # rase however this does not work alongside typing given the fact that we are pres
 # sing keys. So we need to temporally disable it then re enable it at the end of
@@ -181,12 +185,10 @@ def disable_interrupt(_):
     for command, value in results:
         match command:
             case (
-                (
-                    "getSpeechInterruptForCharacters"
-                    | "getSpeakTypedWords"
-                    | "getSpeakTypedCharacters"
-                ) as cmd
-            ) if value:
+                "getSpeechInterruptForCharacters"
+                | "getSpeakTypedWords"
+                | "getSpeakTypedCharacters"
+            ) as cmd if value:
                 NVDAState.reenable_commands.append(cmd.replace("get", "enable"))
 
     NVDAState.pre_phrase_sent = True
@@ -211,9 +213,11 @@ def enable_interrupt(_):
         return
 
     # best way to do this because we don't have a callback at the end of the last keypress
-    cron.after("400ms", lambda: actions.user.send_ipc_commands(NVDAState.reenable_commands))
+    cron.after(
+        "400ms", lambda: actions.user.send_ipc_commands(NVDAState.reenable_commands)
+    )
     # Reset the pre_phrase_sent flag to prevent another post:phrase callback during sleep mode
-    
+
     NVDAState.pre_phrase_sent = False
 
 

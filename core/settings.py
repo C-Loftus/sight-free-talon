@@ -1,5 +1,6 @@
-from talon import Module
 from typing import Literal
+
+from talon import Module
 
 mod = Module()
 

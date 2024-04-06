@@ -1,8 +1,9 @@
 # from __future__ import absolute_import
 # import pywintypes
 
-from talon import actions, Module, cron, Context
 import os
+
+from talon import Context, Module, actions, cron
 
 # class Jaws():
 #     """Supports the Jaws for Windows screen reader."""

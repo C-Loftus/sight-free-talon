@@ -1,5 +1,6 @@
-from talon import scope, registry, ui, actions, settings, speech_system, app
 from typing import ClassVar, Optional
+
+from talon import actions, app, registry, scope, settings, speech_system, ui
 
 
 class CallbackState:
@@ -53,6 +54,7 @@ def on_title_switch(win):
 
     CallbackState.last_title = active_window_title
     actions.user.tts(f"{active_window_title}")
+
 
 def on_update_contexts():
     last_mode = CallbackState.last_mode

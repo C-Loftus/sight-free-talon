@@ -1,19 +1,20 @@
-from talon import Module, Context, actions, settings, cron
-import os
 import ipaddress
 import json
+import os
 import socket
 import threading
-from typing import Tuple, assert_never, Optional
+from typing import Optional, Tuple, assert_never
+
+from talon import Context, Module, actions, cron, settings
+
 from .ipc_schema import (
     IPC_COMMAND,
-    IPCServerResponse,
     IPCClientResponse,
+    IPCServerResponse,
+    ResponseBundle,
     ServerSpec,
     ServerStatusResult,
-    ResponseBundle,
 )
-
 
 mod = Module()
 lock = threading.Lock()
@@ -33,13 +34,11 @@ def handle_ipc_result(
 
     match client_response, server_response:
         case (
-            (
-                IPCClientResponse.NO_RESPONSE
-                | IPCClientResponse.TIMED_OUT
-                | IPCClientResponse.GENERAL_ERROR,
-                _,
-            ) as error
-        ):
+            IPCClientResponse.NO_RESPONSE
+            | IPCClientResponse.TIMED_OUT
+            | IPCClientResponse.GENERAL_ERROR,
+            _,
+        ) as error:
             raise RuntimeError(
                 f"Clientside {error=} communicating with screenreader extension"
             )
@@ -64,11 +63,9 @@ def handle_ipc_result(
                     "Invalid JSON payload sent from client to screenreader"
                 )
             case (
-                (
-                    ServerStatusResult.INTERNAL_SERVER_ERROR
-                    | ServerStatusResult.RUNTIME_ERROR
-                ) as error
-            ):
+                ServerStatusResult.INTERNAL_SERVER_ERROR
+                | ServerStatusResult.RUNTIME_ERROR
+            ) as error:
                 raise RuntimeError(f"{error} processing command '{cmd}'")
             case _:
                 assert_never((cmd, value, status))

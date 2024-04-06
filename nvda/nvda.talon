@@ -2,7 +2,8 @@ tag: user.nvda_running
 os: windows
 -
 
-reader press <user.keys>:   user.with_nvda_mod_press(keys)
+reader press <user.keys>:
+    user.with_nvda_mod_press(keys)
 
 next heading:
     key(h)
@@ -10,22 +11,22 @@ previous heading:
     key(shift-h)
 
 previous option:
-    user.with_nvda_mod_press('ctrl-left')
+    user.with_nvda_mod_press("ctrl-left")
 
 # In the menu, this will go to the next option
 next option:
-    user.with_nvda_mod_press('ctrl-right')
+    user.with_nvda_mod_press("ctrl-right")
 
 up option:
-    user.with_nvda_mod_press('ctrl-up')
+    user.with_nvda_mod_press("ctrl-up")
 
 # In the menu, this will lower the value of the option
 down option:
-    user.with_nvda_mod_press('ctrl-down')
+    user.with_nvda_mod_press("ctrl-down")
 
 # reads everything from the current position down
 read below:
-    user.with_nvda_mod_press('down')
+    user.with_nvda_mod_press("down")
 
 # If the user is in the middle of an echoed text and this will posit otherwise it will resume
 pause speech:
@@ -35,13 +36,13 @@ stop speech:
     key(ctrl)
 
 speak line:
-    user.with_nvda_mod_press('up')
+    user.with_nvda_mod_press("up")
 
 mouse to navigator:
-    user.with_nvda_mod_press('shift-m')
+    user.with_nvda_mod_press("shift-m")
 
 navigator to mouse:
-    user.with_nvda_mod_press('shift-n')
+    user.with_nvda_mod_press("shift-n")
 
 next paragraph:
     key(ctrl-down)
@@ -50,66 +51,71 @@ previous paragraph:
     key(ctrl-up)
 
 change verbosity:
-    user.with_nvda_mod_press('p')
+    user.with_nvda_mod_press("p")
 
 speak title:
-    user.with_nvda_mod_press('t')
+    user.with_nvda_mod_press("t")
 
-next focusable item:        key(tab)
-next heading <number_small>: key("{number_small}")
-previous heading  <number_small>: key("shift-{number_small}")
+next focusable item:
+    key(tab)
+next heading <number_small>:
+    key("{number_small}")
+previous heading <number_small>:
+    key("shift-{number_small}")
 
-next landmark:              key(d)
-previous landmark:          key(shift-d)
+next landmark:
+    key(d)
+previous landmark:
+    key(shift-d)
 # toggle speech mode:
 
 open element list:
-    user.with_nvda_mod_press('f7')
+    user.with_nvda_mod_press("f7")
 
 toggle input help:
-    user.with_nvda_mod_press('1')
+    user.with_nvda_mod_press("1")
 
 speak typed words:
-    user.with_nvda_mod_press('3')
+    user.with_nvda_mod_press("3")
 
 speak typed characters:
-    user.with_nvda_mod_press('2')
+    user.with_nvda_mod_press("2")
 
 speak command keys:
-    user.with_nvda_mod_press('4')
+    user.with_nvda_mod_press("4")
 
 follow system focus:
-    user.with_nvda_mod_press('7')
+    user.with_nvda_mod_press("7")
 follow system caret:
-    user.with_nvda_mod_press('6')
+    user.with_nvda_mod_press("6")
 
 toggle mouse tracking:
-    user.with_nvda_mod_press('m')
+    user.with_nvda_mod_press("m")
 
 open reader setings:
-    user.with_nvda_mod_press('ctrl-g')
+    user.with_nvda_mod_press("ctrl-g")
 
 synthesizer settings:
-    user.with_nvda_mod_press('ctrl-s')
+    user.with_nvda_mod_press("ctrl-s")
 
 speak time:
-    user.with_nvda_mod_press('f12')
+    user.with_nvda_mod_press("f12")
 
 # Reporting Location and Other Information
 speak text formatting:
-    user.with_nvda_mod_press('f')
+    user.with_nvda_mod_press("f")
 
 speak link destination:
-    user.with_nvda_mod_press('k')
+    user.with_nvda_mod_press("k")
 
 speak window:
-    user.with_nvda_mod_press('b')
+    user.with_nvda_mod_press("b")
 
 speak focus:
-    user.with_nvda_mod_press('tab')
+    user.with_nvda_mod_press("tab")
 
 screen curtain:
-    user.with_nvda_mod_press('ctrl-escape')
+    user.with_nvda_mod_press("ctrl-escape")
 
 # sleep mode disables all NVDA commands and speech/braille
 # output for the current application. This is most useful in
@@ -119,29 +125,43 @@ screen curtain:
 toggle reader sleep:
     user.with_nvda_mod_press("shift-s")
 
-next table:                 key(T)
-next list:                  key(L)
-next list item:             key(I)
-next graphic:               key(G)
-next link:                  key(K)
-next unvisited link:        key(U)
-next visited link:          key(V)
-Next form field:            key(F)
-Next button:                key(B)
+next table:
+    key(T)
+next list:
+    key(L)
+next list item:
+    key(I)
+next graphic:
+    key(G)
+next link:
+    key(K)
+next unvisited link:
+    key(U)
+next visited link:
+    key(V)
+Next form field:
+    key(F)
+Next button:
+    key(B)
 
-toggle selection:           key(space)
-Next checkbox:              key(X)
+toggle selection:
+    key(space)
+Next checkbox:
+    key(X)
 
-Next combo box:             key(C)
+Next combo box:
+    key(C)
 
-Toggle selection:           key(up)
-Next radio button:          key(R)
+Toggle selection:
+    key(up)
+Next radio button:
+    key(R)
 
 braille display dialog:
-    user.with_nvda_mod_press('ctrl-a')
+    user.with_nvda_mod_press("ctrl-a")
 
 pass through next:
-    user.with_nvda_mod_press('f2')
+    user.with_nvda_mod_press("f2")
 
 restart reader:
     user.restart_nvda()

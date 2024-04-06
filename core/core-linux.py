@@ -1,15 +1,15 @@
 from talon import Context, actions, settings
 import os
 import subprocess
-from typing import Literal
+from typing import Literal, ClassVar
 
 ctxLinux = Context()
 ctxLinux.matches = r"""
 os: linux
 """
 
-
-speaker: Literal["espeak", "piper"] = "espeak"
+class LinuxState():
+    speaker: ClassVar[Literal["espeak", "piper"]] = "espeak"
 
 
 @ctxLinux.action_class("user")
@@ -20,12 +20,11 @@ class UserActions:
 
     def switch_voice():
         """Switches the tts voice"""
-        global speaker
-        if speaker == "espeak":
-            speaker = "piper"
+        if LinuxState.speaker == "espeak":
+            LinuxState.speaker = "piper"
             actions.user.tts("Switched to piper")
         else:
-            speaker = "espeak"
+            LinuxState.speaker = "espeak"
             actions.user.tts("Switched to espeak")
 
     def tts(text: str, interrupt: bool = True):
@@ -33,13 +32,13 @@ class UserActions:
         if interrupt:
             actions.user.cancel_current_speaker()
 
-        match speaker:
+        match LinuxState.speaker:
             case "espeak":
                 actions.user.espeak(text)
             case "piper":
                 actions.user.piper(text)
             case _:
-                raise ValueError(f"Unknown speaker {speaker}")
+                raise ValueError(f"Unknown speaker {LinuxState.speaker}")
 
     def espeak(text: str):
         """Text to speech with a robotic/narrator voice"""

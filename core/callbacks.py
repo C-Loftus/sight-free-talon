@@ -1,4 +1,10 @@
 from talon import scope, registry, ui, actions, settings, speech_system, app
+from typing import ClassVar, Optional
+
+
+class CallbackState:
+    last_mode: ClassVar[Optional[str]] = None
+    last_title: ClassVar[Optional[str]] = None
 
 
 def on_phrase(parsed_phrase):
@@ -42,19 +48,15 @@ def on_title_switch(win):
     # trime the title to 20 characters so super long addresses don't get read
     active_window_title = active_window_title[:20]
 
-    global last_title
-    if last_title == active_window_title:
+    if CallbackState.last_title == active_window_title:
         return
 
-    last_title = active_window_title
+    CallbackState.last_title = active_window_title
     actions.user.tts(f"{active_window_title}")
 
-
-last_mode = None
-
-
 def on_update_contexts():
-    global last_mode
+    last_mode = CallbackState.last_mode
+
     modes = scope.get("mode") or []
 
     MIXED = "command" in modes and "dictation" in modes
@@ -99,13 +101,13 @@ def on_update_contexts():
             actions.user.tts("Talon dictation mode")
 
     if SLEEP:
-        last_mode = "sleep"
+        CallbackState.last_mode = "sleep"
     elif MIXED:
-        last_mode = "mixed"
+        CallbackState.last_mode = "mixed"
     elif COMMAND:
-        last_mode = "command"
+        CallbackState.last_mode = "command"
     elif DICTATION:
-        last_mode = "dictation"
+        CallbackState.last_mode = "dictation"
 
 
 def on_ready():

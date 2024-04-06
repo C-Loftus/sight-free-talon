@@ -3,15 +3,18 @@ This file contains actions that are core to the talon tts system
 and are agnostic to the tts voice being used or the operating system
 """
 
-from typing import Optional, Callable
+from typing import Optional, Callable, ClassVar
 from talon import Module, actions, Context, settings, app
 
 mod = Module()
 ctx = Context()
 
+class AgnosticState():
+    speaker_cancel_callback: ClassVar[Optional[Callable]] = None
+
 
 # We want to get the settings from the talon file but then update
-# them locally here so we can change them globally via expose talon actions
+# them locally here so we can change them globally via exposed talon actions
 def initialize_settings():
     ctx.settings["user.echo_dictation"] = settings.get("user.echo_dictation", True)
     ctx.settings["user.echo_context"] = settings.get("user.echo_context", False)
@@ -31,21 +34,19 @@ class Actions:
         Sets the callback to call when the current speaker is cancelled. Only
         necessary to set if the tts is coming from a subprocess where we need to store a handle
         """
-        global speaker_cancel_callback
-        speaker_cancel_callback = callback
+        AgnosticState.speaker_cancel_callback = callback
 
     def cancel_current_speaker():
         """Cancels the current speaker"""
-        global speaker_cancel_callback
-        if not speaker_cancel_callback:
+        if not AgnosticState.speaker_cancel_callback:
             return
 
         try:
-            speaker_cancel_callback()
+            AgnosticState.speaker_cancel_callback()
         except Exception as e:
             print(e)
         finally:
-            speaker_cancel_callback = None
+            AgnosticState.speaker_cancel_callback = None
 
     def braille(text: str):
         """Output braille with the screenreader"""

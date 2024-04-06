@@ -16,7 +16,6 @@ IPC_COMMAND = Literal[
     "debug",
 ]
 
-
 class ServerSpec(TypedDict):
     address: str
     port: str
@@ -36,7 +35,6 @@ class ServerStatusResult(enum.Enum):
             if member.value == value:
                 return member
         raise KeyError(f"Invalid status result: {value}")
-
 
 class IPCServerResponse(TypedDict):
     processedCommands: List[str]

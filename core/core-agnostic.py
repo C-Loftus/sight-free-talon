@@ -28,7 +28,6 @@ def initialize_settings():
 app.register("ready", initialize_settings)
 
 
-
 @mod.action_class
 class Actions:
     def set_cancel_callback(callback: Callable):

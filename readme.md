@@ -20,6 +20,8 @@ This repository integrates with:
 # Usage
 
 - Watch my demo video for a quick overview
+
+
   <a href="https://www.youtube.com/watch?v=i-XcpnVwvR0" title="Sight-free-talon overview video">
   <img alt="Sight-free-talon overview video" src="https://github.com/C-Loftus/sight-free-talon/assets/70598503/1c33a46b-9595-4641-a6c1-0bc11b4ea90d" width="400">
   </a>

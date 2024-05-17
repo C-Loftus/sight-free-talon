@@ -64,21 +64,22 @@ def on_update_contexts():
     COMMAND = "command" in modes and "dictation" not in modes
     DICTATION = "dictation" in modes and "command" not in modes
     SLEEP = "sleep" in modes
-    ANNOUNCE = settings.get("user.announce_mode_updates")
+
+
+    speak  = actions.user.echo_dictation_enabled() and settings.get("user.announce_mode_updates")
+    message_to_speak: str = ""
 
     if last_mode == "sleep" and not SLEEP:
-        # Always announce wake up
         # Cancel any current speaker, weird edge case where it will speak twice otherwise
         actions.user.cancel_current_speaker()
-        actions.user.tts("Talon now listening")
+        message_to_speak = "Talon listening"
 
     elif last_mode != "sleep" and SLEEP:
         # Always announce sleep
-        actions.user.tts("Talon asleep")
+        message_to_speak = "Talon asleep"
 
     elif last_mode != "sleep" and MIXED and last_mode != "mixed":
-        if ANNOUNCE:
-            actions.user.tts("Talon mixed mode")
+        message_to_speak = "Talon mixed mode"
 
     elif (
         last_mode != "sleep"
@@ -87,8 +88,7 @@ def on_update_contexts():
         and not SLEEP
         and last_mode != "command"
     ):
-        if ANNOUNCE:
-            actions.user.tts("Talon command mode")
+        message_to_speak = "Talon command mode"
 
     elif (
         last_mode != "sleep"
@@ -98,8 +98,7 @@ def on_update_contexts():
         and last_mode != "dictation"
         and last_mode != "mixed"
     ):
-        if ANNOUNCE:
-            actions.user.tts("Talon dictation mode")
+        message_to_speak = "Talon dictation mode"
 
     if SLEEP:
         CallbackState.last_mode = "sleep"
@@ -109,6 +108,9 @@ def on_update_contexts():
         CallbackState.last_mode = "command"
     elif DICTATION:
         CallbackState.last_mode = "dictation"
+
+    if speak and message_to_speak != "":
+        actions.user.tts(message_to_speak)
 
 
 def on_ready():
@@ -121,7 +123,11 @@ def on_ready():
 
     if settings.get("user.start_screenreader_on_startup"):
         actions.user.toggle_reader()
-    actions.user.tts("Talon user scripts loaded")
+
+    # We don't have a setting specifically for echoing at startup
+    # but we can still use the same setting since it is semantically relevant
+    if actions.user.echo_dictation_enabled():
+        actions.user.tts("Talon user scripts loaded")
 
 
 app.register("ready", on_ready)

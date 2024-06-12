@@ -25,13 +25,14 @@ addon_info = {
     # Translators: Long description to be shown for this add-on on add-on information from add-ons manager
     "addon_description": _(
         "Recieves and processes commands sent from the Talon Voice dictation engine to NVDA. It is tightly scoped and only allows clients to change settings for speech verbosity and interrupts."
+        "Integrate the Talon Voice dictation engine with NVDA. Improves the user experience of dictation by echoing back dictated commands and allowing users to interrupt text-to-speech via Talon"
     ),
     # version
     "addon_version": "1.0",
     # Author(s)
-    "addon_author": "Colton Loftus https://colton.bio/contact/",
+    "addon_author": "Colton Loftus https://colton.place/contact/",
     # URL for the add-on documentation support
-    "addon_url": "https://colton.bio/sight-free-talon/",
+    "addon_url": "https://colton.place/sight-free-talon/",
     # URL for the add-on repository where the source code can be found
     "addon_sourceURL": "https://github.com/C-Loftus/sight-free-talon",
     # Documentation file name
@@ -45,9 +46,9 @@ addon_info = {
     # Do not change unless you know what you are doing!
     "addon_updateChannel": None,
     # Add-on license such as GPL 2
-    "addon_license": "GPL 3",
+    "addon_license": "GPL 2",
     # URL for the license document the ad-on is licensed under
-    "addon_licenseURL": "https://www.gnu.org/licenses/gpl-3.0.en.html#license-text",
+    "addon_licenseURL": "https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt",
 }
 
 # Define the python files that are the sources of your add-on.

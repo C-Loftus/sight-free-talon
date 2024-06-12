@@ -65,8 +65,9 @@ def on_update_contexts():
     DICTATION = "dictation" in modes and "command" not in modes
     SLEEP = "sleep" in modes
 
-
-    speak  = actions.user.echo_dictation_enabled() and settings.get("user.announce_mode_updates")
+    speak = actions.user.echo_dictation_enabled() and settings.get(
+        "user.announce_mode_updates"
+    )
     message_to_speak: str = ""
 
     if last_mode == "sleep" and not SLEEP:

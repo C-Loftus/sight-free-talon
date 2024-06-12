@@ -1,3 +1,5 @@
+# THIS FILE IS CURRENTLY LIMITED TO TALON BETA
+
 from talon import Context, Module, actions, ui
 from talon.windows import ax as ax
 

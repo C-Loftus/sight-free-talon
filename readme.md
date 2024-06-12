@@ -21,11 +21,11 @@ This repository integrates with:
 
 - Watch my demo video for a quick overview
 
-  <a href="https://www.youtube.com/watch?v=i-XcpnVwvR0" title="Sight-free-talon overview video">
-  <img alt="Sight-free-talon overview video" src="https://github.com/C-Loftus/sight-free-talon/assets/70598503/1c33a46b-9595-4641-a6c1-0bc11b4ea90d" width="400">
+  <a href="https://www.youtube.com/watch?v=i-XcpnVwvR0" title="Sight-free-talon overview video" alt="Sight-free-talon overview video">
+  <img alt="Sight-free-talon overview video" src="https://github.com/C-Loftus/sight-free-talon/assets/70598503/1c33a46b-9595-4641-a6c1-0bc11b4ea90d" width="400" aria-hidden="true" >
   </a>
 
-- [Official docs](https://colton.bio/sight-free-talon/) can be found on my website and are in active development
+- [Official docs](https://colton.place/sight-free-talon/) can be found on my website and are in active development
 - All voice commands are found in the `.talon` files in each subdirectory and are scoped to each corresponding application or context
 
 # Installing

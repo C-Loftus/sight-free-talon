@@ -17,3 +17,6 @@ manifest.ini
 .ruff_cache/
 .mypy_cache/
 __pycache__/
+
+# If output via precommit
+node_modules/

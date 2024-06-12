@@ -24,14 +24,14 @@ addon_info = {
     # Add-on description
     # Translators: Long description to be shown for this add-on on add-on information from add-ons manager
     "addon_description": _(
-        "Recieves and processes commands sent from the Talon Voice dictation engine to NVDA. It is tightly scoped and only allows clients to change settings for speech verbosity and interrupts."
+        "Recieves and processes commands sent from the Talon Voice dictation engine to NVDA. Improves the user experience of dictation by echoing back dictated phrases and optionally controlling NVDA via voice commands"
     ),
     # version
-    "addon_version": "1.0",
+    "addon_version": "1.0.1",
     # Author(s)
-    "addon_author": "Colton Loftus https://colton.bio/contact/",
+    "addon_author": "Colton Loftus https://colton.place/contact/",
     # URL for the add-on documentation support
-    "addon_url": "https://colton.bio/sight-free-talon/",
+    "addon_url": "https://colton.place/sight-free-talon/",
     # URL for the add-on repository where the source code can be found
     "addon_sourceURL": "https://github.com/C-Loftus/sight-free-talon",
     # Documentation file name
@@ -39,15 +39,15 @@ addon_info = {
     # Minimum NVDA version supported (e.g. "2018.3.0", minor version is optional)
     "addon_minimumNVDAVersion": "2019.3",
     # Last NVDA version supported/tested
-    "addon_lastTestedNVDAVersion": "2023.3.4",
+    "addon_lastTestedNVDAVersion": "2024.1.0",
     # Add-on update channel (default is None, denoting stable releases,
     # and for development releases, use "dev".)
     # Do not change unless you know what you are doing!
     "addon_updateChannel": None,
     # Add-on license such as GPL 2
-    "addon_license": "GPL 3",
+    "addon_license": "GPL 2",
     # URL for the license document the ad-on is licensed under
-    "addon_licenseURL": "https://www.gnu.org/licenses/gpl-3.0.en.html#license-text",
+    "addon_licenseURL": "https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt",
 }
 
 # Define the python files that are the sources of your add-on.

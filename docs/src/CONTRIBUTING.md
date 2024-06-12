@@ -2,7 +2,7 @@
 
 My goal is to make contributing as easy as possible. Please directly reach out to me if you are interested in contributing to this repository. I am happy to help you get started and answer any questions you may have.
 
-I can be reached either through the Talon Slack or my website, [https://colton.bio](https://colton.bio).
+I can be reached either through the Talon Slack or my website, [https://colton.place](https://colton.place).
 
 ## Technical Contributions
 

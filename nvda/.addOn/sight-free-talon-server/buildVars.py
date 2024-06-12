@@ -24,11 +24,10 @@ addon_info = {
     # Add-on description
     # Translators: Long description to be shown for this add-on on add-on information from add-ons manager
     "addon_description": _(
-        "Recieves and processes commands sent from the Talon Voice dictation engine to NVDA. It is tightly scoped and only allows clients to change settings for speech verbosity and interrupts."
-        "Integrate the Talon Voice dictation engine with NVDA. Improves the user experience of dictation by echoing back dictated commands and allowing users to interrupt text-to-speech via Talon"
+        "Recieves and processes commands sent from the Talon Voice dictation engine to NVDA. Improves the user experience of dictation by echoing back dictated phrases and optionally controlling NVDA via voice commands"
     ),
     # version
-    "addon_version": "1.0",
+    "addon_version": "1.0.1",
     # Author(s)
     "addon_author": "Colton Loftus https://colton.place/contact/",
     # URL for the add-on documentation support

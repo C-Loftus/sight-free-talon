@@ -11,6 +11,7 @@ os: mac
 
 from talon.mac import applescript
 
+
 @ctx.action_class("user")
 class MacActions:
     def toggle_reader():
@@ -27,6 +28,7 @@ class MacActions:
 
 
 mod.tag("voiceover_running", desc="If set, voiceover is running")
+
 
 @mod.scope
 def set_voiceover_running_tag():
@@ -51,7 +53,7 @@ class Actions:
         """Returns true if voiceover is running"""
         if os.name != "darwin":
             return False
-        
+
         # TODO : figure out how a way to check this without spamming subprocesses
         return False
 
@@ -78,17 +80,16 @@ tag: user.voiceover_running
 class VoiceoverActions:
     def tts(text: str, interrupt: bool = True):
         """text to speech with voiceover"""
-        
 
         def wrapper(text):
             res = applescript.run(
-            f"""
+                f"""
 
             tell application "VoiceOver"
                 output "{text}"
             end tell
             """
             )
+
         # spawn it on a different thread so if it stalls we don't hang
         cron.after("0s", lambda: wrapper(text))
-

@@ -2,6 +2,7 @@ import ctypes
 import os
 import time
 from typing import ClassVar
+
 from talon import Context, Module, actions, clip, cron, scope, settings, speech_system
 
 mod = Module()

@@ -62,6 +62,14 @@ mod.setting(
 )
 
 mod.setting(
+    "voiceover_key",
+    type=str,
+    default="capslock",
+    desc="The key that is used as the voiceover key",
+)
+
+
+mod.setting(
     "speak_errors",
     type=bool,
     default=True,

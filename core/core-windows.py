@@ -65,7 +65,7 @@ class SAPI5:
         # Likewise, if this routine is not changed, then the pitch will sound higher than it should be.
         # https://www.autohotkey.com/boards/viewtopic.php?t=33651#p232026
         self.object.AllowAudioOutputFormatChangesOnNextSet = 0
-        self.object.AudioOutputStream.Format.Type = 39 # SAFT48kHz16BitStereo
+        self.object.AudioOutputStream.Format.Type = 39  # SAFT48kHz16BitStereo
         self.object.AudioOutputStream = self.object.AudioOutputStream
         self.object.AllowAudioOutputFormatChangesOnNextSet = 1
 

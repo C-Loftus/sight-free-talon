@@ -11,3 +11,7 @@ echo website:
     text = user.get_website_text(clip.text())
     user.tts(text)
     key(escape)
+
+echo (clip | clipboard):
+    text = clip.text()
+    user.tts(text)

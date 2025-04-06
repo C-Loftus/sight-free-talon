@@ -1,8 +1,9 @@
 import ctypes
 import os
-import time
 import subprocess
-from talon import Context, Module, actions, cron, speech_system, settings, scope, clip
+import time
+
+from talon import Context, Module, actions, clip, cron, scope, settings, speech_system
 
 mod = Module()
 ctx = Context()
@@ -23,6 +24,7 @@ if os.name == "nt":
     # Load the JAWS COM object for speech synthesis
     try:
         import win32com.client
+
         jaws = win32com.client.Dispatch("FreedomSci.JawsApi")
     except Exception as e:
         jaws = None
@@ -87,7 +89,9 @@ class Actions:
 
         try:
             # Test if JAWS is running by invoking a function from the API
-            return jaws.SayString("", False)  # If JAWS is running, this should not throw an error
+            return jaws.SayString(
+                "", False
+            )  # If JAWS is running, this should not throw an error
         except Exception:
             return False
 
@@ -115,7 +119,9 @@ class UserActions:
         """text to speech with JAWS"""
         if not jaws:
             errorMessage = str(ctypes.WinError(1))
-            raise Exception(f"Error communicating between Talon and JAWS: {errorMessage}", e)
+            raise Exception(
+                f"Error communicating between Talon and JAWS: {errorMessage}", e
+            )
 
         if use_clipboard:
             with clip.revert():

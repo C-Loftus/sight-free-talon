@@ -16,7 +16,7 @@ next paragraph: key(ctrl-down)
 previous paragraph: key(ctrl-up)
 stop speech | be quiet: key(ctrl)
 
-# Date and time 
+# Date and time
 speak time | say time: user.with_jaws_mod_press("f12")
 speak date | say date: user.with_jaws_mod_press("f12, f12")
 
@@ -31,8 +31,10 @@ toggle speech | speech on demand: user.with_jaws_mod_layered_key_presses("space,
 quick settings: user.with_jaws_mod_press("v")
 increase speech rate | speak faster: key(ctrl-alt-super-pgup)
 decrease speech rate | speak slower: key(ctrl-alt-super-pgdown)
-increase jaws volume | jaws volume up | speak louder: user.with_jaws_mod_layered_key_presses("space, v, j, pgup, escape")
-decrease jaws volume | jaws volume down| speak softer: user.with_jaws_mod_layered_key_presses("space, v, j, pgdown, escape")
+increase jaws volume | jaws volume up | speak louder:
+    user.with_jaws_mod_layered_key_presses("space, v, j, pgup, escape")
+decrease jaws volume | jaws volume down | speak softer:
+    user.with_jaws_mod_layered_key_presses("space, v, j, pgdown, escape")
 
 # Navigating
 
@@ -49,7 +51,8 @@ headings list | list headings: user.with_jaws_mod_press("f6")
 forms list | list forms: user.with_jaws_mod_press("f5")
 
 # Reporting Location and Other Information
-speak text formatting | speak formatting | say text formatting | say formatting: user.with_jaws_mod_press("f")
+speak text formatting | speak formatting | say text formatting | say formatting:
+    user.with_jaws_mod_press("f")
 speak selection | say selection: user.with_jaws_mod_press("shift-a")
 speak link destination | say link destination: user.with_jaws_mod_press("k")
 speak window | say window | speak dialog | say dialog: user.with_jaws_mod_press("b")

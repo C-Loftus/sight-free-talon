@@ -62,6 +62,13 @@ mod.setting(
 )
 
 mod.setting(
+    "jaws_key",
+    type=str,
+    default="insert",
+    desc="The key that is used as the JAWS key",
+)
+
+mod.setting(
     "speak_errors",
     type=bool,
     default=True,

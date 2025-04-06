@@ -126,7 +126,11 @@ class UserActions:
 
     def toggle_reader():
         """Toggles the screen reader on and off"""
-        actions.user.toggle_nvda()
+        screenreader: str = settings.get("user.screenreader_type")
+        if screenreader == "NVDA":
+            actions.user.toggle_nvda()
+        elif screenreader == "JAWS":
+            actions.user.toggle_jaws()
 
     def switch_voice():
         """Switches the voice for the screen reader"""

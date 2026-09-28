@@ -27,7 +27,7 @@ addon_info = {
         "Recieves and processes commands sent from the Talon Voice dictation engine to NVDA. Improves the user experience of dictation by echoing back dictated phrases and optionally controlling NVDA via voice commands"
     ),
     # version
-    "addon_version": "1.0.1",
+    "addon_version": "1.0.2",
     # Author(s)
     "addon_author": "Colton Loftus https://colton.place/contact/",
     # URL for the add-on documentation support
@@ -39,7 +39,7 @@ addon_info = {
     # Minimum NVDA version supported (e.g. "2018.3.0", minor version is optional)
     "addon_minimumNVDAVersion": "2019.3",
     # Last NVDA version supported/tested
-    "addon_lastTestedNVDAVersion": "2024.1.0",
+    "addon_lastTestedNVDAVersion": "2026.1.0",
     # Add-on update channel (default is None, denoting stable releases,
     # and for development releases, use "dev".)
     # Do not change unless you know what you are doing!
@@ -58,7 +58,7 @@ addon_info = {
 # pythonSources = ["addon/globalPlugins/*.py"]
 # For more information on SCons Glob expressions please take a look at:
 # https://scons.org/doc/production/HTML/scons-user/apd.html
-pythonSources = []
+pythonSources = ["addon/globalPlugins/*.py"]
 
 # Files that contain strings for translation. Usually your python sources
 i18nSources = pythonSources + ["buildVars.py"]

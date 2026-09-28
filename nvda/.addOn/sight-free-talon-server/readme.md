@@ -4,6 +4,10 @@ This addon creates a command server in NVDA that can recieve socket messages fro
 
 You do not need to install this addon to use NVDA alongside the general dictation echo back through NVDA my `sight-free-talon` repo. However, if you want to prevent NVDA from interrupting your dictation, you will need to either disable speech interrupt for typed characters in your NVDA settings or install this addon.
 
+## Compatibility
+
+This add-on is compatible with NVDA 2019.3 through NVDA 2026.x (including 64-bit versions).
+
 ## Installation
 
 First install the sight-free-talon NVDA addon with one click like any other NVDA addon.

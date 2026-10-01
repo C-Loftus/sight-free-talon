@@ -1,11 +1,11 @@
 import os
+
 from collections import OrderedDict
 
 from talon import Context, actions, settings
 
 if os.name == "nt":
-    import pywintypes
-    import win32com.client
+    from . import ctypes_dispatch
 
 
 SVSFDefault = 0
@@ -36,11 +36,11 @@ class SAPI5:
     def __init__(self):
         try:
             # self.object = load_com("SAPI.SPVoice")
-            self.object = win32com.client.Dispatch("SAPI.SpVoice")
+            self.object = ctypes_dispatch.Dispatch("SAPI.SpVoice")
 
             self._voices = self._available_voices()
-        except (pywintypes.com_error, TypeError):
-            raise Exception
+        except:
+            raise
         self._pitch = 0
 
     def _available_voices(self):
